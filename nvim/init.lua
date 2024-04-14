@@ -1,6 +1,46 @@
+-- load Vim-plug for installation of plugins
+local vim = vim
+local Plug = vim.fn["plug#"]
+
+-- Install Plugins
+vim.call("plug#begin")
+
+Plug("numToStr/Comment.nvim")
+
+vim.call("plug#end")
+
+-- Enable Plugins
+require("Comment").setup()
+
+-- Configure Plugins
+
+-- if pressec Ctrl + / - comment out given block of code
+
 -- my remaps
 vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-n>", ":nohl<CR>", { noremap = true, silent = true })
+
+-- Autocommand to save .py and .go files automatically on buffer change
+-- Function to check if the file is Python or Golang
+local function is_py_or_go()
+	local ext = vim.fn.expand("%:e")
+	return ext == "py" or ext == "go"
+end
+
+-- Auto-save function
+local function auto_save()
+	if is_py_or_go() then
+		vim.cmd("write")
+	end
+end
+
+-- Setup autocommand
+vim.api.nvim_create_augroup("AutoSave", { clear = true })
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+	group = "AutoSave",
+	pattern = { "*.py", "*.go" },
+	callback = auto_save,
+})
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -15,7 +55,7 @@ vim.g.have_nerd_font = false
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
-
+--
 -- Make line numbers default
 vim.opt.number = false
 -- You can also add relative line numbers, to help with jumping.
