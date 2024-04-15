@@ -826,3 +826,5 @@ vim.api.nvim_set_keymap("n", "<C-n>", ":nohl<CR>", { noremap = true, silent = tr
 -- if pressec Ctrl + / - comment out given block of code
 vim.api.nvim_set_keymap("n", "<C-_>", ":Commentary<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<C-_>", ":Commentary<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>Telescope live_grep<cr>", { noremap = true, silent = true })
