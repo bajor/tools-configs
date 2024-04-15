@@ -2,24 +2,6 @@
 local vim = vim
 local Plug = vim.fn["plug#"]
 
--- Install Plugins
-vim.call("plug#begin")
-
-Plug("numToStr/Comment.nvim")
-
-vim.call("plug#end")
-
--- Enable Plugins
-require("Comment").setup()
-
--- Configure Plugins
-
--- if pressec Ctrl + / - comment out given block of code
-
--- my remaps
-vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-n>", ":nohl<CR>", { noremap = true, silent = true })
-
 -- Autocommand to save .py and .go files automatically on buffer change
 -- Function to check if the file is Python or Golang
 local function is_py_or_go()
@@ -173,6 +155,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 --
+-- vim.call("plug#begin", "~/.local/share/nvim/plugged")
+--
 --  To check the current status of your plugins, run
 --    :Lazy
 --
@@ -184,6 +168,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+	"tpope/vim-commentary",
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
 	-- NOTE: Plugins can also be added by using a table,
@@ -192,11 +177,6 @@ require("lazy").setup({
 	--
 	-- Use `opts = {}` to force a plugin to be loaded.
 	--
-	--  This is equivalent to:
-	--    require('Comment').setup({})
-
-	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
 
 	-- Here is a more advanced example where we pass configuration
 	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -839,3 +819,10 @@ require("lazy").setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- my remaps
+vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-n>", ":nohl<CR>", { noremap = true, silent = true })
+-- if pressec Ctrl + / - comment out given block of code
+vim.api.nvim_set_keymap("n", "<C-_>", ":Commentary<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<C-_>", ":Commentary<CR>", { noremap = true, silent = true })
