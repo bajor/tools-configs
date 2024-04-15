@@ -1,6 +1,5 @@
 -- load Vim-plug for installation of plugins
 local vim = vim
-local Plug = vim.fn["plug#"]
 
 -- Autocommand to save .py and .go files automatically on buffer change
 -- Function to check if the file is Python or Golang
@@ -168,6 +167,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+
 	"tpope/vim-commentary",
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
@@ -828,3 +828,5 @@ vim.api.nvim_set_keymap("n", "<C-_>", ":Commentary<CR>", { noremap = true, silen
 vim.api.nvim_set_keymap("v", "<C-_>", ":Commentary<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>Telescope live_grep<cr>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<F2>", ":lua vim.lsp.buf.rename()<CR>", { noremap = true, silent = true })
