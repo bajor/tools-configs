@@ -1,0 +1,41 @@
+[
+    {
+        "key": "ctrl+tab",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "workbench.action.previousEditor"
+    },
+    {
+        "key": "alt+j",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "alt+h",
+        "command": "workbench.action.navigateBack"
+    },
+    {
+        "key": "alt+l",
+        "command": "editor.action.goToDeclaration"
+    },
+    {
+        "key": "ctrl+space",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+at+space",
+        "command": "editor.action.triggerParameterHints",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "workbench.view.extension.databricksBar"
+    },
+    {
+        "key": "ctrl+alt+o",
+        "command": "workbench.view.extension.codegpt-sidebar-view"
+    }
+]
+
