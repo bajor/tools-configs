@@ -153,8 +153,17 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
+
+local Plug = vim.fn["plug#"]
+
+vim.call("plug#begin")
+
+Plug("mbbill/undotree")
+
+vim.call("plug#end")
 --
--- vim.call("plug#begin", "~/.local/share/nvim/plugged")
+--
+--
 --
 --  To check the current status of your plugins, run
 --    :Lazy
@@ -167,9 +176,13 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+	{
+		"tpope/vim-commentary",
+	},
 
-	"tpope/vim-commentary",
-	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+	{
+		"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+	},
 
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
