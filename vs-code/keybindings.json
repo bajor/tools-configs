@@ -23,19 +23,6 @@
         "key": "ctrl+space",
         "command": "editor.action.showHover",
         "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+at+space",
-        "command": "editor.action.triggerParameterHints",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+shift+q",
-        "command": "workbench.view.extension.databricksBar"
-    },
-    {
-        "key": "ctrl+alt+o",
-        "command": "workbench.view.extension.codegpt-sidebar-view"
     }
 ]
 
