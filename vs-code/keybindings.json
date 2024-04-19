@@ -23,6 +23,11 @@
         "key": "ctrl+space",
         "command": "editor.action.showHover",
         "when": "editorTextFocus"
+    },
+    {
+        "key": "shift+k",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
     }
 ]
 
