@@ -5,4 +5,5 @@
 - gruvbox
 - isort
 - bookmarks
+- code spell checker
 - LSPs
