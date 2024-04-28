@@ -4,4 +4,5 @@
 - vim
 - gruvbox
 - isort
+- bookmarks
 - LSPs
