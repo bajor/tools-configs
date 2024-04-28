@@ -28,6 +28,20 @@
         "key": "shift+k",
         "command": "editor.action.showHover",
         "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+b m",
+        "command": "bookmarks.toggle",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+b n",
+        "command": "bookmarks.jumpToNext",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+b p",
+        "command": "bookmarks.jumpToPrevious",
+        "when": "editorTextFocus"
     }
 ]
-
