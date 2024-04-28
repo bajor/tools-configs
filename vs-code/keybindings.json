@@ -43,5 +43,10 @@
         "key": "ctrl+b p",
         "command": "bookmarks.jumpToPrevious",
         "when": "editorTextFocus"
-    }
+    },
+    {
+        "key": "ctrl+b l",
+        "command": "bookmarks.listFromAllFiles",
+        "when": "editorTextFocus"
+    },
 ]
