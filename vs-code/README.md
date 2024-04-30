@@ -1,9 +1,10 @@
 ## plugins:
 - scrolloff 
 - error lens
-- vim
+- VSCode Neovim
 - gruvbox
 - isort
 - bookmarks
 - code spell checker
+- Highlight on Copy
 - LSPs
