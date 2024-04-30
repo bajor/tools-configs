@@ -25,28 +25,19 @@
         "when": "editorTextFocus"
     },
     {
-        "key": "shift+k",
-        "command": "editor.action.showHover",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+b m",
+        "key": "ctrl+m m",
         "command": "bookmarks.toggle",
-        "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+b n",
+        "key": "ctrl+m n",
         "command": "bookmarks.jumpToNext",
-        "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+b p",
+        "key": "ctrl+m p",
         "command": "bookmarks.jumpToPrevious",
-        "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+b l",
+        "key": "ctrl+m l",
         "command": "bookmarks.listFromAllFiles",
-        "when": "editorTextFocus"
     },
 ]
