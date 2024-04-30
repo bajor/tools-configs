@@ -1,0 +1,14 @@
+// located in /home/<user name>/.config/Code/User
+{
+    "version": "0.2",
+    "language": "en",
+    "words": [
+        "esbenp",
+        "Grun",
+        "hlsearch",
+        "incsearch",
+        "isort",
+        "nohl",
+        "vimrc"
+    ]
+}
