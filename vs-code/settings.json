@@ -49,6 +49,7 @@
   "security.workspace.trust.untrustedFiles": "open",
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1,
+  "vim.highlightedyank.enable": true,
   "vim.vimrc.enable": true,
   "vim.leader": "<space>",
   "vim.incsearch": true,
