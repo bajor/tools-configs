@@ -40,4 +40,8 @@
         "key": "ctrl+m l",
         "command": "bookmarks.listFromAllFiles",
     },
+    {
+        "key": "ctrl+shift+m",
+        "command": "workbench.action.toggleMaximizeEditorGroup"
+    },
 ]
