@@ -7,3 +7,4 @@
 - bookmarks
 - code spell checker
 - LSPs
+- wsl
