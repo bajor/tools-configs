@@ -202,4 +202,5 @@
     "**/.ammonite": true
   },
   "workbench.sideBar.location": "right",
+  "window.customTitleBarVisibility": "never"
 }
