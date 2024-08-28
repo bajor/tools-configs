@@ -44,4 +44,14 @@
         "key": "ctrl+shift+m",
         "command": "workbench.action.toggleMaximizeEditorGroup"
     },
+
+    // copilot
+    {
+        "key": "ctrl+shift+alt+t",
+        "command": "github.copilot.interactiveEditor.generateTests"
+    },
+    { 
+        "key": "ctrl+shift+m", "command": "github.copilot.terminal.generateCommitMessage"
+    },
+
 ]
