@@ -1,4 +1,5 @@
 ## plugins:
+- single editor tabs
 - scrolloff 
 - error lens
 - vim
