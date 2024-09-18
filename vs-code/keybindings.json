@@ -53,5 +53,10 @@
     { 
         "key": "ctrl+shift+m", "command": "github.copilot.terminal.generateCommitMessage"
     },
-
+    { 
+        "key": "ctrl+shift+[", "command": "workbench.action.terminal.focusPrevious"
+    },
+    { 
+        "key": "ctrl+shift+]", "command": "workbench.action.terminal.focusNext"
+    },
 ]
