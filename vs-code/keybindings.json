@@ -44,6 +44,12 @@
         "key": "ctrl+shift+m",
         "command": "workbench.action.toggleMaximizeEditorGroup"
     },
+    { 
+        "key": "ctrl+shift+[", "command": "workbench.action.terminal.focusPrevious"
+    },
+    { 
+        "key": "ctrl+shift+]", "command": "workbench.action.terminal.focusNext"
+    },
 
     // copilot
     {
@@ -51,9 +57,7 @@
         "command": "github.copilot.interactiveEditor.generateTests"
     },
     { 
-        "key": "ctrl+shift+[", "command": "workbench.action.terminal.focusPrevious"
+        "key": "ctrl+shift+i", "command": "workbench.action.quickchat.toggle"
     },
-    { 
-        "key": "ctrl+shift+]", "command": "workbench.action.terminal.focusNext"
-    },
+
 ]
