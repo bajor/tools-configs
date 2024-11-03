@@ -3,12 +3,9 @@
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
-    },
+    }
   },
-  "isort.args": [
-    "--profile",
-    "black"
-  ],
+  "isort.args": ["--profile", "black"],
   "python.analysis.autoImportCompletions": true,
   // "python.condaPath": "C:\\Anaconda3\\Scripts\\conda.exe",
   "editor.folding": false,
@@ -27,17 +24,13 @@
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        "scope": [
-          "meta.function",
-          "meta.class"
-        ],
+        "scope": ["meta.function", "meta.class"],
         "settings": {
           "fontStyle": "bold"
         }
       }
     ]
   },
-  "workbench.colorTheme": "GrunBoxTheme",
   "workbench.colorCustomizations": {
     "statusBar.foreground": "#c0c0c0",
     "statusBar.background": "#282828",
@@ -68,20 +61,13 @@
   "vim.useCtrlKeys": true,
   "vim.insertModeKeyBindings": [
     {
-      "before": [
-        "j",
-        "k"
-      ],
-      "after": [
-        "<Esc>"
-      ]
-    },
+      "before": ["j", "k"],
+      "after": ["<Esc>"]
+    }
   ],
   "vim.normalModeKeyBindingsNonRecursive": [
     {
-      "before": [
-        "u"
-      ],
+      "before": ["u"],
       "after": [],
       "commands": [
         {
@@ -90,9 +76,7 @@
       ]
     },
     {
-      "before": [
-        "r"
-      ],
+      "before": ["r"],
       "after": [],
       "commands": [
         {
@@ -101,20 +85,11 @@
       ]
     },
     {
-      "before": [
-        "<leader>",
-        "d"
-      ],
-      "after": [
-        "d",
-        "d"
-      ]
+      "before": ["<leader>", "d"],
+      "after": ["d", "d"]
     },
     {
-      "before": [
-        "<leader>",
-        "p"
-      ],
+      "before": ["<leader>", "p"],
       "after": [],
       "commands": [
         {
@@ -123,10 +98,7 @@
       ]
     },
     {
-      "before": [
-        "<leader>",
-        "o"
-      ],
+      "before": ["<leader>", "o"],
       "after": [],
       "commands": [
         {
@@ -135,10 +107,7 @@
       ]
     },
     {
-      "before": [
-        "<leader>",
-        "v"
-      ],
+      "before": ["<leader>", "v"],
       "after": [],
       "commands": [
         {
@@ -147,10 +116,7 @@
       ]
     },
     {
-      "before": [
-        "<leader>",
-        "h"
-      ],
+      "before": ["<leader>", "h"],
       "after": [],
       "commands": [
         {
@@ -159,10 +125,7 @@
       ]
     },
     {
-      "before": [
-        "<leader>",
-        "l"
-      ],
+      "before": ["<leader>", "l"],
       "after": [],
       "commands": [
         {
@@ -171,16 +134,14 @@
       ]
     },
     {
-      "before": [
-        "<C-n>"
-      ],
+      "before": ["<C-n>"],
       "after": [],
       "commands": [
         {
           "command": ":nohl"
         }
       ]
-    },
+    }
   ],
   "telemetry.telemetryLevel": "off",
   "extensions.ignoreRecommendations": true,
@@ -202,5 +163,35 @@
     "**/.ammonite": true
   },
   "workbench.sideBar.location": "right",
-  "window.customTitleBarVisibility": "never"
+  "workbench.colorTheme": "GrunBoxTheme",
+  "cSpell.userWords": ["xfdsfd"],
+  "[scala]": {
+    "editor.suggestSelection": "first",
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
+  },
+  "[haskell]": {
+      "editor.tabSize": 4,
+      "editor.insertSpaces": true
+  },
+
+  "cSpell.enabled": false,
+
+  "window.customTitleBarVisibility": "never",
+
+  "metals.formatOnSave": true,
+  "metals.enable-organize-imports-on-save": true,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+
+
+  "github.copilot.preferredAccount": "bajor",
+  "github.copilot.advanced": {
+    "authProvider": "github"
+  },
+  "github.copilot.chat.localeOverride": "en"
 }
