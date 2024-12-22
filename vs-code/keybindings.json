@@ -26,19 +26,19 @@
     },
     {
         "key": "ctrl+m m",
-        "command": "bookmarks.toggle",
+        "command": "bookmarks.toggle"
     },
     {
         "key": "ctrl+m n",
-        "command": "bookmarks.jumpToNext",
+        "command": "bookmarks.jumpToNext"
     },
     {
         "key": "ctrl+m p",
-        "command": "bookmarks.jumpToPrevious",
+        "command": "bookmarks.jumpToPrevious"
     },
     {
         "key": "ctrl+m l",
-        "command": "bookmarks.listFromAllFiles",
+        "command": "bookmarks.listFromAllFiles"
     },
     {
         "key": "ctrl+shift+m",
@@ -58,6 +58,6 @@
     },
     { 
         "key": "ctrl+shift+i", "command": "workbench.action.quickchat.toggle"
-    },
+    }
 
 ]
