@@ -1,0 +1,31 @@
+# Put these shortcuts or figure out how to do it with defaults:
+- jk for vim
+- alt j for terminal
+- alt+h - navigate back/forward
+- alt+l - go to declaration
+- ctrl+shift+m - maximize/minimalize currrent tab
+- ctrl+shift+i - go to chat/ask about a code selected 
+- ctrl+tab - go to next tab
+
+- check if ag works (moves me to the displayed findings)
+
+- hide line numbers
+- hide scrollbars
+- don't match brackets 
+- solid cursor/don't blink 
+- format on save? 
+- autosave
+- single editor tabs 
+- scrolloff
+- error lens/errors in line
+- shortly highlight text on yanking
+- check english spelling
+- upper and lower section in the same color as rest
+- vim incsearch - true
+- vim use system clipboard 
+- vim hl search - true
+- r - redo, u - undo - vim normal mode
+- leader - spaceboard 
+- leader + v - split vertically, h - horizontally
+- leader h, leder l - focus left/right editor 
+- ctrl + n - vim :nohl
