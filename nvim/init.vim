@@ -46,6 +46,10 @@ nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 nnoremap <silent> <Leader>fh :Telescope help_tags<CR>
 
 
+" Quick terminal
+Plug 'akinsho/toggleterm.nvim'
+
+
 call plug#end()
 " END OF PLUGINS CONFIG
 
@@ -70,6 +74,7 @@ augroup END
 
 
 lua << EOF
+-- Python LSP
 local cmp = require'cmp'
 cmp.setup {
   sources = {
@@ -80,3 +85,11 @@ local lspconfig = require'lspconfig'
 lspconfig.pyright.setup{}
 
 
+-- Quick terminal
+require("toggleterm").setup{
+    size = 15,                       -- Height of the terminal window
+    open_mapping = [[<A-j>]],        -- Keybinding to toggle the terminal
+    direction = "float",        -- Terminal direction ("horizontal", "vertical", or "float")
+    close_on_exit = true,            -- Close terminal when the process exits
+    shell = vim.o.shell,             -- Use the default shell
+}
