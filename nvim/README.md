@@ -2,16 +2,6 @@
 - `:PlugInstall`
 - LSPs autocomplete - ctrl-p/n, enter - select previous/next suggestion, accept
 - install newest neovim, not default
-- tmux
-	`sudo apt install tmux`
-	`tmux new`		    - creaate new session
-	`tmux ctrl+b d` 	- detach from current session
-	`tmux ls` 		    - list sessions
-	`tmux attach -t 0`	- attach to session named 0
-	`ctrl+b c` 		    - create new window
-	`ctrl+b w`		    - list all windows and switch between them
-	`ctrl+b <num>`		- switch to window <num>
-	`ctrl+b n/p`		- next/previous window
 
 
 ## Telescpe
