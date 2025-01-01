@@ -50,21 +50,31 @@ nnoremap <silent> <Leader>fh :Telescope help_tags<CR>
 Plug 'akinsho/toggleterm.nvim'
 
 
+" Lua LSP
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim' " Optional: Integrates Mason with lspconfig
+
+
 call plug#end()
 " END OF PLUGINS CONFIG
 
+
 syntax enable
-set background=dark " or light
+set background=dark
 colorscheme gruvbox
+
 
 " Map 'jk' to <Esc> in insert mode
 inoremap jk <Esc>
 
+
 " Leader is spacebar
 let mapleader = " "
 
+
 " No highlight after / search 
 nnoremap <C-n> :nohl<CR>
+
 
 " Highlight yanked text briefly
 augroup YankHighlight
@@ -74,22 +84,51 @@ augroup END
 
 
 lua << EOF
--- Python LSP
-local cmp = require'cmp'
-cmp.setup {
-  sources = {
-    { name = 'nvim_lsp' },
-  },
-}
-local lspconfig = require'lspconfig'	
-lspconfig.pyright.setup{}
-
-
+-- START OF LUA
 -- Quick terminal
-require("toggleterm").setup{
-    size = 15,                       -- Height of the terminal window
-    open_mapping = [[<A-j>]],        -- Keybinding to toggle the terminal
-    direction = "float",        -- Terminal direction ("horizontal", "vertical", or "float")
-    close_on_exit = true,            -- Close terminal when the process exits
-    shell = vim.o.shell,             -- Use the default shell
+require("toggleterm").setup({
+    size = 15,                 -- Height of the terminal window
+    open_mapping = [[<A-j>]],  -- Keybinding to toggle the terminal
+    direction = "float",       -- "horizontal", "vertical", or "float"
+    close_on_exit = true,      -- Close terminal when the process exits
+    shell = vim.o.shell,       -- Use the default shell
+})
+
+-- PYTHON LSP
+local cmp = require("cmp")
+cmp.setup({
+  sources = {
+    { name = "nvim_lsp" },
+  },
+})
+
+local lspconfig = require("lspconfig")
+lspconfig.pyright.setup({})
+
+-- SCALA LSP
+-- (Using nvim-metals)
+-- In your Lua config (e.g., after the "SCALA LSP" comment)
+local metals = require("metals")
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+local metals_config = metals.bare_config()
+metals_config.capabilities = capabilities
+metals_config.settings = {
+  showImplicitArguments = true,
+  excludedPackages = { "akka.actor.typed.javadsl" },
 }
+metals_config.init_options = {
+  statusBarProvider = "on",
+}
+
+-- Use Neovim's Lua autocmd function
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "scala", "sbt" },
+  callback = function()
+    metals.initialize_or_attach(metals_config)
+  end,
+})
+
+EOF
+
+
