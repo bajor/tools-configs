@@ -23,7 +23,7 @@
 
 
 ## Gruvbox color scheme for Windows Terminal
-
+```
 Name of the color scheme
 "name": "Gruvbox Dark"
 
@@ -50,4 +50,5 @@ Bright colors
 "brightPurple": "#d3869b",   " Bright Magenta (Pink)
 "brightCyan": "#8ec07c",     " Bright Cyan
 "brightWhite": "#ebdbb2",    " Bright White
+```
 
