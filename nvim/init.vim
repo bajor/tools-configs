@@ -1,4 +1,6 @@
 " NOTES:
+" :PlugInstall
+" LSPs autocomplete - ctrl-p/n, enter - select previous/next suggestion, accept
 " - install newest neovim, not default
 " - tmux
 	" sudo apt install tmux
@@ -46,7 +48,7 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " sudo mv coursier /usr/local/bin/
 " coursier bootstrap metals -o metals -f
 " export JAVAHOME=/home/m/.sdkman/candidates/java/current/bin/java
-" export PATH=$JAVA_HOME/bin:$PAT
+" 
 " coursier install metals
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
@@ -64,9 +66,6 @@ nnoremap <silent> <Leader>fh :Telescope help_tags<CR>
 " <Leader>fb: Show a list of open buffers.
 " <Leader>fh: Search through Neovim help tags.
 " :Telescope git_files: Search files in a Git repository (requires Git).
-
-
-Plug 'Pocco81/auto-save.nvim'
 
 
 call plug#end()
@@ -131,3 +130,5 @@ cmp.setup {
 }
 local lspconfig = require'lspconfig'	
 lspconfig.pyright.setup{}
+
+
