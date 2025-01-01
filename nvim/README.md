@@ -42,3 +42,11 @@ Bright colors
 "brightWhite": "#ebdbb2",    " Bright White
 ```
 
+
+## Exploring files
+`:ex`
+
+
+## Git - show staged changes
+`git diff --cached`
+
