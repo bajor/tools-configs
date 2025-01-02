@@ -33,6 +33,10 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
 
+" Leader is spacebar THIS NEEDS TO BE BEFORE LEADER SHORTCUTS
+let mapleader = " "
+
+
 " Telescope
 Plug 'nvim-lua/plenary.nvim'          	" Required by Telescope
 Plug 'nvim-telescope/telescope.nvim'  	" Fuzzy Finder
@@ -65,8 +69,6 @@ colorscheme gruvbox
 inoremap jk <Esc>
 
 
-" Leader is spacebar
-let mapleader = " "
 
 
 " No highlight after / search 
@@ -139,7 +141,4 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 EOF
-
-
-
 
