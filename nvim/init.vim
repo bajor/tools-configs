@@ -21,11 +21,8 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " sudo apt-get install zip
 " curl -s "https://get.sdkman.io" | bash
 " source "$HOME/.sdkman/bin/sdkman-init.sh"
-" sdk install java 11.0.20-tem
-" sdk default java 11.0.20-tem
-		" sdk install java 8.0.275.hs-adpt
-		" sdk install java 8.0.275.hs-adpt
-		" sdk default java 8.0.275.hs-adpt
+" sdk install java 17.0.8-tem
+" and set as default
 " source ~/.bashrc
 " curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier && ./coursier
 " sudo mv coursier /usr/local/bin/
@@ -74,6 +71,14 @@ let mapleader = " "
 
 " No highlight after / search 
 nnoremap <C-n> :nohl<CR>
+
+
+" Open a vertical split with <leader>v
+nnoremap <leader>v :vsplit<CR>
+" Navigate splits using Alt+j (left) and Alt+l (right)
+" nnoremap <A-h> <C-w>h
+nnoremap <leader>h <C-w>h
+nnoremap <leader>l <C-w>l
 
 
 " Highlight yanked text briefly
@@ -130,5 +135,4 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 EOF
-
 
