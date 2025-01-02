@@ -4,9 +4,13 @@
 - install newest neovim, not default
 
 
+## In quickterminal
+`alt + j/k` - go down/up through past commands
+
+
 ## Telescpe
 `<Leader>ff`: Search for files in your current working directory.
-`<Leader>fg`: Perform a live grep search across your project.
+`<C-p>`: Perform a live grep search across your project.
 `<Leader>fb`: Show a list of open buffers.
 `<Leader>fh`: Search through Neovim help tags.
 `:Telescope git_files`: Search files in a Git repository (requires Git).

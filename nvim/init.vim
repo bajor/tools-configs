@@ -1,3 +1,7 @@
+" Leader is spacebar THIS NEEDS TO BE BEFORE LEADER SHORTCUTS
+let mapleader = " "
+
+
 " START OF PLUGINS CONFIG
 call plug#begin('~/.vim/plugged')
 
@@ -33,22 +37,22 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
 
-" Leader is spacebar THIS NEEDS TO BE BEFORE LEADER SHORTCUTS
-let mapleader = " "
-
-
 " Telescope
 Plug 'nvim-lua/plenary.nvim'          	" Required by Telescope
 Plug 'nvim-telescope/telescope.nvim'  	" Fuzzy Finder
 " needed: sudo apt install ripgrep
 nnoremap <silent> <Leader>ff :Telescope find_files<CR>
-nnoremap <silent> <Leader>fg :Telescope live_grep<CR>
+" nnoremap <silent> <Leader>fg :Telescope live_grep<CR>
+nnoremap <silent> <C-p> :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
-nnoremap <silent> <Leader>fh :Telescope help_tags<CR>
 
 
 " Quick terminal
 Plug 'akinsho/toggleterm.nvim'
+
+
+" Comment out sections
+Plug 'numToStr/Comment.nvim'
 
 
 " Lua LSP
@@ -69,8 +73,6 @@ colorscheme gruvbox
 inoremap jk <Esc>
 
 
-
-
 " No highlight after / search 
 nnoremap <C-n> :nohl<CR>
 
@@ -87,6 +89,12 @@ nnoremap <leader>l <C-w>l
 nnoremap r <C-r>
 
 
+" Commenting out sections of code 
+" In most terminals, Ctrl+/ is actually recognized as Ctrl+_ in Neovim:
+nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
+xnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
+
+
 " Highlight yanked text briefly
 augroup YankHighlight
   autocmd!
@@ -98,12 +106,17 @@ lua << EOF
 -- START OF LUA
 -- Quick terminal
 require("toggleterm").setup({
-    size = 15,                 -- Height of the terminal window
-    open_mapping = [[<A-j>]],  -- Keybinding to toggle the terminal
-    direction = "float",       -- "horizontal", "vertical", or "float"
-    close_on_exit = true,      -- Close terminal when the process exits
-    shell = vim.o.shell,       -- Use the default shell
+    size = 15,                 		-- Height of the terminal window
+    open_mapping = [[<A-t>]],  	-- Keybinding to toggle the terminal
+    direction = "float",       		-- "horizontal", "vertical", or "float"
+    close_on_exit = true,      		-- Close terminal when the process exits
+    shell = vim.o.shell,       		-- Use the default shell
 })
+
+
+-- Comment out selected 
+require('Comment').setup()
+
 
 -- PYTHON LSP
 local cmp = require("cmp")
