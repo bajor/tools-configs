@@ -81,6 +81,10 @@ nnoremap <leader>h <C-w>h
 nnoremap <leader>l <C-w>l
 
 
+" Redo as r
+nnoremap r <C-r>
+
+
 " Highlight yanked text briefly
 augroup YankHighlight
   autocmd!
@@ -135,4 +139,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 EOF
+
+
+
 
