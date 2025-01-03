@@ -36,6 +36,14 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " coursier install metals
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
+" Ala isort for Python - sort import on save
+Plug 'dense-analysis/ale'
+let g:ale_fixers = {
+\  'python': ['isort'],
+\}
+let g:ale_fix_on_save = 1
+" MAKE SURE YOU HAVE pip isort insall ed
+
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'          	" Required by Telescope
@@ -47,12 +55,20 @@ nnoremap <silent> <C-p> :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 
 
+" Rename variable/func with F2
+nnoremap <silent> <F2> :lua vim.lsp.buf.rename()<CR>
+
+
 " Quick terminal
 Plug 'akinsho/toggleterm.nvim'
 
 
 " Comment out sections
 Plug 'numToStr/Comment.nvim'
+
+
+" Mark on left pane/strip modified lines
+Plug 'lewis6991/gitsigns.nvim'
 
 
 " Lua LSP
@@ -152,6 +168,56 @@ vim.api.nvim_create_autocmd("FileType", {
     metals.initialize_or_attach(metals_config)
   end,
 })
+
+
+-- Suggestoins by LSPs, how to choose and accept them
+local cmp = require'cmp'
+
+cmp.setup({
+  mapping = {
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Up>'] = cmp.mapping.select_prev_item(),
+    ['<Down>'] = cmp.mapping.select_next_item(),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'path' },
+  },
+})
+
+
+-- Mark on left pane/strip modified lines
+require('gitsigns').setup {
+  signs = {
+    add          = { text = '+' },
+    change       = { text = '~' },
+    delete       = { text = '-' },
+    topdelete    = { text = 'T' },
+    changedelete = { text = 'C' },
+  },
+  watch_gitdir = {
+    interval = 100, -- Check for changes every 100ms
+    follow_files = true,
+  },
+  update_debounce = 100,  -- Debounce time for updates
+  current_line_blame = false, -- Optional: show inline blame
+}
+
 
 EOF
 

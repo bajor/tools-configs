@@ -4,6 +4,10 @@
 - install newest neovim, not default
 
 
+## isort python
+MAKE SURE YOU HAVE `pip isort insall` ed
+
+
 ## In quickterminal
 `alt + j/k` - go down/up through past commands
 
