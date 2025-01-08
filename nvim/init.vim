@@ -123,7 +123,7 @@ lua << EOF
 -- Quick terminal
 require("toggleterm").setup({
     size = 15,                 		-- Height of the terminal window
-    open_mapping = [[<A-t>]],  	-- Keybinding to toggle the terminal
+    open_mapping = [[<A-f>]],  	-- Keybinding to toggle the terminal
     direction = "float",       		-- "horizontal", "vertical", or "float"
     close_on_exit = true,      		-- Close terminal when the process exits
     shell = vim.o.shell,       		-- Use the default shell
@@ -220,4 +220,3 @@ require('gitsigns').setup {
 
 
 EOF
-
