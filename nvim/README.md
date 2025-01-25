@@ -5,7 +5,10 @@
 
 ## go to defitiion (f.e. SparkSession):
 `:lua vim.lsp.buf.definition()` TODO - make a shortcut alt l maybe
-TODO set shortcut to go back
+
+## Go to previosly visited locations
+<C-o> (Ctrl + o) → Jump back to the previous location.
+<C-i> (Ctrl + i) → Jump forward to the next location.
 
 ## isort python
 MAKE SURE YOU HAVE `pip isort insall` ed
