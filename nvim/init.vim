@@ -55,6 +55,9 @@ nnoremap <silent> <C-p> :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 
 
+" gi - go to implementation of lib, like SparkSession for example
+nnoremap gi :lua vim.lsp.buf.definition()<CR>
+
 " Rename variable/func with F2
 nnoremap <silent> <F2> :lua vim.lsp.buf.rename()<CR>
 
