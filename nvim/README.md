@@ -3,6 +3,8 @@
 - LSPs autocomplete - ctrl-p/n, enter - select previous/next suggestion, accept
 - install newest neovim, not default
 
+## go to defitiion (f.e. SparkSession):
+`:lua vim.lsp.buf.definition()` TODO - make a shortcut alt l maybe
 
 ## isort python
 MAKE SURE YOU HAVE `pip isort insall` ed
