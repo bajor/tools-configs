@@ -1,6 +1,7 @@
 ## NOTES:
 
-## setup local git in the directory where init.vim is so I can easily revert if I mess config 
+- setup local git in the directory where init.vim is so I can easily revert if I mess config
+- copy to wsl :set ff=unix
 
 - `:PlugInstall`
 - LSPs autocomplete - ctrl-p/n, enter - select previous/next suggestion, accept
