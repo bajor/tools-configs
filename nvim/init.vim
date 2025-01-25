@@ -220,3 +220,4 @@ require('gitsigns').setup {
 
 
 EOF
+
