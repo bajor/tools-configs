@@ -68,3 +68,9 @@ Bright colors
 ## Git - show staged changes
 `git diff --cached`
 
+## mvn
+if JAVA_HOME not defined correctly
+`sdk default java 17.0.8-tem`
+`sdk env`
+
+
