@@ -1,4 +1,7 @@
 ## NOTES:
+
+## setup local git in the directory where init.vim is so I can easily revert if I mess config 
+
 - `:PlugInstall`
 - LSPs autocomplete - ctrl-p/n, enter - select previous/next suggestion, accept
 - install newest neovim, not default
