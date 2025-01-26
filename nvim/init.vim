@@ -137,12 +137,23 @@ require("toggleterm").setup({
 require('Comment').setup()
 
 
--- PYTHON LSP
+-- LSP
 local cmp = require("cmp")
+
 cmp.setup({
+
   sources = {
     { name = "nvim_lsp" },
   },
+
+  window = {
+    documentation = {
+      winhighlight = 'NormalFloat:NormalFloat,FloatBorder:TelescopeBorder',
+      max_width = 80,   -- Set the documentation window max width
+      max_height = 20,  -- Set the documentation window max height
+    },
+  },
+
 })
 
 local lspconfig = require("lspconfig")
