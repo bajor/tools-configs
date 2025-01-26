@@ -183,6 +183,13 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.scala", "*.sbt" },
+  callback = function()
+    require("metals").organize_imports()
+  end,
+})
+
 
 -- Suggestoins by LSPs, how to choose and accept them
 local cmp = require'cmp'
