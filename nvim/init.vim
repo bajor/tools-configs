@@ -166,14 +166,30 @@ local metals = require("metals")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local metals_config = metals.bare_config()
+
 metals_config.capabilities = capabilities
 metals_config.settings = {
   showImplicitArguments = true,
   excludedPackages = { "akka.actor.typed.javadsl" },
+  serverProperties = {
+    "-Dmetals.silent-file-warnings=false",  -- Show all warnings
+  }
 }
 metals_config.init_options = {
   statusBarProvider = "on",
 }
+
+-- vim diagnostic
+vim.diagnostic.config({
+  virtual_text = true,      -- Show inline diagnostic messages
+  signs = true,             -- Show signs in the gutter
+  underline = true,         -- Underline problematic code
+  update_in_insert = false, -- Don't show diagnostics while typing
+  severity_sort = true,     -- Sort diagnostics by severity
+})
+-- arning highlight
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineUnused', { undercurl = true, sp = '#FFA500' })
+
 
 -- Use Neovim's Lua autocmd function
 vim.api.nvim_create_autocmd("FileType", {
