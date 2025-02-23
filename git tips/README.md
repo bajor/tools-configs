@@ -1,3 +1,3 @@
-`git commit -am "<message>"` - `-a` (auto-stage): Stage (add) all changes to tracked files (i.e., files Git is already tracking).
+`git commit -am "<message>"` - -a flag is auto-stage: stage (add) all changes to tracked files (i.e., files git is already tracking).
 
 
