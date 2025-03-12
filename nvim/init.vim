@@ -55,9 +55,6 @@ nnoremap <silent> <C-p> :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 
 
-" gi - go to implementation of lib, like SparkSession for example
-nnoremap gi :lua vim.lsp.buf.definition()<CR>
-
 " Rename variable/func with F2
 nnoremap <silent> <F2> :lua vim.lsp.buf.rename()<CR>
 
@@ -77,6 +74,7 @@ Plug 'lewis6991/gitsigns.nvim'
 " Lua LSP
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim' " Optional: Integrates Mason with lspconfig
+
 
 
 call plug#end()
@@ -137,23 +135,12 @@ require("toggleterm").setup({
 require('Comment').setup()
 
 
--- LSP
+-- PYTHON LSP
 local cmp = require("cmp")
-
 cmp.setup({
-
   sources = {
     { name = "nvim_lsp" },
   },
-
-  window = {
-    documentation = {
-      winhighlight = 'NormalFloat:NormalFloat,FloatBorder:TelescopeBorder',
-      max_width = 80,   -- Set the documentation window max width
-      max_height = 20,  -- Set the documentation window max height
-    },
-  },
-
 })
 
 local lspconfig = require("lspconfig")
@@ -166,43 +153,20 @@ local metals = require("metals")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local metals_config = metals.bare_config()
-
 metals_config.capabilities = capabilities
 metals_config.settings = {
   showImplicitArguments = true,
   excludedPackages = { "akka.actor.typed.javadsl" },
-  serverProperties = {
-    "-Dmetals.silent-file-warnings=false",  -- Show all warnings
-  }
 }
 metals_config.init_options = {
   statusBarProvider = "on",
 }
-
--- vim diagnostic
-vim.diagnostic.config({
-  virtual_text = true,      -- Show inline diagnostic messages
-  signs = true,             -- Show signs in the gutter
-  underline = true,         -- Underline problematic code
-  update_in_insert = false, -- Don't show diagnostics while typing
-  severity_sort = true,     -- Sort diagnostics by severity
-})
--- arning highlight
-vim.api.nvim_set_hl(0, 'DiagnosticUnderlineUnused', { undercurl = true, sp = '#FFA500' })
-
 
 -- Use Neovim's Lua autocmd function
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "scala", "sbt" },
   callback = function()
     metals.initialize_or_attach(metals_config)
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.scala", "*.sbt" },
-  callback = function()
-    require("metals").organize_imports()
   end,
 })
 
@@ -253,6 +217,38 @@ require('gitsigns').setup {
   },
   update_debounce = 100,  -- Debounce time for updates
   current_line_blame = false, -- Optional: show inline blame
+}
+
+require("mason").setup()
+require("mason-lspconfig").setup {
+    ensure_installed = { "hls", "gopls" },
+}
+
+local lspconfig = require('lspconfig')
+lspconfig.hls.setup {}
+
+lspconfig.gopls.setup {
+  capabilities = capabilities,
+  -- The on_attach function can define keybindings or format-on-save behavior
+  on_attach = function(client, bufnr)
+    -- Format on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("GoFormat", { clear = true }),
+      pattern = "*.go",
+      callback = function()
+        -- Uses the built-in LSP format
+        vim.lsp.buf.format({ async = false })
+      end,
+    })
+  end,
+  -- Gopls-specific settings, e.g. using gofumpt
+  settings = {
+    gopls = {
+      gofumpt = true, -- stricter formatter than gofmt
+      usePlaceholders = true,
+      completeUnimported = true,
+    },
+  },
 }
 
 
