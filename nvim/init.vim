@@ -1,6 +1,9 @@
 " Leader is spacebar THIS NEEDS TO BE BEFORE LEADER SHORTCUTS
 let mapleader = " "
 
+set cmdheight=2  " Increase the command-line height to 2 lines
+set display=lastline  " Ensure long messages are shown completely
+
 
 " START OF PLUGINS CONFIG
 call plug#begin('~/.vim/plugged')
@@ -9,6 +12,8 @@ call plug#begin('~/.vim/plugged')
 " Gruvbox color scheme for Windows Terminal
 Plug 'morhetz/gruvbox'
 
+" Error messagess wrapped
+Plug 'Maan2003/lsp_lines.nvim'
 
 " LSPs
 Plug 'neovim/nvim-lspconfig'   	        " LSP configurations
@@ -128,6 +133,13 @@ require("toggleterm").setup({
     direction = "float",       		-- "horizontal", "vertical", or "float"
     close_on_exit = true,      		-- Close terminal when the process exits
     shell = vim.o.shell,       		-- Use the default shell
+})
+
+
+require("lsp_lines").setup()
+vim.diagnostic.config({
+  virtual_text = false,  -- Disable default inline messages
+  virtual_lines = true,  -- Enable error messages across multiple lines
 })
 
 
