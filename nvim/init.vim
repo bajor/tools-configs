@@ -41,15 +41,6 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " coursier install metals
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
-" Ala isort for Python - sort import on save
-Plug 'dense-analysis/ale'
-let g:ale_fixers = {
-\  'python': ['isort'],
-\}
-let g:ale_fix_on_save = 1
-" MAKE SURE YOU HAVE pip isort insall ed
-
-
 " Telescope
 Plug 'nvim-lua/plenary.nvim'          	" Required by Telescope
 Plug 'nvim-telescope/telescope.nvim'  	" Fuzzy Finder
