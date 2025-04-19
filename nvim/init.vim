@@ -80,6 +80,30 @@ call plug#end()
 syntax enable
 set background=dark
 colorscheme gruvbox
+" ── Darken all LSP / diagnostic colours ─────────────────────────────────────
+" Feel free to tweak the #hex codes or cterm numbers to taste.
+highlight! DiagnosticError        gui=NONE guifg=#7f1d1d cterm=NONE ctermfg=1
+highlight! DiagnosticWarn         gui=NONE guifg=#7f5e00 cterm=NONE ctermfg=3
+highlight! DiagnosticInfo         gui=NONE guifg=#0f5f87 cterm=NONE ctermfg=4
+highlight! DiagnosticHint         gui=NONE guifg=#00605f cterm=NONE ctermfg=6
+
+" Make the virtual‑text, underline and sign‑column variants reuse those colours.
+highlight! link DiagnosticVirtualTextError  DiagnosticError
+highlight! link DiagnosticVirtualTextWarn   DiagnosticWarn
+highlight! link DiagnosticVirtualTextInfo   DiagnosticInfo
+highlight! link DiagnosticVirtualTextHint   DiagnosticHint
+
+highlight! link DiagnosticUnderlineError    DiagnosticError
+highlight! link DiagnosticUnderlineWarn     DiagnosticWarn
+highlight! link DiagnosticUnderlineInfo     DiagnosticInfo
+highlight! link DiagnosticUnderlineHint     DiagnosticHint
+
+highlight! link DiagnosticSignError         DiagnosticError
+highlight! link DiagnosticSignWarn          DiagnosticWarn
+highlight! link DiagnosticSignInfo          DiagnosticInfo
+highlight! link DiagnosticSignHint          DiagnosticHint
+" ────────────────────────────────────────────────────────────────────────────
+
 
 
 " Map 'jk' to <Esc> in insert mode
@@ -113,6 +137,20 @@ augroup YankHighlight
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=100}
 augroup END
+
+" make darker colors alive
+augroup MyDarkerDiagnostics
+  autocmd!
+  autocmd ColorScheme * call DarkerDiagnostics()
+augroup END
+
+function! DarkerDiagnostics() abort
+  " …paste the 14 highlight! lines from above here…
+endfunction
+
+" Run once on startup (otherwise you’d wait for the first ColorScheme event)
+call DarkerDiagnostics()
+
 
 
 lua << EOF
