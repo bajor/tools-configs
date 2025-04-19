@@ -80,30 +80,30 @@ call plug#end()
 syntax enable
 set background=dark
 colorscheme gruvbox
-" ── Darken all LSP / diagnostic colours ─────────────────────────────────────
-" Feel free to tweak the #hex codes or cterm numbers to taste.
-highlight! DiagnosticError        gui=NONE guifg=#7f1d1d cterm=NONE ctermfg=1
-highlight! DiagnosticWarn         gui=NONE guifg=#7f5e00 cterm=NONE ctermfg=3
-highlight! DiagnosticInfo         gui=NONE guifg=#0f5f87 cterm=NONE ctermfg=4
-highlight! DiagnosticHint         gui=NONE guifg=#00605f cterm=NONE ctermfg=6
+" ── Darker diagnostic virtual‑text & signs (keep code colours) ─────────────
+augroup MyDarkerDiagnostics
+  autocmd!
+  " Re‑apply every time you :colorscheme
+  autocmd ColorScheme * call DarkerDiagnostics()
+augroup END
 
-" Make the virtual‑text, underline and sign‑column variants reuse those colours.
-highlight! link DiagnosticVirtualTextError  DiagnosticError
-highlight! link DiagnosticVirtualTextWarn   DiagnosticWarn
-highlight! link DiagnosticVirtualTextInfo   DiagnosticInfo
-highlight! link DiagnosticVirtualTextHint   DiagnosticHint
+function! DarkerDiagnostics() abort
+  " ── virtual text (inline messages) ──────────────────────────────────────
+  highlight! DiagnosticVirtualTextError  gui=NONE guifg=#7f1d1d cterm=NONE ctermfg=1
+  highlight! DiagnosticVirtualTextWarn   gui=NONE guifg=#7f5e00 cterm=NONE ctermfg=3
+  highlight! DiagnosticVirtualTextInfo   gui=NONE guifg=#0f5f87 cterm=NONE ctermfg=4
+  highlight! DiagnosticVirtualTextHint   gui=NONE guifg=#00605f cterm=NONE ctermfg=6
 
-highlight! link DiagnosticUnderlineError    DiagnosticError
-highlight! link DiagnosticUnderlineWarn     DiagnosticWarn
-highlight! link DiagnosticUnderlineInfo     DiagnosticInfo
-highlight! link DiagnosticUnderlineHint     DiagnosticHint
+  " ── sign‑column icons ───────────────────────────────────────────────────
+  highlight! DiagnosticSignError         gui=NONE guifg=#7f1d1d cterm=NONE ctermfg=1
+  highlight! DiagnosticSignWarn          gui=NONE guifg=#7f5e00 cterm=NONE ctermfg=3
+  highlight! DiagnosticSignInfo          gui=NONE guifg=#0f5f87 cterm=NONE ctermfg=4
+  highlight! DiagnosticSignHint          gui=NONE guifg=#00605f cterm=NONE ctermfg=6
+endfunction
 
-highlight! link DiagnosticSignError         DiagnosticError
-highlight! link DiagnosticSignWarn          DiagnosticWarn
-highlight! link DiagnosticSignInfo          DiagnosticInfo
-highlight! link DiagnosticSignHint          DiagnosticHint
-" ────────────────────────────────────────────────────────────────────────────
-
+" Run once on startup
+call DarkerDiagnostics()
+" ───────────────────────────────────────────────────────────────────────────
 
 
 " Map 'jk' to <Esc> in insert mode
@@ -136,12 +136,6 @@ xnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<
 augroup YankHighlight
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=100}
-augroup END
-
-" make darker colors alive
-augroup MyDarkerDiagnostics
-  autocmd!
-  autocmd ColorScheme * call DarkerDiagnostics()
 augroup END
 
 function! DarkerDiagnostics() abort
