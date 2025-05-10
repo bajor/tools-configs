@@ -28,6 +28,7 @@ MAKE SURE YOU HAVE `pip isort insall` ed
 `<Leader>fb`: Show a list of open buffers.
 `<Leader>fh`: Search through Neovim help tags.
 `:Telescope git_files`: Search files in a Git repository (requires Git).
+`Ctrl - V` - open in split tab
 
 
 ## Gruvbox color scheme for Windows Terminal
