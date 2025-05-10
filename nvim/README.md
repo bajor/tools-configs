@@ -1,5 +1,7 @@
 ## NOTES:
 
+`gr` - go to refferences
+
 - setup local git in the directory where init.vim is so I can easily revert if I mess config
 - copy to wsl :set ff=unix
 
