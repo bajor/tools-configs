@@ -1,4 +1,6 @@
-# ~/.bashrc: executed by bash(1) for non-login shells. 
+set -o vi
+
+# ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -116,20 +118,19 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f "/home/m/.ghcup/env" ] && source "/home/m/.ghcup/env" # ghcup-env
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/m/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/m/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/m/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/m/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/home/m/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/home/m/anaconda3/etc/profile.d/conda.sh" ]; then
+#         . "/home/m/anaconda3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/home/m/anaconda3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
 
 
@@ -139,10 +140,38 @@ export NVM_DIR="$HOME/.nvm"
 
 
 alias br='brightnessctl set'
-alias cursor='nohup /home/m/Documents/cursor.AppImage > /dev/null 2>&1 & disown'
+alias cursor='nohup /opt/cursor.AppImage > /dev/null 2>&1 & disown'
 # alias cursor='/home/m/Documents/cursor.AppImage'
 
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+
+
+# Spark environment variables
+export SPARK_HOME=/opt/spark
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+
+
+# Hadoop environment variables
+export HADOOP_HOME=/opt/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+
+export HADOOP_CONF_DIR=$HADOOP_HOME/conf
+
+[ -f "/home/m/.ghcup/env" ] && . "/home/m/.ghcup/env" # ghcup-env
+
+export JAVAHOME=/home/m/.sdkman/candidates/java/current/bin/java
+
+export PATH="$PATH:/home/m/.local/share/coursier/bin"
+
+export PATH="$HOME/.ghcup/bin:$PATH"
+
