@@ -5,7 +5,7 @@ set cmdheight=2  " Increase the command-line height to 2 lines
 set display=lastline  " Ensure long messages are shown completely
 
 
-" START OF PLUGINS CONFIG
+" START OF PLUGINS CONFIG -------------------------------------------
 call plug#begin('~/.vim/plugged')
 
 
@@ -15,7 +15,7 @@ Plug 'morhetz/gruvbox'
 " Error messagess wrapped
 Plug 'Maan2003/lsp_lines.nvim'
 
-" LSPs
+" LSPs -------------------------------------------
 Plug 'neovim/nvim-lspconfig'   	        " LSP configurations
 Plug 'hrsh7th/nvim-cmp'  	       	" Autocompletion
 Plug 'hrsh7th/cmp-nvim-lsp'             " LSP source for nvim-cmp
@@ -41,7 +41,7 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " coursier install metals
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
-" Telescope
+" Telescope -------------------------------------------
 Plug 'nvim-lua/plenary.nvim'          	" Required by Telescope
 Plug 'nvim-telescope/telescope.nvim'  	" Fuzzy Finder
 " needed: sudo apt install ripgrep
@@ -50,6 +50,8 @@ nnoremap <silent> <Leader>ff :Telescope find_files<CR>
 nnoremap <silent> <C-p> :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 
+" after gr close bototm tab with leader q
+nnoremap <silent> <Leader>q :cclose<CR>
 
 " Rename variable/func with F2
 nnoremap <silent> <F2> :lua vim.lsp.buf.rename()<CR>
@@ -70,7 +72,6 @@ Plug 'lewis6991/gitsigns.nvim'
 " Lua LSP
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim' " Optional: Integrates Mason with lspconfig
-
 
 
 call plug#end()
@@ -138,18 +139,45 @@ augroup YankHighlight
   autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=100}
 augroup END
 
-function! DarkerDiagnostics() abort
-  " …paste the 14 highlight! lines from above here…
-endfunction
 
-" Run once on startup (otherwise you’d wait for the first ColorScheme event)
-call DarkerDiagnostics()
-
-
-
+" START OF LUA """"""""""""""""""""""""""""""""""""""
 lua << EOF
--- START OF LUA
--- Quick terminal
+
+
+-- MASON --------------------------------------------
+
+
+local function on_attach(client, bufnr)
+  local opt = { buffer = bufnr, silent = true }
+
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opt)        -- go to definition
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opt)    -- go to implementation
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, opt)        -- list references
+  vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opt)          -- rename symbol
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opt)
+
+end
+
+local lspconfig = require("lspconfig")
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local util      = require("lspconfig.util")
+local common = { on_attach = on_attach, capabilities = capabilities }
+local cmp = require'cmp'
+
+
+require("mason").setup()
+require("mason-lspconfig").setup {
+    ensure_installed = { "hls", "gopls" },
+}
+
+require("mason-lspconfig").setup_handlers ({
+    function(server)
+      lspconfig[server].setup(common)
+    end,
+})
+
+
+-- Quick terminal --------------------------------
 require("toggleterm").setup({
     size = 15,                 		-- Height of the terminal window
     open_mapping = [[<A-f>]],  	-- Keybinding to toggle the terminal
@@ -159,55 +187,25 @@ require("toggleterm").setup({
 })
 
 
-require("lsp_lines").setup()
-vim.diagnostic.config({
-  virtual_text = false,  -- Disable default inline messages
-  virtual_lines = true,  -- Enable error messages across multiple lines
-})
+-- Inline messages
+local ok, lsp_lines = pcall(require, "lsp_lines")
+if ok then
+  lsp_lines.setup()
+  vim.diagnostic.config({ virtual_text = false, virtual_lines = true })
+end
+
+-- require("lsp_lines").setup()
+-- vim.diagnostic.config({
+--  virtual_text = false,  -- Disable default inline messages
+--  virtual_lines = true,  -- Enable error messages across multiple lines
+-- })
 
 
 -- Comment out selected 
 require('Comment').setup()
 
 
--- PYTHON LSP
-local cmp = require("cmp")
-cmp.setup({
-  sources = {
-    { name = "nvim_lsp" },
-  },
-})
-
-local lspconfig = require("lspconfig")
-lspconfig.pyright.setup({})
-
--- SCALA LSP
--- (Using nvim-metals)
--- In your Lua config (e.g., after the "SCALA LSP" comment)
-local metals = require("metals")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-local metals_config = metals.bare_config()
-metals_config.capabilities = capabilities
-metals_config.settings = {
-  showImplicitArguments = true,
-  excludedPackages = { "akka.actor.typed.javadsl" },
-}
-metals_config.init_options = {
-  statusBarProvider = "on",
-}
-
--- Use Neovim's Lua autocmd function
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "scala", "sbt" },
-  callback = function()
-    metals.initialize_or_attach(metals_config)
-  end,
-})
-
-
 -- Suggestoins by LSPs, how to choose and accept them
-local cmp = require'cmp'
 
 cmp.setup({
   mapping = {
@@ -237,6 +235,7 @@ cmp.setup({
 })
 
 
+
 -- Mark on left pane/strip modified lines
 require('gitsigns').setup {
   signs = {
@@ -254,13 +253,41 @@ require('gitsigns').setup {
   current_line_blame = false, -- Optional: show inline blame
 }
 
-require("mason").setup()
-require("mason-lspconfig").setup {
-    ensure_installed = { "hls", "gopls" },
+-- ---- PYTHON --------------------------------- 
+cmp.setup({
+  sources = {
+    { name = "nvim_lsp" },
+  },
+})
+
+
+lspconfig.pyright.setup({})
+
+-- ---- SCALA ----------------------------------
+-- (Using nvim-metals)
+-- In your Lua config (e.g., after the "SCALA LSP" comment)
+local metals = require("metals")
+
+local metals_config = metals.bare_config()
+metals_config.capabilities = capabilities
+metals_config.settings = {
+  showImplicitArguments = true,
+  excludedPackages = { "akka.actor.typed.javadsl" },
+}
+metals_config.init_options = {
+  statusBarProvider = "on",
 }
 
-local lspconfig = require('lspconfig')
-lspconfig.hls.setup {}
+-- Use Neovim's Lua autocmd function
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "scala", "sbt" },
+  callback = function()
+    metals.initialize_or_attach(metals_config)
+  end,
+})
+
+
+-- ------------------ GOLANG ---------------------
 
 lspconfig.gopls.setup {
   capabilities = capabilities,
@@ -286,6 +313,38 @@ lspconfig.gopls.setup {
   },
 }
 
+
+
+
+-- ------------- HASKELL -----------------------
+lspconfig.hls.setup{
+  on_attach    = on_attach,
+  capabilities = capabilities,
+  root_dir     = util.root_pattern(
+                   "hie.yaml",        -- explicit hie file
+                   "stack.yaml",      -- Stack
+                   "cabal.project",   -- Cabal projects
+                   "package.yaml",
+                   "*.cabal",
+                   ".git"             -- fallback
+                 ),
+  settings     = {
+    haskell = {
+      formattingProvider = "ormolu",  -- or "fourmolu", "brittany"…
+      checkParents       = "on-save",
+    }
+  }
+}
+
+-- Give every other server the same on_attach
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.server_capabilities then
+      on_attach(client, args.buf)
+    end
+  end,
+})
 
 EOF
 
