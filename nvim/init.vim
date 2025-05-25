@@ -5,7 +5,7 @@ set cmdheight=2  " Increase the command-line height to 2 lines
 set display=lastline  " Ensure long messages are shown completely
 
 
-" START OF PLUGINS CONFIG -------------------------------------------
+" START OF PLUGINS CONFIG --------------------------------------------
 call plug#begin('~/.vim/plugged')
 
 
@@ -15,7 +15,7 @@ Plug 'morhetz/gruvbox'
 " Error messagess wrapped
 Plug 'Maan2003/lsp_lines.nvim'
 
-" LSPs -------------------------------------------
+" LSPs ---------------------------------------------------------------
 Plug 'neovim/nvim-lspconfig'   	        " LSP configurations
 Plug 'hrsh7th/nvim-cmp'  	       	" Autocompletion
 Plug 'hrsh7th/cmp-nvim-lsp'             " LSP source for nvim-cmp
@@ -41,7 +41,7 @@ Plug 'scalameta/nvim-metals'        " Scala Metals LSP support
 " coursier install metals
 " export PATH="$PATH:/home/m/.local/share/coursier/bin"
 
-" Telescope -------------------------------------------
+" Telescope ----------------------------------------------------------
 Plug 'nvim-lua/plenary.nvim'          	" Required by Telescope
 Plug 'nvim-telescope/telescope.nvim'  	" Fuzzy Finder
 " needed: sudo apt install ripgrep
@@ -57,25 +57,25 @@ nnoremap <silent> <Leader>q :cclose<CR>
 nnoremap <silent> <F2> :lua vim.lsp.buf.rename()<CR>
 
 
-" Quick terminal
+" Quick terminal """"""""""""""""""""""""""""""""""""""""""""""
 Plug 'akinsho/toggleterm.nvim'
 
 
-" Comment out sections
+" Comment out sections """"""""""""""""""""""""""""""""""""""""
 Plug 'numToStr/Comment.nvim'
 
 
-" Mark on left pane/strip modified lines
+" Mark on left pane/strip modified lines """"""""""""""""""""""
 Plug 'lewis6991/gitsigns.nvim'
 
 
-" Lua LSP
+" Lua LSP """""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim' " Optional: Integrates Mason with lspconfig
 
 
 call plug#end()
-" END OF PLUGINS CONFIG
+" END OF INSTALLED PLUGINS """"""""""""""""""""""""""""""""""""
 
 
 syntax enable
@@ -177,7 +177,7 @@ require("mason-lspconfig").setup_handlers ({
 })
 
 
--- Quick terminal --------------------------------
+-- Quick terminal ----------------------------------
 require("toggleterm").setup({
     size = 15,                 		-- Height of the terminal window
     open_mapping = [[<A-f>]],  	-- Keybinding to toggle the terminal
@@ -187,7 +187,7 @@ require("toggleterm").setup({
 })
 
 
--- Inline messages
+-- Inline messages ---------------------------------
 local ok, lsp_lines = pcall(require, "lsp_lines")
 if ok then
   lsp_lines.setup()
@@ -201,7 +201,7 @@ end
 -- })
 
 
--- Comment out selected 
+-- Comment out selected ----------------------------
 require('Comment').setup()
 
 
