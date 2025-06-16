@@ -1,0 +1,71 @@
+[
+    {
+        "key": "cmd+tab",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "cmd+shift+tab",
+        "command": "workbench.action.previousEditor"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.navigateBack"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "editor.action.goToDeclaration"
+    },
+    {
+        "key": "cmd+space",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+m m",
+        "command": "bookmarks.toggle"
+    },
+    {
+        "key": "cmd+m n",
+        "command": "bookmarks.jumpToNext"
+    },
+    {
+        "key": "cmd+m p",
+        "command": "bookmarks.jumpToPrevious"
+    },
+    {
+        "key": "cmd+m l",
+        "command": "bookmarks.listFromAllFiles"
+    },
+    {
+        "key": "cmd+shift+m",
+        "command": "workbench.action.toggleMaximizeEditorGroup"
+    },
+    {
+        "key": "cmd+shift+,",
+        "command": "workbench.action.toggleEditorWidths"
+    },
+    {
+        "key": "cmd+shift+[",
+        "command": "workbench.action.terminal.focusPrevious"
+    },
+    {
+        "key": "cmd+shift+]",
+        "command": "workbench.action.terminal.focusNext"
+    },
+    {
+        "key": "cmd+shift+ctrl+t",
+        "command": "github.copilot.interactiveEditor.generateTests"
+    },
+    {
+        "key": "cmd+shift+i",
+        "command": "workbench.action.quickchat.toggle"
+    },
+    {
+        "key": "cmd+shift+e",
+        "command": "workbench.view.explorer"
+    }
+]
