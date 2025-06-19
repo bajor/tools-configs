@@ -1,0 +1,21 @@
+{
+  "description": "Right ⌘ toggles Caps Lock (held 200 ms)",
+  "manipulators": [
+    {
+      "type": "basic",
+
+      "from": {
+        "key_code": "right_command",
+        "modifiers": { "optional": ["any"] }
+      },
+
+      /* Karabiner przytrzyma wirtualny Caps Lock ~0,2 s,
+         więc macOS uzna to za „prawdziwe” wciśnięcie. */
+      "to": [
+        { "key_code": "caps_lock", "hold_down_milliseconds": 200 }
+      ]
+    }
+  ]
+}
+
+
