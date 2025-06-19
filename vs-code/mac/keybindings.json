@@ -8,15 +8,15 @@
         "command": "workbench.action.previousEditor"
     },
     {
-        "key": "ctrl+f",
+        "key": "cmd+f",
         "command": "workbench.action.terminal.toggleTerminal"
     },
     {
-        "key": "ctrl+h",
+        "key": "cmd+h",
         "command": "workbench.action.navigateBack"
     },
     {
-        "key": "ctrl+l",
+        "key": "cmd+l",
         "command": "editor.action.goToDeclaration"
     },
     {
@@ -65,7 +65,12 @@
         "command": "workbench.action.quickchat.toggle"
     },
     {
-        "key": "cmd+shift+e",
+        "key": "cmd+e",
         "command": "workbench.view.explorer"
+    },
+    {
+        "key": "cmd+g",
+        "command": "workbench.view.scm",
+        "when": "viewContainer.workbench.view.scm.enabled"
     }
 ]
