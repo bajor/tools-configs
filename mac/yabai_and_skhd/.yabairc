@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+#
+# macOS-friendly, i3-like tiling for yabai
+
+# --- 0. keep the scripting-addition alive -------------------------
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+# --- 1. global defaults -------------------------------------------
+yabai -m config layout               bsp          # binary space
+yabai -m config window_gap           0
+yabai -m config window_border        off
+yabai -m config window_shadow        off
+yabai -m config window_zoom_persist  on            # keep full-screen on move
+yabai -m config mouse_follows_focus  off           # i3 doesn’t warp focus
+
+# --- 2. auto-balance whenever a tile disappears -------------------
+yabai -m signal --add event=window_destroyed action='yabai -m space --balance'
+
+# --- 3. per-app rules (float utilities so they don’t break tiling) -
+yabai -m rule --add app="^System Settings$" manage=off
+yabai -m rule --add app="^Finder$"          manage=off
+
+# --- 4. optional: workspace bootstrap (like “exec obsidian on 2”) --
+if ! yabai -m query --windows | jq -e '.[] | select(.app=="Obsidian")' >/dev/null; then
+  open -na "Obsidian"
+  yabai -m space --focus 2
+fi
+

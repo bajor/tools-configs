@@ -1,0 +1,58 @@
+# ===== 0. shorthand =====================================================
+set   mod   = alt           # Option ⌥ is $mod
+set   stack = "yabai -m"
+
+# ===== 1. application launcher & terminal ==============================
+$mod - return  : open -na "Terminal"
+$mod - d       : open -a  "Raycast"          # Spotlight alt-key; swap if preferred
+
+# ===== 2. focus ========================================================
+$mod - h : $stack window --focus west
+$mod - j : $stack window --focus south
+$mod - k : $stack window --focus north
+$mod - l : $stack window --focus east
+
+# arrow keys too
+$mod - left  : $stack window --focus west
+$mod - down  : $stack window --focus south
+$mod - up    : $stack window --focus north
+$mod - right : $stack window --focus east
+
+# ===== 3. move =========================================================
+$mod + shift - h : $stack window --warp west
+$mod + shift - j : $stack window --warp south
+$mod + shift - k : $stack window --warp north
+$mod + shift - l : $stack window --warp east
+
+# ===== 4. layout toggles ===============================================
+$mod - f            : $stack window --toggle zoom-fullscreen
+$mod + shift - space: $stack window --toggle float
+$mod - s            : $stack space  --layout stack     # i3 stacking
+$mod - w            : $stack space  --layout float     # close enough to i3 tabbed
+$mod - e            : $stack space  --layout bsp       # back to split
+
+# ===== 5. workspaces (spaces) ==========================================
+# jump
+$mod - 1 : $stack space --focus 1
+$mod - 2 : $stack space --focus 2
+$mod - 3 : $stack space --focus 3
+$mod - 4 : $stack space --focus 4
+$mod - 5 : $stack space --focus 5
+$mod - 6 : $stack space --focus 6
+$mod - 7 : $stack space --focus 7
+$mod - 8 : $stack space --focus 8
+$mod - 9 : $stack space --focus 9
+$mod - 0 : $stack space --focus 10
+
+# send + follow + balance
+$mod + shift - 1 : $stack window --space 1;  $stack space --focus 1;  $stack space --balance
+$mod + shift - 2 : $stack window --space 2;  $stack space --focus 2;  $stack space --balance
+$mod + shift - 3 : $stack window --space 3;  $stack space --focus 3;  $stack space --balance
+$mod + shift - 4 : $stack window --space 4;  $stack space --focus 4;  $stack space --balance
+$mod + shift - 5 : $stack window --space 5;  $stack space --focus 5;  $stack space --balance
+$mod + shift - 6 : $stack window --space 6;  $stack space --focus 6;  $stack space --balance
+$mod + shift - 7 : $stack window --space 7;  $stack space --focus 7;  $stack space --balance
+$mod + shift - 8 : $stack window --space 8;  $stack space --focus 8;  $stack space --balance
+$mod + shift - 9 : $stack window --space 9;  $stack space --focus 9;  $stack space --balance
+$mod + shift - 0 : $stack window --space 10; $stack space --focus 10; $stack space --balance
+
