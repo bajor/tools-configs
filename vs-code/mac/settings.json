@@ -1,0 +1,224 @@
+{
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "isort.args": [
+    "--profile",
+    "black"
+  ],
+  "python.analysis.autoImportCompletions": true,
+  "editor.folding": false,
+  "editor.scrollbar.vertical": "hidden",
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.matchBrackets": "never",
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.overviewRulerBorder": false,
+  "editor.roundedSelection": false,
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "off",
+  "editor.autoClosingBrackets": "never",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "meta.function",
+          "meta.class"
+        ],
+        "settings": {
+          "fontStyle": "bold"
+        }
+      }
+    ]
+  },
+  "workbench.colorCustomizations": {
+    "statusBar.foreground": "#c0c0c0",
+    "statusBar.background": "#282828",
+    "statusBar.noFolderBackground": "#282828",
+    "statusBar.debuggingBackground": "#282828",
+    "editorCursor.foreground": "#cecdcd",
+    "terminalCursor.foreground": "#cecdcd"
+  },
+  "security.workspace.trust.untrustedFiles": "open",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1,
+  "vim.highlightedyank.enable": true,
+  "vim.vimrc.enable": true,
+  "vim.vimrc.path": "/Users/m/vscode/.vimrc",
+  "vim.leader": "<space>",
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.hlsearch": true,
+  "vim.handleKeys": {
+    "<space-j>": true,
+    "<space-k>": true,
+    "<D-l>": false,
+    "<D-p>": false,
+    "<D-a>": false,
+    "<D-f>": true,
+    "<D-c>": false,
+    "<D-v>": true
+  },
+  "vim.useCtrlKeys": true,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": [
+        "j",
+        "k"
+      ],
+      "after": [
+        "<Esc>"
+      ]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "u"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "undo"
+        }
+      ]
+    },
+    {
+      "before": [
+        "r"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "redo"
+        }
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "d"
+      ],
+      "after": [
+        "d",
+        "d"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "p"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.quickOpen"
+        }
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "o"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.quickOpen"
+        }
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "v"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.splitEditor"
+        }
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "h"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.focusFirstEditorGroup"
+        }
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "l"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.focusSecondEditorGroup"
+        }
+      ]
+    },
+    {
+      "before": [
+        "<C-n>"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": ":nohl"
+        }
+      ]
+    }
+  ],
+  "telemetry.telemetryLevel": "off",
+  "extensions.ignoreRecommendations": true,
+  "editor.cursorBlinking": "solid",
+  "editor.inlineSuggest.enabled": true,
+  "terminal.integrated.inheritEnv": false,
+  "python.analysis.extraPaths": [],
+  "breadcrumbs.enabled": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "go.toolsManagement.autoUpdate": true,
+  "workbench.activityBar.location": "hidden",
+  "workbench.sideBar.location": "right",
+  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "cSpell.userWords": [
+    "xfdsfd"
+  ],
+  "[scala]": {
+    "editor.suggestSelection": "first",
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
+  },
+  "[haskell]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "cSpell.enabled": false,
+  "window.customTitleBarVisibility": "never",
+  "metals.formatOnSave": true,
+  "metals.enable-organize-imports-on-save": true,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "github.copilot.preferredAccount": "bajor",
+  "github.copilot.advanced": {
+    "authProvider": "github"
+  },
+  "github.copilot.chat.localeOverride": "en",
+  "security.promptForLocalFileProtocolHandling": false,
+  "haskell.manageHLS": "GHCup"
+}
