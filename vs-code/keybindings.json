@@ -1,22 +1,22 @@
 [
     {
-        "key": "ctrl+tab",
+        "key": "cmd+tab",
         "command": "workbench.action.nextEditor"
     },
     {
-        "key": "ctrl+shift+tab",
+        "key": "cmd+shift+tab",
         "command": "workbench.action.previousEditor"
     },
     {
-        "key": "alt+f",
+        "key": "cmd+f",
         "command": "workbench.action.terminal.toggleTerminal"
     },
     {
-        "key": "alt+h",
+        "key": "cmd+h",
         "command": "workbench.action.navigateBack"
     },
     {
-        "key": "alt+l",
+        "key": "cmd+l",
         "command": "editor.action.goToDeclaration"
     },
     {
@@ -25,44 +25,52 @@
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+m m",
+        "key": "cmd+m m",
         "command": "bookmarks.toggle"
     },
     {
-        "key": "ctrl+m n",
+        "key": "cmd+m n",
         "command": "bookmarks.jumpToNext"
     },
     {
-        "key": "ctrl+m p",
+        "key": "cmd+m p",
         "command": "bookmarks.jumpToPrevious"
     },
     {
-        "key": "ctrl+m l",
+        "key": "cmd+m l",
         "command": "bookmarks.listFromAllFiles"
     },
     {
-        "key": "ctrl+shift+m",
+        "key": "cmd+shift+m",
         "command": "workbench.action.toggleMaximizeEditorGroup"
     },
     {
-        "key": "ctrl+shift+,",
+        "key": "cmd+shift+,",
         "command": "workbench.action.toggleEditorWidths"
     },
     {
-        "key": "ctrl+shift+[",
+        "key": "cmd+shift+[",
         "command": "workbench.action.terminal.focusPrevious"
     },
     {
-        "key": "ctrl+shift+]",
+        "key": "cmd+shift+]",
         "command": "workbench.action.terminal.focusNext"
     },
-    // copilot
     {
-        "key": "ctrl+shift+alt+t",
+        "key": "cmd+shift+ctrl+t",
         "command": "github.copilot.interactiveEditor.generateTests"
     },
     {
-        "key": "ctrl+shift+i",
+        "key": "cmd+shift+i",
         "command": "workbench.action.quickchat.toggle"
+    },
+    {
+        "key": "cmd+e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "cmd+g",
+        "command": "workbench.view.scm",
+        "when": "viewContainer.workbench.view.scm.enabled"
     }
 ]
