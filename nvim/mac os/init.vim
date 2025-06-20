@@ -1,7 +1,6 @@
 " ========================== BASIC SETTINGS ==========================
 let mapleader = " "
 
-set termguicolors
 set cmdheight=2
 set display=lastline
 set number
@@ -50,6 +49,7 @@ colorscheme gruvbox
 " ========================== KEY MAPPINGS ==========================
 nnoremap <silent> <Leader>ff :Telescope find_files<CR>
 nnoremap <silent> <C-p> :Telescope live_grep<CR>
+nnoremap <silent> <D-p> :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 nnoremap <silent> <Leader>q :cclose<CR>
 nnoremap <silent> <F2> :lua vim.lsp.buf.rename()<CR>
@@ -72,7 +72,6 @@ augroup END
 augroup MyDarkerDiagnostics
   autocmd!
   autocmd ColorScheme * call DarkerDiagnostics()
-  autocmd VimEnter * call DarkerDiagnostics()
 augroup END
 
 function! DarkerDiagnostics() abort
@@ -85,6 +84,7 @@ function! DarkerDiagnostics() abort
   highlight! DiagnosticSignInfo          gui=NONE guifg=#0f5f87
   highlight! DiagnosticSignHint          gui=NONE guifg=#00605f
 endfunction
+call DarkerDiagnostics()
 
 " ========================== LUA CONFIG ==========================
 lua << EOF
@@ -106,9 +106,10 @@ end
 -- Mason setup
 require("mason").setup()
 require("mason-lspconfig").setup {
-  ensure_installed = { "hls" }
+  ensure_installed = { "hls", "gopls", "pyright" }
 }
 
+-- Safe setup_handlers fallback
 local mason_lspconfig = require("mason-lspconfig")
 if mason_lspconfig.setup_handlers then
   mason_lspconfig.setup_handlers({
@@ -155,6 +156,27 @@ lspconfig.hls.setup {
   }
 }
 
+-- Golang
+lspconfig.gopls.setup {
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("GoFormat", { clear = true }),
+      pattern = "*.go",
+      callback = function()
+        vim.lsp.buf.format({ async = false })
+      end,
+    })
+  end,
+  settings = {
+    gopls = {
+      gofumpt = true,
+      usePlaceholders = true,
+      completeUnimported = true,
+    },
+  },
+}
+
 -- Completion
 cmp.setup({
   mapping = {
@@ -178,7 +200,7 @@ cmp.setup({
 -- ToggleTerm
 require("toggleterm").setup {
   size = 15,
-  open_mapping = [[<A-f>]],
+  open_mapping = [[<D-f>]],
   direction = "float",
   close_on_exit = true,
   shell = vim.o.shell,
