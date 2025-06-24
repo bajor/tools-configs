@@ -1,4 +1,13 @@
-## NOTES:
+## Close quick list fix `<Leader>q`
+
+## Telescpe
+`<Leader>ff`: Search for files in your current working directory.
+`<C-p>`: Perform a live grep search across your project.
+`<Leader>fb`: Show a list of open buffers.
+`<Leader>fh`: Search through Neovim help tags.
+`:Telescope git_files`: Search files in a Git repository (requires Git).
+`Ctrl - V` - open in split tab
+
 
 `gr` - go to refferences
 
@@ -24,13 +33,6 @@ MAKE SURE YOU HAVE `pip isort insall` ed
 `alt + j/k` - go down/up through past commands
 
 
-## Telescpe
-`<Leader>ff`: Search for files in your current working directory.
-`<C-p>`: Perform a live grep search across your project.
-`<Leader>fb`: Show a list of open buffers.
-`<Leader>fh`: Search through Neovim help tags.
-`:Telescope git_files`: Search files in a Git repository (requires Git).
-`Ctrl - V` - open in split tab
 
 
 ## Gruvbox color scheme for Windows Terminal
