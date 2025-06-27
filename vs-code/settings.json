@@ -134,7 +134,10 @@
       ]
     },
     {
-      "before": ["<C-n>"],
+      "before": [
+        "<leader>",
+        "n"
+      ],
       "after": [],
       "commands": [
         {
