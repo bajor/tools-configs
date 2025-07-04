@@ -65,10 +65,6 @@
         "command": "workbench.action.quickchat.toggle"
     },
     {
-        "key": "cmd+e",
-        "command": "workbench.view.explorer"
-    },
-    {
         "key": "cmd+g",
         "command": "workbench.view.scm",
         "when": "viewContainer.workbench.view.scm.enabled"
