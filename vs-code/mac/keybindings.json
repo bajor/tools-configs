@@ -20,7 +20,7 @@
         "command": "editor.action.goToDeclaration"
     },
     {
-        "key": "cmd+space",
+        "key": "ctrl+space",
         "command": "editor.action.showHover",
         "when": "editorTextFocus"
     },
@@ -68,5 +68,14 @@
         "key": "cmd+g",
         "command": "workbench.view.scm",
         "when": "viewContainer.workbench.view.scm.enabled"
+    },
+    {
+        "key": "cmd+e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "cmd+e",
+        "command": "workbench.action.closeSidebar",
+        "when": "activeViewlet == 'workbench.view.explorer'"
     }
 ]
