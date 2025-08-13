@@ -70,11 +70,11 @@
         "when": "viewContainer.workbench.view.scm.enabled"
     },
     {
-        "key": "cmd+e",
+        "key": "cmd+shift+e",
         "command": "workbench.view.explorer"
     },
     {
-        "key": "cmd+e",
+        "key": "cmd+shift+e",
         "command": "workbench.action.closeSidebar",
         "when": "activeViewlet == 'workbench.view.explorer'"
     }
