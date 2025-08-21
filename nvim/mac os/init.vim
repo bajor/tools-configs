@@ -58,6 +58,7 @@ inoremap jk <Esc>
 nnoremap <Leader>v :vsplit<CR>
 nnoremap <Leader>h <C-w>h
 nnoremap <Leader>l <C-w>l
+" If you didn't intend to clobber 'r' (replace char), remove this:
 nnoremap r <C-r>
 nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
 xnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
@@ -92,45 +93,24 @@ local function on_attach(_, bufnr)
 end
 
 -- ------------------------------------------------------------------
---  MASON & LSP-INSTALLER
+--  MASON (INSTALL ONLY) — NO AUTO-SETUP
 -- ------------------------------------------------------------------
 require('mason').setup()
-local mlsp = require('mason-lspconfig')
-mlsp.setup({ ensure_installed = { 'hls', 'clangd' } })
+require('mason-lspconfig').setup({
+  ensure_installed = { 'clangd', 'hls' },
+  automatic_installation = false,
+})
 
-mlsp.setup_handlers({
-  -- default for all servers EXCEPT ones you override
-  function(server)
-    if server == 'hls' then return end
-    lspconfig[server].setup({
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-  end,
-
-  -- HLS override
-  ['hls'] = function()
-    lspconfig.hls.setup({
-      cmd = { "haskell-language-server-wrapper", "--lsp" },
-      cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
-      on_attach    = on_attach,
-      capabilities = capabilities,
-      root_dir     = lspconfig.util.root_pattern(
-                       'hie.yaml','stack.yaml','cabal.project',
-                       'package.yaml','*.cabal','.git'),
-      settings     = {
-        haskell = {
-          formattingProvider = 'ormolu',
-          checkParents       = 'on-save',
-        },
-      },
-    })
-  end,
+-- Manually set up only the servers we want, once.
+lspconfig.clangd.setup({
+  on_attach    = on_attach,
+  capabilities = capabilities,
 })
 
 -- ------------------------------------------------------------------
---  LANGUAGE-SPECIFIC: Scala (metals)
+--  LANGUAGE-SPECIFIC OVERRIDES
 -- ------------------------------------------------------------------
+-- Scala (metals)
 local metals      = require('metals')
 local metals_cfg  = metals.bare_config()
 metals_cfg.capabilities = capabilities
@@ -138,6 +118,32 @@ metals_cfg.settings     = { showImplicitArguments = true }
 vim.api.nvim_create_autocmd('FileType', {
   pattern  = { 'scala', 'sbt' },
   callback = function() metals.initialize_or_attach(metals_cfg) end,
+})
+
+-- Haskell (hls) — make absolutely sure only one client attaches
+lspconfig.hls.setup({
+  cmd = { "haskell-language-server-wrapper", "--lsp" },
+  cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
+  on_attach = function(client, bufnr)
+    -- hard guard against duplicate HLS clients
+    for _, c in pairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+      if c.name == 'hls' and c.id ~= client.id then
+        client.stop()      -- kill the newcomer
+        return
+      end
+    end
+    on_attach(client, bufnr)
+  end,
+  capabilities = capabilities,
+  root_dir     = lspconfig.util.root_pattern(
+                   'hie.yaml','stack.yaml','cabal.project',
+                   'package.yaml','*.cabal','.git'),
+  settings     = {
+    haskell = {
+      formattingProvider = 'ormolu',
+      checkParents       = 'on-save',
+    },
+  },
 })
 
 -- ------------------------------------------------------------------
@@ -200,42 +206,27 @@ require('gitsigns').setup({
 })
 
 -- ------------------------------------------------------------------
---  DIAGNOSTIC COLORS  (apply now + on colorscheme change)
+--  DIAGNOSTIC COLORS  (dark palette)
 -- ------------------------------------------------------------------
-local function set_diag_hls()
-  local set = vim.api.nvim_set_hl
-  local c = {
-    err  = '#7f1d1d',
-    warn = '#7f5e00',
-    info = '#0f5f87',
-    hint = '#00605f',
-  }
-
-  -- signs / virtual text / floating
-  set(0,'DiagnosticVirtualTextError',{fg=c.err})
-  set(0,'DiagnosticVirtualTextWarn', {fg=c.warn})
-  set(0,'DiagnosticVirtualTextInfo', {fg=c.info})
-  set(0,'DiagnosticVirtualTextHint', {fg=c.hint})
-  set(0,'DiagnosticSignError',       {fg=c.err})
-  set(0,'DiagnosticSignWarn',        {fg=c.warn})
-  set(0,'DiagnosticSignInfo',        {fg=c.info})
-  set(0,'DiagnosticSignHint',        {fg=c.hint})
-  set(0,'DiagnosticFloatingError',   {fg=c.err})
-  set(0,'DiagnosticFloatingWarn',    {fg=c.warn})
-  set(0,'DiagnosticFloatingInfo',    {fg=c.info})
-  set(0,'DiagnosticFloatingHint',    {fg=c.hint})
-
-  -- undercurls in code
-  set(0,'DiagnosticUnderlineError', {undercurl=true, sp=c.err})
-  set(0,'DiagnosticUnderlineWarn',  {undercurl=true, sp=c.warn})
-  set(0,'DiagnosticUnderlineInfo',  {undercurl=true, sp=c.info})
-  set(0,'DiagnosticUnderlineHint',  {undercurl=true, sp=c.hint})
-end
-
--- apply immediately (colorscheme already set earlier)
-set_diag_hls()
--- re-apply on future colorscheme changes
-vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hls })
-
+local dark = {
+  err  = '#7f1d1d',
+  warn = '#7f5e00',
+  info = '#0f5f87',
+  hint = '#00605f',
+}
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = function()
+    local set = vim.api.nvim_set_hl
+    set(0,'DiagnosticVirtualTextError',{fg=dark.err})
+    set(0,'DiagnosticVirtualTextWarn', {fg=dark.warn})
+    set(0,'DiagnosticVirtualTextInfo', {fg=dark.info})
+    set(0,'DiagnosticVirtualTextHint', {fg=dark.hint})
+    set(0,'DiagnosticSignError',       {fg=dark.err})
+    set(0,'DiagnosticSignWarn',        {fg=dark.warn})
+    set(0,'DiagnosticSignInfo',        {fg=dark.info})
+    set(0,'DiagnosticSignHint',        {fg=dark.hint})
+  end
+})
 EOF
+
 
