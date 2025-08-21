@@ -78,13 +78,57 @@ augroup END
 " ========================== LUA CONFIG ==========================
 lua << EOF
 -- ------------------------------------------------------------------
+--  DIAGNOSTIC DEDUPLICATION (MUST BE FIRST)
+-- ------------------------------------------------------------------
+local function setup_diagnostic_dedup()
+  local original_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+  
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+    if not result or not result.diagnostics then
+      return original_handler(err, result, ctx, config)
+    end
+    
+    -- Create a map to track unique diagnostics per buffer
+    local seen = {}
+    local filtered_diagnostics = {}
+    
+    for _, diagnostic in ipairs(result.diagnostics) do
+      local range = diagnostic.range
+      local key = string.format("%s|%d|%d:%d-%d:%d",
+        diagnostic.message or "",
+        diagnostic.severity or vim.diagnostic.severity.ERROR,
+        range.start.line,
+        range.start.character,
+        range["end"].line,
+        range["end"].character
+      )
+      
+      if not seen[key] then
+        seen[key] = true
+        table.insert(filtered_diagnostics, diagnostic)
+      end
+    end
+    
+    -- Update result with filtered diagnostics
+    local filtered_result = vim.tbl_deep_extend("force", result, {
+      diagnostics = filtered_diagnostics
+    })
+    
+    return original_handler(err, filtered_result, ctx, config)
+  end
+end
+
+-- Set up deduplication before any LSP servers
+setup_diagnostic_dedup()
+
+-- ------------------------------------------------------------------
 --  LSP & COMPLETION
 -- ------------------------------------------------------------------
 local lspconfig       = require('lspconfig')
 local cmp             = require('cmp')
 local capabilities    = require('cmp_nvim_lsp').default_capabilities()
 
-local function on_attach(_, bufnr)
+local function on_attach(client, bufnr)
   local o = { buffer = bufnr, silent = true }
   vim.keymap.set('n','gd', vim.lsp.buf.definition,      o)
   vim.keymap.set('n','gi', vim.lsp.buf.implementation,  o)
@@ -101,8 +145,19 @@ require('mason-lspconfig').setup({
   automatic_installation = false,
 })
 
+-- Track which servers are already set up to prevent duplicates
+local setup_servers = {}
+
+local function safe_setup_server(server_name, config)
+  if setup_servers[server_name] then
+    return -- Already set up
+  end
+  setup_servers[server_name] = true
+  lspconfig[server_name].setup(config)
+end
+
 -- Manually set up only the servers we want, once.
-lspconfig.clangd.setup({
+safe_setup_server('clangd', {
   on_attach    = on_attach,
   capabilities = capabilities,
 })
@@ -115,21 +170,38 @@ local metals      = require('metals')
 local metals_cfg  = metals.bare_config()
 metals_cfg.capabilities = capabilities
 metals_cfg.settings     = { showImplicitArguments = true }
+metals_cfg.on_attach    = on_attach
+
 vim.api.nvim_create_autocmd('FileType', {
   pattern  = { 'scala', 'sbt' },
-  callback = function() metals.initialize_or_attach(metals_cfg) end,
+  callback = function() 
+    -- Only initialize if not already attached
+    local buf = vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.get_active_clients({ bufnr = buf })
+    for _, client in pairs(clients) do
+      if client.name == 'metals' then
+        return -- Already attached
+      end
+    end
+    metals.initialize_or_attach(metals_cfg) 
+  end,
 })
 
--- Haskell (hls) — make absolutely sure only one client attaches
-lspconfig.hls.setup({
+-- Haskell (hls) — ensure only one client attaches
+safe_setup_server('hls', {
   cmd = { "haskell-language-server-wrapper", "--lsp" },
   cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
   on_attach = function(client, bufnr)
-    -- hard guard against duplicate HLS clients
-    for _, c in pairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
-      if c.name == 'hls' and c.id ~= client.id then
-        client.stop()      -- kill the newcomer
-        return
+    -- Check for duplicate hls clients and stop them
+    local active_clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+    local hls_count = 0
+    for _, c in pairs(active_clients) do
+      if c.name == 'hls' then
+        hls_count = hls_count + 1
+        if hls_count > 1 and c.id ~= client.id then
+          vim.schedule(function() c.stop() end)
+          return
+        end
       end
     end
     on_attach(client, bufnr)
@@ -181,15 +253,35 @@ cmp.setup({
 })
 
 -- ------------------------------------------------------------------
---  OTHER PLUGINS
+--  DIAGNOSTIC CONFIGURATION
 -- ------------------------------------------------------------------
-require('toggleterm').setup({ size = 15, open_mapping = [[<D-f>]], direction = 'float' })
-
 local ok, lsp_lines = pcall(require,'lsp_lines')
 if ok then
   lsp_lines.setup()
-  vim.diagnostic.config({ virtual_text = false, virtual_lines = true })
 end
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = ok, -- Only enable if lsp_lines loaded successfully
+  severity_sort = true,
+  update_in_insert = false, -- Prevent duplicates during typing
+  signs = true,
+  underline = true,
+  float = {
+    show_header = true,
+    source = 'always',
+    border = 'rounded',
+  },
+})
+
+-- ------------------------------------------------------------------
+--  OTHER PLUGINS
+-- ------------------------------------------------------------------
+require('toggleterm').setup({ 
+  size = 15, 
+  open_mapping = [[<D-f>]], 
+  direction = 'float' 
+})
 
 require('Comment').setup()
 
@@ -206,27 +298,34 @@ require('gitsigns').setup({
 })
 
 -- ------------------------------------------------------------------
---  DIAGNOSTIC COLORS  (dark palette)
+--  DIAGNOSTIC COLORS  (very subdued messages; colored signs)
 -- ------------------------------------------------------------------
-local dark = {
-  err  = '#7f1d1d',
-  warn = '#7f5e00',
-  info = '#0f5f87',
-  hint = '#00605f',
+local sign = {
+  err  = '#cc241d', -- red (gruvbox)
+  warn = '#d79921', -- yellow
+  info = '#458588', -- blue
+  hint = '#689d6a', -- green
 }
-vim.api.nvim_create_autocmd('ColorScheme', {
-  callback = function()
-    local set = vim.api.nvim_set_hl
-    set(0,'DiagnosticVirtualTextError',{fg=dark.err})
-    set(0,'DiagnosticVirtualTextWarn', {fg=dark.warn})
-    set(0,'DiagnosticVirtualTextInfo', {fg=dark.info})
-    set(0,'DiagnosticVirtualTextHint', {fg=dark.hint})
-    set(0,'DiagnosticSignError',       {fg=dark.err})
-    set(0,'DiagnosticSignWarn',        {fg=dark.warn})
-    set(0,'DiagnosticSignInfo',        {fg=dark.info})
-    set(0,'DiagnosticSignHint',        {fg=dark.hint})
+local vt = '#7c6f64'        -- gruvbox fg3: muted gray-brown
+local underline = '#5a524c' -- darker gray for undercurl
+
+local function set_diag_hl()
+  local set = vim.api.nvim_set_hl
+  -- virtual text / lsp_lines blocks: all the same muted color
+  for _, sev in ipairs({ 'Error','Warn','Info','Hint' }) do
+    set(0, 'DiagnosticVirtualText'..sev, { fg = vt })
+    set(0, 'LspLines'..sev,              { fg = vt })
+    set(0, 'LspLinesVirtualText'..sev,   { fg = vt })
+    set(0, 'DiagnosticFloating'..sev,    { fg = vt })
+    set(0, 'DiagnosticUnderline'..sev,   { undercurl = true, sp = underline })
   end
-})
+  -- signs keep severity color but not screaming-bright
+  set(0,'DiagnosticSignError', { fg = sign.err })
+  set(0,'DiagnosticSignWarn',  { fg = sign.warn })
+  set(0,'DiagnosticSignInfo',  { fg = sign.info })
+  set(0,'DiagnosticSignHint',  { fg = sign.hint })
+end
+
+set_diag_hl()
+vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hl })
 EOF
-
-
