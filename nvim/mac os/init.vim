@@ -91,32 +91,46 @@ local function on_attach(_, bufnr)
   vim.keymap.set('n','<leader>ca', vim.lsp.buf.code_action, o)
 end
 
-
 -- ------------------------------------------------------------------
 --  MASON & LSP-INSTALLER
 -- ------------------------------------------------------------------
 require('mason').setup()
-
-local mlsp = require('mason-lspconfig')   -- create the variable ONCE
+local mlsp = require('mason-lspconfig')
 mlsp.setup({ ensure_installed = { 'hls', 'clangd' } })
 
--- Newer mason-lspconfig exposes :setup_handlers(); older ones do not.
-if mlsp.setup_handlers then
-  mlsp.setup_handlers({
-    function(server)
-      lspconfig[server].setup({ on_attach = on_attach, capabilities = capabilities })
-    end,
-  })
-else
-  for _, server in ipairs(mlsp.get_installed_servers()) do
-    lspconfig[server].setup({ on_attach = on_attach, capabilities = capabilities })
-  end
-end
+mlsp.setup_handlers({
+  -- default for all servers EXCEPT ones you override
+  function(server)
+    if server == 'hls' then return end
+    lspconfig[server].setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+  end,
+
+  -- HLS override
+  ['hls'] = function()
+    lspconfig.hls.setup({
+      cmd = { "haskell-language-server-wrapper", "--lsp" },
+      cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
+      on_attach    = on_attach,
+      capabilities = capabilities,
+      root_dir     = lspconfig.util.root_pattern(
+                       'hie.yaml','stack.yaml','cabal.project',
+                       'package.yaml','*.cabal','.git'),
+      settings     = {
+        haskell = {
+          formattingProvider = 'ormolu',
+          checkParents       = 'on-save',
+        },
+      },
+    })
+  end,
+})
 
 -- ------------------------------------------------------------------
---  LANGUAGE-SPECIFIC OVERRIDES
+--  LANGUAGE-SPECIFIC: Scala (metals)
 -- ------------------------------------------------------------------
--- Scala (metals)
 local metals      = require('metals')
 local metals_cfg  = metals.bare_config()
 metals_cfg.capabilities = capabilities
@@ -125,31 +139,6 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern  = { 'scala', 'sbt' },
   callback = function() metals.initialize_or_attach(metals_cfg) end,
 })
-
--- Haskell (hls) – extra root patterns & settings
-lspconfig.hls.setup({
-  -- always launch ghcup’s wrapper (it will pick the right binary)
-  cmd = { "haskell-language-server-wrapper", "--lsp" },
-
-  -- guarantee the process sees ~/.ghcup/bin first in PATH
-  cmd_env = {
-    PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH,
-  },
-
-  -- your existing settings
-  on_attach    = on_attach,
-  capabilities = capabilities,
-  root_dir     = lspconfig.util.root_pattern(
-                   'hie.yaml','stack.yaml','cabal.project',
-                   'package.yaml','*.cabal','.git'),
-  settings     = {
-    haskell = {
-      formattingProvider = 'ormolu',
-      checkParents       = 'on-save',
-    },
-  },
-})
-
 
 -- ------------------------------------------------------------------
 --  TREESITTER (C syntax highlighting)
@@ -222,7 +211,7 @@ local function set_diag_hls()
     hint = '#00605f',
   }
 
-  -- signs / virtual text (used by lsp_lines) / floating
+  -- signs / virtual text / floating
   set(0,'DiagnosticVirtualTextError',{fg=c.err})
   set(0,'DiagnosticVirtualTextWarn', {fg=c.warn})
   set(0,'DiagnosticVirtualTextInfo', {fg=c.info})
@@ -243,13 +232,10 @@ local function set_diag_hls()
   set(0,'DiagnosticUnderlineHint',  {undercurl=true, sp=c.hint})
 end
 
--- apply immediately (your colorscheme is already set)
+-- apply immediately (colorscheme already set earlier)
 set_diag_hls()
-
--- also re-apply whenever you change colorschemes later
+-- re-apply on future colorscheme changes
 vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hls })
-
-
 
 EOF
 
