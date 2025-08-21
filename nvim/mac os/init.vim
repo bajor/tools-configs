@@ -52,13 +52,13 @@ nnoremap <silent> <D-p>      :Telescope live_grep<CR>
 nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 nnoremap <silent> <Leader>q  :cclose<CR>
 nnoremap <silent> <F2>       :lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <Leader>n :nohl<CR>
 
 inoremap jk <Esc>
 nnoremap <Leader>v :vsplit<CR>
 nnoremap <Leader>h <C-w>h
 nnoremap <Leader>l <C-w>l
 nnoremap r <C-r>
-nnoremap <C-n> :nohl<CR>
 nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
 xnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
 
@@ -90,6 +90,7 @@ local function on_attach(_, bufnr)
   vim.keymap.set('n','gr', vim.lsp.buf.references,      o)
   vim.keymap.set('n','<leader>ca', vim.lsp.buf.code_action, o)
 end
+
 
 -- ------------------------------------------------------------------
 --  MASON & LSP-INSTALLER
@@ -127,13 +128,28 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Haskell (hls) – extra root patterns & settings
 lspconfig.hls.setup({
+  -- always launch ghcup’s wrapper (it will pick the right binary)
+  cmd = { "haskell-language-server-wrapper", "--lsp" },
+
+  -- guarantee the process sees ~/.ghcup/bin first in PATH
+  cmd_env = {
+    PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH,
+  },
+
+  -- your existing settings
   on_attach    = on_attach,
   capabilities = capabilities,
   root_dir     = lspconfig.util.root_pattern(
                    'hie.yaml','stack.yaml','cabal.project',
                    'package.yaml','*.cabal','.git'),
-  settings     = { haskell = { formattingProvider = 'ormolu', checkParents = 'on-save' } }
+  settings     = {
+    haskell = {
+      formattingProvider = 'ormolu',
+      checkParents       = 'on-save',
+    },
+  },
 })
+
 
 -- ------------------------------------------------------------------
 --  TREESITTER (C syntax highlighting)
@@ -195,26 +211,45 @@ require('gitsigns').setup({
 })
 
 -- ------------------------------------------------------------------
---  DIAGNOSTIC COLORS  (dark palette)
+--  DIAGNOSTIC COLORS  (apply now + on colorscheme change)
 -- ------------------------------------------------------------------
-local dark = {
-  err  = '#7f1d1d',
-  warn = '#7f5e00',
-  info = '#0f5f87',
-  hint = '#00605f',
-}
-vim.api.nvim_create_autocmd('ColorScheme', {
-  callback = function()
-    local set = vim.api.nvim_set_hl
-    set(0,'DiagnosticVirtualTextError',{fg=dark.err})
-    set(0,'DiagnosticVirtualTextWarn', {fg=dark.warn})
-    set(0,'DiagnosticVirtualTextInfo', {fg=dark.info})
-    set(0,'DiagnosticVirtualTextHint', {fg=dark.hint})
-    set(0,'DiagnosticSignError',       {fg=dark.err})
-    set(0,'DiagnosticSignWarn',        {fg=dark.warn})
-    set(0,'DiagnosticSignInfo',        {fg=dark.info})
-    set(0,'DiagnosticSignHint',        {fg=dark.hint})
-  end
-})
+local function set_diag_hls()
+  local set = vim.api.nvim_set_hl
+  local c = {
+    err  = '#7f1d1d',
+    warn = '#7f5e00',
+    info = '#0f5f87',
+    hint = '#00605f',
+  }
+
+  -- signs / virtual text (used by lsp_lines) / floating
+  set(0,'DiagnosticVirtualTextError',{fg=c.err})
+  set(0,'DiagnosticVirtualTextWarn', {fg=c.warn})
+  set(0,'DiagnosticVirtualTextInfo', {fg=c.info})
+  set(0,'DiagnosticVirtualTextHint', {fg=c.hint})
+  set(0,'DiagnosticSignError',       {fg=c.err})
+  set(0,'DiagnosticSignWarn',        {fg=c.warn})
+  set(0,'DiagnosticSignInfo',        {fg=c.info})
+  set(0,'DiagnosticSignHint',        {fg=c.hint})
+  set(0,'DiagnosticFloatingError',   {fg=c.err})
+  set(0,'DiagnosticFloatingWarn',    {fg=c.warn})
+  set(0,'DiagnosticFloatingInfo',    {fg=c.info})
+  set(0,'DiagnosticFloatingHint',    {fg=c.hint})
+
+  -- undercurls in code
+  set(0,'DiagnosticUnderlineError', {undercurl=true, sp=c.err})
+  set(0,'DiagnosticUnderlineWarn',  {undercurl=true, sp=c.warn})
+  set(0,'DiagnosticUnderlineInfo',  {undercurl=true, sp=c.info})
+  set(0,'DiagnosticUnderlineHint',  {undercurl=true, sp=c.hint})
+end
+
+-- apply immediately (your colorscheme is already set)
+set_diag_hls()
+
+-- also re-apply whenever you change colorschemes later
+vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hls })
+
+
+
 EOF
 
