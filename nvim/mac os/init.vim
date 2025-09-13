@@ -7,23 +7,36 @@ set display=lastline
 set hidden
 set updatetime=300
 set signcolumn=yes
+set shortmess+=c
+set completeopt=menuone,noinsert,noselect
 
 " ========================== PLUGINS ==========================
 call plug#begin('~/.vim/plugged')
   " UI / theme
   Plug 'morhetz/gruvbox'
+  Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'nvim-lualine/lualine.nvim'
 
   " LSP & completion
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/cmp-vsnip'
+  Plug 'hrsh7th/vim-vsnip'
+  Plug 'L3MON4D3/LuaSnip'
+  Plug 'saadparwaiz1/cmp_luasnip'
 
   " Scala
   Plug 'scalameta/nvim-metals'
+  Plug 'mfussenegger/nvim-dap'
+  Plug 'rcarriga/nvim-dap-ui'
 
   " Telescope
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
   " Terminal, comment, git
   Plug 'akinsho/toggleterm.nvim'
@@ -37,8 +50,13 @@ call plug#begin('~/.vim/plugged')
   " Inline diagnostics
   Plug 'Maan2003/lsp_lines.nvim'
 
-  " Treesitter for C highlighting
+  " Treesitter for better highlighting
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
+  " Scala specific tools
+  Plug 'ckipp01/nvim-jvmopts'
+  Plug 'ray-x/lsp_signature.nvim'
 call plug#end()
 
 " ========================== THEMING ==========================
@@ -88,7 +106,6 @@ local function setup_diagnostic_dedup()
       return original_handler(err, result, ctx, config)
     end
     
-    -- Create a map to track unique diagnostics per buffer
     local seen = {}
     local filtered_diagnostics = {}
     
@@ -109,7 +126,6 @@ local function setup_diagnostic_dedup()
       end
     end
     
-    -- Update result with filtered diagnostics
     local filtered_result = vim.tbl_deep_extend("force", result, {
       diagnostics = filtered_diagnostics
     })
@@ -118,7 +134,6 @@ local function setup_diagnostic_dedup()
   end
 end
 
--- Set up deduplication before any LSP servers
 setup_diagnostic_dedup()
 
 -- ------------------------------------------------------------------
@@ -126,18 +141,31 @@ setup_diagnostic_dedup()
 -- ------------------------------------------------------------------
 local lspconfig       = require('lspconfig')
 local cmp             = require('cmp')
+local luasnip         = require('luasnip')
 local capabilities    = require('cmp_nvim_lsp').default_capabilities()
 
+-- Keep original on_attach with just the existing mappings
 local function on_attach(client, bufnr)
   local o = { buffer = bufnr, silent = true }
   vim.keymap.set('n','gd', vim.lsp.buf.definition,      o)
   vim.keymap.set('n','gi', vim.lsp.buf.implementation,  o)
   vim.keymap.set('n','gr', vim.lsp.buf.references,      o)
   vim.keymap.set('n','<leader>ca', vim.lsp.buf.code_action, o)
+  
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  
+  -- Signature help setup
+  require('lsp_signature').on_attach({
+    bind = true,
+    handler_opts = {
+      border = "rounded"
+    }
+  }, bufnr)
 end
 
 -- ------------------------------------------------------------------
---  MASON (INSTALL ONLY) — NO AUTO-SETUP
+--  MASON (INSTALL ONLY)
 -- ------------------------------------------------------------------
 require('mason').setup()
 require('mason-lspconfig').setup({
@@ -145,54 +173,155 @@ require('mason-lspconfig').setup({
   automatic_installation = false,
 })
 
--- Track which servers are already set up to prevent duplicates
 local setup_servers = {}
 
 local function safe_setup_server(server_name, config)
   if setup_servers[server_name] then
-    return -- Already set up
+    return
   end
   setup_servers[server_name] = true
   lspconfig[server_name].setup(config)
 end
 
--- Manually set up only the servers we want, once.
 safe_setup_server('clangd', {
   on_attach    = on_attach,
   capabilities = capabilities,
 })
 
 -- ------------------------------------------------------------------
---  LANGUAGE-SPECIFIC OVERRIDES
+--  SCALA METALS CONFIGURATION
 -- ------------------------------------------------------------------
--- Scala (metals)
 local metals      = require('metals')
 local metals_cfg  = metals.bare_config()
-metals_cfg.capabilities = capabilities
-metals_cfg.settings     = { showImplicitArguments = true }
-metals_cfg.on_attach    = on_attach
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern  = { 'scala', 'sbt' },
-  callback = function() 
-    -- Only initialize if not already attached
+-- Metals settings optimized for Scala 3
+metals_cfg.settings = {
+  showImplicitArguments = true,
+  showImplicitConversionsAndClasses = true,
+  showInferredType = true,
+  superMethodLensesEnabled = true,
+  enableSemanticHighlighting = false,
+  excludedPackages = {
+    "akka.actor.typed.javadsl",
+    "com.github.swagger.akka.javadsl",
+    "akka.stream.javadsl",
+    "akka.http.javadsl"
+  },
+  fallbackScalaVersion = "3.3.1",
+  serverVersion = "latest.snapshot",
+  serverProperties = {
+    "-Xmx2G",
+    "-XX:+UseG1GC",
+    "-XX:MaxGCPauseMillis=100",
+    "-XX:GCTimeRatio=4",
+    "-XX:+UseStringDeduplication"
+  }
+}
+
+metals_cfg.init_options = {
+  statusBarProvider = "on",
+  inputBoxProvider = true,
+  quickPickProvider = true,
+  executeClientCommandProvider = true,
+  decorationProvider = true,
+  inlineDecorationProvider = true,
+  didFocusProvider = true,
+  slowTaskProvider = true,
+  debuggingProvider = true,
+  treeViewProvider = true
+}
+
+metals_cfg.capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+metals_cfg.on_attach = function(client, bufnr)
+  on_attach(client, bufnr)
+  
+  -- Metals specific setup
+  require('metals').setup_dap()
+end
+
+-- Metals auto-start configuration
+local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "scala", "sbt", "java" },
+  callback = function()
     local buf = vim.api.nvim_get_current_buf()
     local clients = vim.lsp.get_active_clients({ bufnr = buf })
     for _, client in pairs(clients) do
       if client.name == 'metals' then
-        return -- Already attached
+        return
       end
     end
-    metals.initialize_or_attach(metals_cfg) 
+    require('metals').initialize_or_attach(metals_cfg)
   end,
+  group = nvim_metals_group,
 })
 
--- Haskell (hls) — ensure only one client attaches
+-- ------------------------------------------------------------------
+--  DAP CONFIGURATION FOR SCALA
+-- ------------------------------------------------------------------
+local dap = require('dap')
+
+dap.configurations.scala = {
+  {
+    type = "scala",
+    request = "launch",
+    name = "Run or Test Target",
+    metals = {
+      runType = "runOrTestFile",
+    },
+  },
+  {
+    type = "scala",
+    request = "launch",
+    name = "Test Target",
+    metals = {
+      runType = "testTarget",
+    },
+  },
+}
+
+require('dapui').setup({
+  layouts = {
+    {
+      elements = {
+        'scopes',
+        'breakpoints',
+        'stacks',
+        'watches',
+      },
+      size = 40,
+      position = 'left',
+    },
+    {
+      elements = {
+        'repl',
+        'console',
+      },
+      size = 10,
+      position = 'bottom',
+    },
+  },
+})
+
+-- Automatically open/close dapui
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  require('dapui').open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  require('dapui').close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  require('dapui').close()
+end
+
+-- ------------------------------------------------------------------
+--  HASKELL CONFIGURATION
+-- ------------------------------------------------------------------
 safe_setup_server('hls', {
   cmd = { "haskell-language-server-wrapper", "--lsp" },
   cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
   on_attach = function(client, bufnr)
-    -- Check for duplicate hls clients and stop them
     local active_clients = vim.lsp.get_active_clients({ bufnr = bufnr })
     local hls_count = 0
     for _, c in pairs(active_clients) do
@@ -219,21 +348,46 @@ safe_setup_server('hls', {
 })
 
 -- ------------------------------------------------------------------
---  TREESITTER (C syntax highlighting)
+--  TREESITTER CONFIGURATION
 -- ------------------------------------------------------------------
 require('nvim-treesitter.configs').setup({
-  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash' },
-  highlight        = { enable = true },
+  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash', 'scala', 'java', 'haskell' },
+  highlight        = { 
+    enable = true,
+    additional_vim_regex_highlighting = { 'scala' }
+  },
+  indent = { enable = true },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
+      },
+    },
+  },
 })
 
 -- ------------------------------------------------------------------
---  COMPLETION
+--  ENHANCED COMPLETION
 -- ------------------------------------------------------------------
 cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
   mapping = {
     ['<Tab>']   = cmp.mapping(function(fb)
       if cmp.visible() then
         cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       else
         fb()
       end
@@ -241,6 +395,8 @@ cmp.setup({
     ['<S-Tab>'] = cmp.mapping(function(fb)
       if cmp.visible() then
         cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fb()
       end
@@ -249,7 +405,27 @@ cmp.setup({
     ['<Up>']    = cmp.mapping.select_prev_item(),
     ['<Down>']  = cmp.mapping.select_next_item(),
   },
-  sources = { { name='nvim_lsp' }, { name='buffer' }, { name='path' } },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'path' },
+  }, {
+    { name = 'buffer' },
+  }),
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.menu = ({
+        nvim_lsp = "[LSP]",
+        luasnip = "[Snippet]",
+        buffer = "[Buffer]",
+        path = "[Path]",
+      })[entry.source.name]
+      return vim_item
+    end
+  },
+  experimental = {
+    ghost_text = true,
+  },
 })
 
 -- ------------------------------------------------------------------
@@ -262,17 +438,39 @@ end
 
 vim.diagnostic.config({
   virtual_text = false,
-  virtual_lines = ok, -- Only enable if lsp_lines loaded successfully
+  virtual_lines = ok,
   severity_sort = true,
-  update_in_insert = false, -- Prevent duplicates during typing
+  update_in_insert = false,
   signs = true,
   underline = true,
   float = {
     show_header = true,
     source = 'always',
     border = 'rounded',
+    focusable = false,
   },
 })
+
+-- ------------------------------------------------------------------
+--  TELESCOPE CONFIGURATION
+-- ------------------------------------------------------------------
+local telescope = require('telescope')
+
+telescope.setup({
+  defaults = {
+    file_ignore_patterns = { "node_modules", ".git", "target", ".bloop", ".metals" },
+  },
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+  },
+})
+
+telescope.load_extension('fzf')
 
 -- ------------------------------------------------------------------
 --  OTHER PLUGINS
@@ -280,7 +478,10 @@ vim.diagnostic.config({
 require('toggleterm').setup({ 
   size = 15, 
   open_mapping = [[<D-f>]], 
-  direction = 'float' 
+  direction = 'float',
+  float_opts = {
+    border = 'curved',
+  },
 })
 
 require('Comment').setup()
@@ -295,6 +496,38 @@ require('gitsigns').setup({
   },
   watch_gitdir    = { interval = 100, follow_files = true },
   update_debounce = 100,
+})
+
+require('lualine').setup({
+  options = {
+    theme = 'gruvbox',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {
+      'g:metals_status',
+      'encoding',
+      'fileformat',
+      'filetype'
+    },
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+})
+
+require('nvim-web-devicons').setup({
+  override = {
+    scala = {
+      icon = "",
+      color = "#cc3e44",
+      cterm_color = "167",
+      name = "Scala"
+    }
+  }
 })
 
 -- ------------------------------------------------------------------
