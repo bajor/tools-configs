@@ -1,0 +1,65 @@
+{
+    "description": "Remap Cmd+H/L to Ctrl+O/I in Terminal/Ghostty (for Neovim jump navigation)",
+    "manipulators": [
+        {
+            "from": {
+                "key_code": "h",
+                "modifiers": { "mandatory": ["command"] }
+            },
+            "to": [
+                {
+                    "key_code": "o",
+                    "modifiers": ["control"]
+                }
+            ],
+            "type": "basic",
+            "conditions": [
+                {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                        "^com\\.apple\\.Terminal$",
+                        "^com\\.mitchellh\\.ghostty$"
+                    ]
+                }
+            ]
+        },
+        {
+            "from": {
+                "key_code": "l",
+                "modifiers": { "mandatory": ["command"] }
+            },
+            "to": [
+                {
+                    "key_code": "i",
+                    "modifiers": ["control"]
+                }
+            ],
+            "type": "basic",
+            "conditions": [
+                {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                        "^com\\.apple\\.Terminal$",
+                        "^com\\.mitchellh\\.ghostty$"
+                    ]
+                }
+            ]
+        },
+        {
+            "from": {
+                "key_code": "h",
+                "modifiers": { "mandatory": ["command"] }
+            },
+            "type": "basic",
+            "conditions": [
+                {
+                    "type": "frontmost_application_unless",
+                    "bundle_identifiers": [
+                        "^com\\.apple\\.Terminal$",
+                        "^com\\.mitchellh\\.ghostty$"
+                    ]
+                }
+            ]
+        }
+    ]
+}
