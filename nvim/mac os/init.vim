@@ -74,8 +74,15 @@ nnoremap <silent> <F2>       :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <Leader>n :nohl<CR>
 
 " Jump list navigation (go back/forward after gd)
-nnoremap <silent> <D-h> <C-o>
-nnoremap <silent> <D-l> <C-i>
+" Using Alt/Option + arrows (like browser navigation)
+nnoremap <silent> <M-Left> <C-o>
+nnoremap <silent> <M-Right> <C-i>
+" Alternative: Using Alt + h/l
+nnoremap <silent> <M-h> <C-o>
+nnoremap <silent> <M-l> <C-i>
+" Alternative: Using brackets
+nnoremap <silent> [b <C-o>
+nnoremap <silent> ]b <C-i>
 
 inoremap jk <Esc>
 nnoremap <Leader>v :vsplit<CR>
