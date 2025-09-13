@@ -74,7 +74,10 @@ nnoremap <silent> <F2>       :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <Leader>n :nohl<CR>
 
 " Jump list navigation (go back/forward after gd)
-" Using Alt/Option + arrows (like browser navigation)
+" Cmd+[ to go back, Cmd+] to go forward (macOS) - like browser navigation
+nnoremap <silent> <D-[> <C-o>
+nnoremap <silent> <D-]> <C-i>
+" Alternative: Using Alt/Option + arrows (like browser navigation)
 nnoremap <silent> <M-Left> <C-o>
 nnoremap <silent> <M-Right> <C-i>
 " Alternative: Using Alt + h/l
