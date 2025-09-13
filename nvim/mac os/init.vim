@@ -31,6 +31,7 @@ call plug#begin('~/.vim/plugged')
   " Scala
   Plug 'scalameta/nvim-metals'
   Plug 'mfussenegger/nvim-dap'
+  Plug 'nvim-neotest/nvim-nio'
   Plug 'rcarriga/nvim-dap-ui'
 
   " Telescope
@@ -141,7 +142,7 @@ setup_diagnostic_dedup()
 -- ------------------------------------------------------------------
 local lspconfig       = require('lspconfig')
 local cmp             = require('cmp')
-local luasnip         = require('luasnip')
+local has_luasnip, luasnip = pcall(require, 'luasnip')
 local capabilities    = require('cmp_nvim_lsp').default_capabilities()
 
 -- Keep original on_attach with just the existing mappings
@@ -237,7 +238,10 @@ metals_cfg.on_attach = function(client, bufnr)
   on_attach(client, bufnr)
   
   -- Metals specific setup
-  require('metals').setup_dap()
+  local ok_metals_dap = pcall(require('metals').setup_dap)
+  if not ok_metals_dap then
+    -- DAP not available, but that's okay
+  end
 end
 
 -- Metals auto-start configuration
@@ -246,7 +250,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "scala", "sbt", "java" },
   callback = function()
     local buf = vim.api.nvim_get_current_buf()
-    local clients = vim.lsp.get_active_clients({ bufnr = buf })
+    local clients = vim.lsp.get_clients and vim.lsp.get_clients({ bufnr = buf }) or vim.lsp.get_active_clients({ bufnr = buf })
     for _, client in pairs(clients) do
       if client.name == 'metals' then
         return
@@ -260,59 +264,63 @@ vim.api.nvim_create_autocmd("FileType", {
 -- ------------------------------------------------------------------
 --  DAP CONFIGURATION FOR SCALA
 -- ------------------------------------------------------------------
-local dap = require('dap')
-
-dap.configurations.scala = {
-  {
-    type = "scala",
-    request = "launch",
-    name = "Run or Test Target",
-    metals = {
-      runType = "runOrTestFile",
-    },
-  },
-  {
-    type = "scala",
-    request = "launch",
-    name = "Test Target",
-    metals = {
-      runType = "testTarget",
-    },
-  },
-}
-
-require('dapui').setup({
-  layouts = {
+local ok_dap, dap = pcall(require, 'dap')
+if ok_dap then
+  dap.configurations.scala = {
     {
-      elements = {
-        'scopes',
-        'breakpoints',
-        'stacks',
-        'watches',
+      type = "scala",
+      request = "launch",
+      name = "Run or Test Target",
+      metals = {
+        runType = "runOrTestFile",
       },
-      size = 40,
-      position = 'left',
     },
     {
-      elements = {
-        'repl',
-        'console',
+      type = "scala",
+      request = "launch",
+      name = "Test Target",
+      metals = {
+        runType = "testTarget",
       },
-      size = 10,
-      position = 'bottom',
     },
-  },
-})
+  }
 
--- Automatically open/close dapui
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  require('dapui').open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  require('dapui').close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  require('dapui').close()
+  local ok_dapui, dapui = pcall(require, 'dapui')
+  if ok_dapui then
+    dapui.setup({
+      layouts = {
+        {
+          elements = {
+            'scopes',
+            'breakpoints',
+            'stacks',
+            'watches',
+          },
+          size = 40,
+          position = 'left',
+        },
+        {
+          elements = {
+            'repl',
+            'console',
+          },
+          size = 10,
+          position = 'bottom',
+        },
+      },
+    })
+
+    -- Automatically open/close dapui
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+  end
 end
 
 -- ------------------------------------------------------------------
@@ -322,7 +330,7 @@ safe_setup_server('hls', {
   cmd = { "haskell-language-server-wrapper", "--lsp" },
   cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
   on_attach = function(client, bufnr)
-    local active_clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+    local active_clients = vim.lsp.get_clients and vim.lsp.get_clients({ bufnr = bufnr }) or vim.lsp.get_active_clients({ bufnr = bufnr })
     local hls_count = 0
     for _, c in pairs(active_clients) do
       if c.name == 'hls' then
@@ -379,14 +387,19 @@ require('nvim-treesitter.configs').setup({
 cmp.setup({
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      if has_luasnip then
+        luasnip.lsp_expand(args.body)
+      else
+        -- Fallback to basic snippet expansion
+        vim.snippet.expand(args.body)
+      end
     end,
   },
   mapping = {
     ['<Tab>']   = cmp.mapping(function(fb)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
+      elseif has_luasnip and luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
       else
         fb()
@@ -395,7 +408,7 @@ cmp.setup({
     ['<S-Tab>'] = cmp.mapping(function(fb)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
+      elseif has_luasnip and luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else
         fb()
@@ -407,7 +420,7 @@ cmp.setup({
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    { name = 'luasnip', max_item_count = 5 },
     { name = 'path' },
   }, {
     { name = 'buffer' },
@@ -475,60 +488,75 @@ telescope.load_extension('fzf')
 -- ------------------------------------------------------------------
 --  OTHER PLUGINS
 -- ------------------------------------------------------------------
-require('toggleterm').setup({ 
-  size = 15, 
-  open_mapping = [[<D-f>]], 
-  direction = 'float',
-  float_opts = {
-    border = 'curved',
-  },
-})
-
-require('Comment').setup()
-
-require('gitsigns').setup({
-  signs = {
-    add         = { text = '+' },
-    change      = { text = '~' },
-    delete      = { text = '-' },
-    topdelete   = { text = 'T' },
-    changedelete= { text = 'C' },
-  },
-  watch_gitdir    = { interval = 100, follow_files = true },
-  update_debounce = 100,
-})
-
-require('lualine').setup({
-  options = {
-    theme = 'gruvbox',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {
-      'g:metals_status',
-      'encoding',
-      'fileformat',
-      'filetype'
+local ok_toggleterm, toggleterm = pcall(require, 'toggleterm')
+if ok_toggleterm then
+  toggleterm.setup({ 
+    size = 15, 
+    open_mapping = [[<D-f>]], 
+    direction = 'float',
+    float_opts = {
+      border = 'curved',
     },
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-})
+  })
+end
 
-require('nvim-web-devicons').setup({
-  override = {
-    scala = {
-      icon = "",
-      color = "#cc3e44",
-      cterm_color = "167",
-      name = "Scala"
+local ok_comment, comment = pcall(require, 'Comment')
+if ok_comment then
+  comment.setup()
+end
+
+local ok_gitsigns, gitsigns = pcall(require, 'gitsigns')
+if ok_gitsigns then
+  gitsigns.setup({
+    signs = {
+      add         = { text = '+' },
+      change      = { text = '~' },
+      delete      = { text = '-' },
+      topdelete   = { text = 'T' },
+      changedelete= { text = 'C' },
+    },
+    watch_gitdir    = { interval = 100, follow_files = true },
+    update_debounce = 100,
+  })
+end
+
+local ok_lualine, lualine = pcall(require, 'lualine')
+if ok_lualine then
+  lualine.setup({
+    options = {
+      theme = 'gruvbox',
+      component_separators = { left = '', right = ''},
+      section_separators = { left = '', right = ''},
+    },
+    sections = {
+      lualine_a = {'mode'},
+      lualine_b = {'branch', 'diff', 'diagnostics'},
+      lualine_c = {'filename'},
+      lualine_x = {
+        'g:metals_status',
+        'encoding',
+        'fileformat',
+        'filetype'
+      },
+      lualine_y = {'progress'},
+      lualine_z = {'location'}
+    },
+  })
+end
+
+local ok_devicons, devicons = pcall(require, 'nvim-web-devicons')
+if ok_devicons then
+  devicons.setup({
+    override = {
+      scala = {
+        icon = "",
+        color = "#cc3e44",
+        cterm_color = "167",
+        name = "Scala"
+      }
     }
-  }
-})
+  })
+end
 
 -- ------------------------------------------------------------------
 --  DIAGNOSTIC COLORS  (very subdued messages; colored signs)
