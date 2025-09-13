@@ -73,6 +73,10 @@ nnoremap <silent> <Leader>q  :cclose<CR>
 nnoremap <silent> <F2>       :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <Leader>n :nohl<CR>
 
+" Jump list navigation (go back/forward after gd)
+nnoremap <silent> <D-h> <C-o>
+nnoremap <silent> <D-l> <C-i>
+
 inoremap jk <Esc>
 nnoremap <Leader>v :vsplit<CR>
 nnoremap <Leader>h <C-w>h
