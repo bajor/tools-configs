@@ -17,6 +17,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'nvim-tree/nvim-web-devicons'
   Plug 'nvim-lualine/lualine.nvim'
 
+  " File Explorer
+  Plug 'nvim-tree/nvim-tree.lua'
+
   " LSP & completion
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
@@ -73,6 +76,9 @@ nnoremap <silent> <Leader>q  :cclose<CR>
 nnoremap <silent> <F2>       :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <Leader>n :nohl<CR>
 
+" NvimTree toggle with Cmd+Shift+E
+nnoremap <silent> <D-S-e> :NvimTreeToggle<CR>
+
 " Jump list navigation (go back/forward after gd)
 " Cmd+[ to go back, Cmd+] to go forward (macOS) - like browser navigation
 nnoremap <silent> <D-[> <C-o>
@@ -89,8 +95,8 @@ nnoremap <silent> ]b <C-i>
 
 inoremap jk <Esc>
 nnoremap <Leader>v :vsplit<CR>
-nnoremap <Leader>h <C-w>h
 nnoremap <Leader>l <C-w>l
+nnoremap <Leader>h <C-w>h
 " If you didn't intend to clobber 'r' (replace char), remove this:
 nnoremap r <C-r>
 nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
@@ -150,6 +156,22 @@ local function setup_diagnostic_dedup()
 end
 
 setup_diagnostic_dedup()
+
+-- ------------------------------------------------------------------
+--  NVIM-TREE CONFIGURATION
+-- ------------------------------------------------------------------
+local ok_nvim_tree, nvim_tree = pcall(require, 'nvim-tree')
+if ok_nvim_tree then
+  -- disable netrw at the very start of your init.vim
+  vim.g.loaded_netrw = 1
+  vim.g.loaded_netrwPlugin = 1
+
+  nvim_tree.setup({
+    view = {
+      side = "right",
+    },
+  })
+end
 
 -- ------------------------------------------------------------------
 --  LSP & COMPLETION
@@ -604,3 +626,4 @@ end
 set_diag_hl()
 vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hl })
 EOF
+
