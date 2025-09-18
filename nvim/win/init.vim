@@ -11,7 +11,7 @@ set shortmess+=c
 set completeopt=menuone,noinsert,noselect
 
 " ========================== PLUGINS ==========================
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/AppData/Local/nvim/plugged')
   " UI / theme
   Plug 'morhetz/gruvbox'
   Plug 'nvim-tree/nvim-web-devicons'
@@ -40,7 +40,7 @@ call plug#begin('~/.vim/plugged')
   " Telescope
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
-  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
   " Terminal, comment, git
   Plug 'akinsho/toggleterm.nvim'
@@ -54,9 +54,9 @@ call plug#begin('~/.vim/plugged')
   " Inline diagnostics
   Plug 'Maan2003/lsp_lines.nvim'
 
-  " Treesitter for better highlighting
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+  " Syntax highlighting (alternative to treesitter)
+  Plug 'sheerun/vim-polyglot'
+  Plug 'derekwyatt/vim-scala'
 
   " Scala specific tools
   Plug 'ckipp01/nvim-jvmopts'
@@ -80,10 +80,10 @@ nnoremap <silent> <Leader>n :nohl<CR>
 nnoremap <silent> <C-S-e> :NvimTreeToggle<CR>
 
 " Jump list navigation (go back/forward after gd)
-" Ctrl+[ to go back, Ctrl+] to go forward - like browser navigation
+" Ctrl+[ to go back, Ctrl+] to go forward
 nnoremap <silent> <C-[> <C-o>
 nnoremap <silent> <C-]> <C-i>
-" Alternative: Using Alt + arrows (like browser navigation)
+" Alternative: Using Alt + arrows
 nnoremap <silent> <A-Left> <C-o>
 nnoremap <silent> <A-Right> <C-i>
 " Alternative: Using Alt + h/l
@@ -95,9 +95,8 @@ nnoremap <silent> ]b <C-i>
 
 inoremap jk <Esc>
 nnoremap <Leader>v :vsplit<CR>
-nnoremap <Leader>h <C-w>h
 nnoremap <Leader>l <C-w>l
-" If you didn't intend to clobber 'r' (replace char), remove this:
+nnoremap <Leader>h <C-w>h
 nnoremap r <C-r>
 nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
 xnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
@@ -112,6 +111,12 @@ augroup END
 augroup CFormat
   autocmd!
   autocmd BufWritePre *.c,*.h lua vim.lsp.buf.format({ async = false })
+augroup END
+
+" format Python on save
+augroup PythonFormat
+  autocmd!
+  autocmd BufWritePre *.py lua vim.lsp.buf.format({ async = false })
 augroup END
 
 " ========================== LUA CONFIG ==========================
@@ -206,7 +211,7 @@ end
 -- ------------------------------------------------------------------
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'clangd', 'hls' },
+  ensure_installed = { 'clangd', 'pylsp' },
   automatic_installation = false,
 })
 
@@ -223,6 +228,30 @@ end
 safe_setup_server('clangd', {
   on_attach    = on_attach,
   capabilities = capabilities,
+})
+
+-- Python LSP setup
+safe_setup_server('pylsp', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {'W391'},
+          maxLineLength = 100
+        },
+        pylint = { enabled = false },
+        flake8 = { enabled = false },
+        autopep8 = { enabled = true },
+        yapf = { enabled = false },
+        mccabe = { enabled = false },
+        pyflakes = { enabled = true },
+        rope_completion = { enabled = true },
+        rope_autoimport = { enabled = true },
+      }
+    }
+  }
 })
 
 -- ------------------------------------------------------------------
@@ -244,7 +273,7 @@ metals_cfg.settings = {
     "akka.stream.javadsl",
     "akka.http.javadsl"
   },
-  fallbackScalaVersion = "3.3.1",
+  fallbackScalaVersion = "2.12.18",
   serverVersion = "latest.snapshot",
   serverProperties = {
     "-Xmx2G",
@@ -360,64 +389,6 @@ if ok_dap then
 end
 
 -- ------------------------------------------------------------------
---  HASKELL CONFIGURATION
--- ------------------------------------------------------------------
-safe_setup_server('hls', {
-  cmd = { "haskell-language-server-wrapper", "--lsp" },
-  cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
-  on_attach = function(client, bufnr)
-    local active_clients = vim.lsp.get_clients and vim.lsp.get_clients({ bufnr = bufnr }) or vim.lsp.get_active_clients({ bufnr = bufnr })
-    local hls_count = 0
-    for _, c in pairs(active_clients) do
-      if c.name == 'hls' then
-        hls_count = hls_count + 1
-        if hls_count > 1 and c.id ~= client.id then
-          vim.schedule(function() c.stop() end)
-          return
-        end
-      end
-    end
-    on_attach(client, bufnr)
-  end,
-  capabilities = capabilities,
-  root_dir     = lspconfig.util.root_pattern(
-                   'hie.yaml','stack.yaml','cabal.project',
-                   'package.yaml','*.cabal','.git'),
-  settings     = {
-    haskell = {
-      formattingProvider = 'ormolu',
-      checkParents       = 'on-save',
-    },
-  },
-})
-
--- ------------------------------------------------------------------
---  TREESITTER CONFIGURATION
--- ------------------------------------------------------------------
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash', 'scala', 'java', 'haskell' },
-  highlight        = { 
-    enable = true,
-    additional_vim_regex_highlighting = { 'scala' }
-  },
-  indent = { enable = true },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-      },
-    },
-  },
-})
-
--- ------------------------------------------------------------------
 --  ENHANCED COMPLETION
 -- ------------------------------------------------------------------
 cmp.setup({
@@ -522,20 +493,32 @@ telescope.setup({
 telescope.load_extension('fzf')
 
 -- ------------------------------------------------------------------
---  OTHER PLUGINS
+--  TERMINAL CONFIGURATION
 -- ------------------------------------------------------------------
 local ok_toggleterm, toggleterm = pcall(require, 'toggleterm')
 if ok_toggleterm then
   toggleterm.setup({ 
     size = 15, 
-    open_mapping = [[<C-f>]], 
+    open_mapping = [[<A-f>]], -- Alt+F opens terminal
     direction = 'float',
     float_opts = {
       border = 'curved',
     },
+    shell = vim.o.shell, -- Use system default shell
   })
+  
+  -- Additional terminal mappings
+  vim.keymap.set('n', '<C-f>', '<cmd>ToggleTerm<cr>', { desc = "Toggle floating terminal" })
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+  vim.keymap.set('t', '<A-h>', [[<Cmd>wincmd h<CR>]], { desc = "Go to left window" })
+  vim.keymap.set('t', '<A-j>', [[<Cmd>wincmd j<CR>]], { desc = "Go to lower window" })
+  vim.keymap.set('t', '<A-k>', [[<Cmd>wincmd k<CR>]], { desc = "Go to upper window" })
+  vim.keymap.set('t', '<A-l>', [[<Cmd>wincmd l<CR>]], { desc = "Go to right window" })
 end
 
+-- ------------------------------------------------------------------
+--  OTHER PLUGINS
+-- ------------------------------------------------------------------
 local ok_comment, comment = pcall(require, 'Comment')
 if ok_comment then
   comment.setup()
