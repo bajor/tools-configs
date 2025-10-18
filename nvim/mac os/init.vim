@@ -99,8 +99,10 @@ nnoremap <Leader>l <C-w>l
 nnoremap <Leader>h <C-w>h
 " If you didn't intend to clobber 'r' (replace char), remove this:
 nnoremap r <C-r>
-nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
-xnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
+
+" Cmd+/ for commenting
+nnoremap <D-/> :lua require('Comment.api').toggle.linewise.current()<CR>
+xnoremap <D-/> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
 
 " ========================== AUTOCOMMANDS ==========================
 augroup YankHighlight
@@ -626,4 +628,3 @@ end
 set_diag_hl()
 vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hl })
 EOF
-
