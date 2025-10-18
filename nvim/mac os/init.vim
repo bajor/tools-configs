@@ -61,6 +61,10 @@ call plug#begin('~/.vim/plugged')
   " Scala specific tools
   Plug 'ckipp01/nvim-jvmopts'
   Plug 'ray-x/lsp_signature.nvim'
+
+  " Copilot
+  Plug 'github/copilot.vim'
+  Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 call plug#end()
 
 " ========================== THEMING ==========================
@@ -78,6 +82,9 @@ nnoremap <silent> <Leader>n :nohl<CR>
 
 " NvimTree toggle with Cmd+Shift+E
 nnoremap <silent> <D-S-e> :NvimTreeToggle<CR>
+
+" Copilot Chat with Cmd+Shift+I
+nnoremap <silent> <D-S-i> :lua require('CopilotChat').toggle()<CR>
 
 " Jump list navigation (go back/forward after gd)
 " Cmd+[ to go back, Cmd+] to go forward (macOS) - like browser navigation
@@ -275,110 +282,70 @@ metals_cfg.capabilities = require('cmp_nvim_lsp').default_capabilities()
 metals_cfg.on_attach = function(client, bufnr)
   on_attach(client, bufnr)
   
-  -- Metals specific setup
-  local ok_metals_dap = pcall(require('metals').setup_dap)
-  if not ok_metals_dap then
-    -- DAP not available, but that's okay
+  local metals_status_update_cmd = function()
+    local status = vim.api.nvim_eval("g:metals_status")
+    require('lualine').refresh()
+  end
+  
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'MetalsStatus',
+    callback = metals_status_update_cmd
+  })
+  
+  local o = { buffer = bufnr, silent = true }
+  vim.keymap.set('n', '<leader>ws', function() metals.hover_worksheet() end, o)
+  vim.keymap.set('n', '<leader>tt', function() metals.tvp() end, o)
+  vim.keymap.set('n', '<leader>tr', function() metals.reveal_in_tree() end, o)
+  vim.keymap.set('n', '<leader>mc', function() metals.commands() end, o)
+  
+  local dap_available, dap = pcall(require, 'dap')
+  if dap_available then
+    metals.setup_dap()
+    local dapui_available, dapui = pcall(require, 'dapui')
+    if dapui_available then
+      dapui.setup()
+      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+      dap.listeners.before.event_exited["dapui_config"]     = function() dapui.close() end
+      
+      vim.keymap.set('n', '<F5>',      function() dap.continue() end, o)
+      vim.keymap.set('n', '<F10>',     function() dap.step_over() end, o)
+      vim.keymap.set('n', '<F11>',     function() dap.step_into() end, o)
+      vim.keymap.set('n', '<S-F11>',   function() dap.step_out() end, o)
+      vim.keymap.set('n', '<leader>b', function() dap.toggle_breakpoint() end, o)
+    end
   end
 end
 
--- Metals auto-start configuration
+metals_cfg.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+    virtual_text = false,
+  }
+)
+
 local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "scala", "sbt", "java" },
+  pattern = { "scala", "sbt" },
   callback = function()
-    local buf = vim.api.nvim_get_current_buf()
-    local clients = vim.lsp.get_clients and vim.lsp.get_clients({ bufnr = buf }) or vim.lsp.get_active_clients({ bufnr = buf })
-    for _, client in pairs(clients) do
-      if client.name == 'metals' then
-        return
-      end
-    end
-    require('metals').initialize_or_attach(metals_cfg)
+    metals.initialize_or_attach(metals_cfg)
   end,
   group = nvim_metals_group,
 })
 
--- ------------------------------------------------------------------
---  DAP CONFIGURATION FOR SCALA
--- ------------------------------------------------------------------
-local ok_dap, dap = pcall(require, 'dap')
-if ok_dap then
-  dap.configurations.scala = {
-    {
-      type = "scala",
-      request = "launch",
-      name = "Run or Test Target",
-      metals = {
-        runType = "runOrTestFile",
-      },
-    },
-    {
-      type = "scala",
-      request = "launch",
-      name = "Test Target",
-      metals = {
-        runType = "testTarget",
-      },
-    },
-  }
-
-  local ok_dapui, dapui = pcall(require, 'dapui')
-  if ok_dapui then
-    dapui.setup({
-      layouts = {
-        {
-          elements = {
-            'scopes',
-            'breakpoints',
-            'stacks',
-            'watches',
-          },
-          size = 40,
-          position = 'left',
-        },
-        {
-          elements = {
-            'repl',
-            'console',
-          },
-          size = 10,
-          position = 'bottom',
-        },
-      },
-    })
-
-    -- Automatically open/close dapui
-    dap.listeners.after.event_initialized["dapui_config"] = function()
-      dapui.open()
-    end
-    dap.listeners.before.event_terminated["dapui_config"] = function()
-      dapui.close()
-    end
-    dap.listeners.before.event_exited["dapui_config"] = function()
-      dapui.close()
-    end
-  end
-end
+vim.g.metals_status = ""
+vim.api.nvim_create_autocmd("User", {
+  pattern = "MetalsStatus",
+  callback = function(ev)
+    vim.g.metals_status = ev.data or ""
+  end,
+})
 
 -- ------------------------------------------------------------------
---  HASKELL CONFIGURATION
+--  HASKELL LSP CONFIGURATION
 -- ------------------------------------------------------------------
 safe_setup_server('hls', {
-  cmd = { "haskell-language-server-wrapper", "--lsp" },
-  cmd_env = { PATH = vim.fn.expand("~/.ghcup/bin") .. ":" .. vim.env.PATH },
   on_attach = function(client, bufnr)
-    local active_clients = vim.lsp.get_clients and vim.lsp.get_clients({ bufnr = bufnr }) or vim.lsp.get_active_clients({ bufnr = bufnr })
-    local hls_count = 0
-    for _, c in pairs(active_clients) do
-      if c.name == 'hls' then
-        hls_count = hls_count + 1
-        if hls_count > 1 and c.id ~= client.id then
-          vim.schedule(function() c.stop() end)
-          return
-        end
-      end
-    end
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
@@ -522,6 +489,33 @@ telescope.setup({
 })
 
 telescope.load_extension('fzf')
+
+-- ------------------------------------------------------------------
+--  COPILOT CHAT CONFIGURATION
+-- ------------------------------------------------------------------
+local ok_copilot_chat, copilot_chat = pcall(require, 'CopilotChat')
+if ok_copilot_chat then
+  -- Set highlights BEFORE setup
+  local gruvbox_bg = '#282828'
+  local gruvbox_fg = '#ebdbb2'
+  local gruvbox_border = '#928374'
+  
+  vim.api.nvim_set_hl(0, 'CopilotChatNormal', { bg = gruvbox_bg, fg = gruvbox_fg })
+  vim.api.nvim_set_hl(0, 'CopilotChatBorder', { bg = gruvbox_bg, fg = gruvbox_border })
+  vim.api.nvim_set_hl(0, 'FloatBorder', { bg = gruvbox_bg, fg = gruvbox_border })
+  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = gruvbox_bg, fg = gruvbox_fg })
+  
+  copilot_chat.setup({
+    window = {
+      layout = 'float',
+      width = 0.8,
+      height = 0.6,
+      relative = 'editor',
+      row = 2,
+      border = 'rounded',
+    },
+  })
+end
 
 -- ------------------------------------------------------------------
 --  OTHER PLUGINS
