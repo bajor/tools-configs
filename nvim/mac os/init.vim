@@ -402,28 +402,31 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<Tab>']   = cmp.mapping(function(fb)
-      if cmp.visible() then
-        cmp.select_next_item()
+    ['<Tab>'] = cmp.mapping(function(fb)
+      -- Priority 1: Accept Copilot suggestion if available
+      local copilot_keys = vim.fn['copilot#Accept']()
+      if copilot_keys ~= '' then
+        vim.api.nvim_feedkeys(copilot_keys, 'i', true)
+      -- Priority 2: Expand/jump snippet
       elseif has_luasnip and luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
+      -- Priority 3: Default Tab behavior
       else
         fb()
       end
     end, { 'i','s' }),
     ['<S-Tab>'] = cmp.mapping(function(fb)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif has_luasnip and luasnip.jumpable(-1) then
+      if has_luasnip and luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else
         fb()
       end
     end, { 'i','s' }),
-    ['<CR>']    = cmp.mapping.confirm({ select = true }),
+    ['<CR>']    = cmp.mapping.confirm({ select = true }),  -- Enter accepts LSP suggestion
     ['<Up>']    = cmp.mapping.select_prev_item(),
     ['<Down>']  = cmp.mapping.select_next_item(),
   },
+
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip', max_item_count = 5 },
@@ -623,3 +626,4 @@ end
 set_diag_hl()
 vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hl })
 EOF
+
