@@ -85,6 +85,7 @@ nnoremap <silent> <D-S-e> :NvimTreeToggle<CR>
 
 " Copilot Chat with Cmd+Shift+I
 nnoremap <silent> <D-S-i> :lua require('CopilotChat').toggle()<CR>
+vnoremap <silent> <D-S-i> :lua require('CopilotChat').toggle()<CR>
 
 " Jump list navigation (go back/forward after gd)
 " Cmd+[ to go back, Cmd+] to go forward (macOS) - like browser navigation
