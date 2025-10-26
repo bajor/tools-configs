@@ -64,7 +64,7 @@ call plug#begin('~/.vim/plugged')
 
   " Copilot
   Plug 'github/copilot.vim'
-  Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+  Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 call plug#end()
 
 " ========================== THEMING ==========================
