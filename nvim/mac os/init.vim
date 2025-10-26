@@ -65,6 +65,7 @@ call plug#begin('~/.vim/plugged')
   " Copilot
   Plug 'github/copilot.vim'
   Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
+
 call plug#end()
 
 " ========================== THEMING ==========================
@@ -214,24 +215,9 @@ end
 -- ------------------------------------------------------------------
 --  MASON (INSTALL ONLY)
 -- ------------------------------------------------------------------
+require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = { 'clangd', 'hls' },
-  automatic_installation = false,
-})
-
-local setup_servers = {}
-
-local function safe_setup_server(server_name, config)
-  if setup_servers[server_name] then
-    return
-  end
-  setup_servers[server_name] = true
-  lspconfig[server_name].setup(config)
-end
-
-safe_setup_server('clangd', {
-  on_attach    = on_attach,
-  capabilities = capabilities,
 })
 
 -- ------------------------------------------------------------------
@@ -282,83 +268,91 @@ metals_cfg.capabilities = require('cmp_nvim_lsp').default_capabilities()
 metals_cfg.on_attach = function(client, bufnr)
   on_attach(client, bufnr)
   
-  local metals_status_update_cmd = function()
-    local status = vim.api.nvim_eval("g:metals_status")
-    require('lualine').refresh()
-  end
-  
-  vim.api.nvim_create_autocmd('User', {
-    pattern = 'MetalsStatus',
-    callback = metals_status_update_cmd
-  })
-  
-  local o = { buffer = bufnr, silent = true }
-  vim.keymap.set('n', '<leader>ws', function() metals.hover_worksheet() end, o)
-  vim.keymap.set('n', '<leader>tt', function() metals.tvp() end, o)
-  vim.keymap.set('n', '<leader>tr', function() metals.reveal_in_tree() end, o)
-  vim.keymap.set('n', '<leader>mc', function() metals.commands() end, o)
-  
-  local dap_available, dap = pcall(require, 'dap')
-  if dap_available then
-    metals.setup_dap()
-    local dapui_available, dapui = pcall(require, 'dapui')
-    if dapui_available then
-      dapui.setup()
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-      dap.listeners.before.event_exited["dapui_config"]     = function() dapui.close() end
-      
-      vim.keymap.set('n', '<F5>',      function() dap.continue() end, o)
-      vim.keymap.set('n', '<F10>',     function() dap.step_over() end, o)
-      vim.keymap.set('n', '<F11>',     function() dap.step_into() end, o)
-      vim.keymap.set('n', '<S-F11>',   function() dap.step_out() end, o)
-      vim.keymap.set('n', '<leader>b', function() dap.toggle_breakpoint() end, o)
-    end
+  -- Metals specific setup
+  local ok_metals_dap = pcall(require('metals').setup_dap)
+  if not ok_metals_dap then
+    -- DAP not available, but that's okay
   end
 end
 
-metals_cfg.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics,
-  {
-    virtual_text = false,
-  }
-)
-
+-- Metals auto-start configuration
 local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "scala", "sbt" },
+  pattern = { "scala", "sbt", "java" },
   callback = function()
-    metals.initialize_or_attach(metals_cfg)
+    local buf = vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.get_clients and vim.lsp.get_clients({ bufnr = buf }) or vim.lsp.get_active_clients({ bufnr = buf })
+    for _, client in pairs(clients) do
+      if client.name == 'metals' then
+        return
+      end
+    end
+    require('metals').initialize_or_attach(metals_cfg)
   end,
   group = nvim_metals_group,
 })
 
-vim.g.metals_status = ""
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MetalsStatus",
-  callback = function(ev)
-    vim.g.metals_status = ev.data or ""
-  end,
-})
-
 -- ------------------------------------------------------------------
---  HASKELL LSP CONFIGURATION
+--  DAP CONFIGURATION FOR SCALA
 -- ------------------------------------------------------------------
-safe_setup_server('hls', {
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-  end,
-  capabilities = capabilities,
-  root_dir     = lspconfig.util.root_pattern(
-                   'hie.yaml','stack.yaml','cabal.project',
-                   'package.yaml','*.cabal','.git'),
-  settings     = {
-    haskell = {
-      formattingProvider = 'ormolu',
-      checkParents       = 'on-save',
+local ok_dap, dap = pcall(require, 'dap')
+if ok_dap then
+  dap.configurations.scala = {
+    {
+      type = "scala",
+      request = "launch",
+      name = "Run or Test Target",
+      metals = {
+        runType = "runOrTestFile",
+      },
     },
-  },
-})
+    {
+      type = "scala",
+      request = "launch",
+      name = "Test Target",
+      metals = {
+        runType = "testTarget",
+      },
+    },
+  }
+
+  local ok_dapui, dapui = pcall(require, 'dapui')
+  if ok_dapui then
+    dapui.setup({
+      layouts = {
+        {
+          elements = {
+            'scopes',
+            'breakpoints',
+            'stacks',
+            'watches',
+          },
+          size = 40,
+          position = 'left',
+        },
+        {
+          elements = {
+            'repl',
+            'console',
+          },
+          size = 10,
+          position = 'bottom',
+        },
+      },
+    })
+
+    -- Automatically open/close dapui
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+  end
+end
 
 -- ------------------------------------------------------------------
 --  TREESITTER CONFIGURATION
@@ -389,6 +383,7 @@ require('nvim-treesitter.configs').setup({
 -- ------------------------------------------------------------------
 --  ENHANCED COMPLETION
 -- ------------------------------------------------------------------
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -625,3 +620,4 @@ end
 set_diag_hl()
 vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hl })
 EOF
+
