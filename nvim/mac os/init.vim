@@ -214,7 +214,6 @@ end
 -- ------------------------------------------------------------------
 --  MASON (INSTALL ONLY)
 -- ------------------------------------------------------------------
-require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = { 'clangd', 'hls' },
   automatic_installation = false,
@@ -626,4 +625,3 @@ end
 set_diag_hl()
 vim.api.nvim_create_autocmd('ColorScheme', { callback = set_diag_hl })
 EOF
-
