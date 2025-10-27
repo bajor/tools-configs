@@ -396,19 +396,17 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<Tab>'] = cmp.mapping(function(fb)
-      -- Priority 1: Accept Copilot suggestion if available
-      local copilot_keys = vim.fn['copilot#Accept']()
-      if copilot_keys ~= '' then
-        vim.api.nvim_feedkeys(copilot_keys, 'i', true)
-      -- Priority 2: Expand/jump snippet
+
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
       elseif has_luasnip and luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
-      -- Priority 3: Default Tab behavior
       else
-        fb()
+        fallback()
       end
     end, { 'i','s' }),
+
     ['<S-Tab>'] = cmp.mapping(function(fb)
       if has_luasnip and luasnip.jumpable(-1) then
         luasnip.jump(-1)
