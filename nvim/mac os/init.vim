@@ -125,6 +125,12 @@ augroup CFormat
   autocmd BufWritePre *.c,*.h lua vim.lsp.buf.format({ async = false })
 augroup END
 
+" Auto-save for Haskell and Markdown files
+augroup AutoSaveHaskellMarkdown
+  autocmd!
+  autocmd TextChanged,InsertLeave *.hs,*.md silent! write
+augroup END
+
 " ========================== LUA CONFIG ==========================
 lua << EOF
 -- ------------------------------------------------------------------
