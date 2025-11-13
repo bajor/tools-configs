@@ -39,7 +39,7 @@ tell application "System Events"
     tell process "Ghostty"
         set frontmost to true
         -- Open new window
-        keystroke "n" using command down
+        keystroke "t" using command down
         delay 1
         -- Type the command exactly as it works in terminal
         keystroke "current && code ."
@@ -64,7 +64,7 @@ tell application "System Events"
     tell process "Ghostty"
         set frontmost to true
         -- Create new window
-        keystroke "n" using command down
+        keystroke "t" using command down
         delay 1
         -- Run Cmd+Shift+F (likely fullscreen or some Ghostty feature)
         keystroke "f" using {command down, shift down}
@@ -193,7 +193,7 @@ on error
 end try
 EOF
 
-sleep 2
+sleep 5
 
 # Return to Desktop 1
 echo "Returning to Desktop 1..."
@@ -209,4 +209,3 @@ echo "  Desktop 3: Safari (Claude, ChatGPT, Gemini)"
 echo "  Desktop 4: Spotify"
 echo "  Desktop 5: Safari (empty tab)"
 echo "  Desktop 6: Docker Desktop"
-
