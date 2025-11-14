@@ -11,9 +11,15 @@
         "key": "cmd+f",
         "command": "workbench.action.terminal.toggleTerminal"
     },
+
+    // {
+    //     "key": "cmd+k",
+    //     "command": "commandId",
+    // }
+
     {
         "key": "cmd+h",
-        "command": "workbench.action.navigateBack"
+        "command": "workbench.action.navigateBack",
     },
     {
         "key": "cmd+l",
@@ -65,7 +71,7 @@
         "command": "workbench.action.quickchat.toggle"
     },
     {
-        "key": "cmd+g",
+        "key": "cmd+shift+g",
         "command": "workbench.view.scm",
         "when": "viewContainer.workbench.view.scm.enabled"
     },
