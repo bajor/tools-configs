@@ -36,6 +36,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'nvim-neotest/nvim-nio'
   Plug 'rcarriga/nvim-dap-ui'
 
+  " Elixir
+  Plug 'elixir-editors/vim-elixir'
+
   " Telescope
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
@@ -78,6 +81,7 @@ nnoremap <silent> <Leader>fb :Telescope buffers<CR>
 nnoremap <silent> <Leader>q  :cclose<CR>
 nnoremap <silent> <F2>       :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <Leader>n :nohl<CR>
+nnoremap <D-h> <C-o>
 
 " NvimTree toggle with Cmd+Shift+E
 nnoremap <silent> <D-S-e> :NvimTreeToggle<CR>
@@ -127,6 +131,12 @@ augroup END
 augroup GoFormat
   autocmd!
   autocmd BufWritePre *.go lua vim.lsp.buf.format({ async = false })
+augroup END
+
+" format Elixir on save
+augroup ElixirFormat
+  autocmd!
+  autocmd BufWritePre *.ex,*.exs lua vim.lsp.buf.format({ async = false })
 augroup END
 
 augroup AutoSaveAll
@@ -249,7 +259,7 @@ require('mason').setup()
 -- Ensure servers are installed via Mason
 local mason_registry_ok, mason_registry = pcall(require, 'mason-registry')
 if mason_registry_ok then
-  local ensure_installed = { 'clangd', 'haskell-language-server', 'gopls' }
+  local ensure_installed = { 'clangd', 'haskell-language-server', 'gopls', 'elixir-ls', 'pyright' }
   for _, tool in ipairs(ensure_installed) do
     local pkg = mason_registry.get_package(tool)
     if not pkg:is_installed() then
@@ -324,6 +334,48 @@ vim.lsp.config('gopls', {
 })
 
 vim.lsp.enable('gopls')
+
+-- ------------------------------------------------------------------
+--  ELIXIR-LS CONFIGURATION
+-- ------------------------------------------------------------------
+vim.lsp.config('elixir-ls', {
+  cmd = { 'elixir-ls' },
+  filetypes = { 'elixir', 'eelixir', 'heex', 'surface' },
+  root_markers = { 'mix.exs', '.git' },
+  capabilities = capabilities,
+  settings = {
+    elixirLS = {
+      dialyzerEnabled = true,
+      fetchDeps = false,
+      enableTestLenses = true,
+      suggestSpecs = true,
+    },
+  },
+})
+
+vim.lsp.enable('elixir-ls')
+
+-- ------------------------------------------------------------------
+--  PYRIGHT (PYTHON) CONFIGURATION
+-- ------------------------------------------------------------------
+vim.lsp.config('pyright', {
+  cmd = { 'pyright-langserver', '--stdio' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', '.git' },
+  capabilities = capabilities,
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = 'workspace',
+        typeCheckingMode = 'basic',
+      },
+    },
+  },
+})
+
+vim.lsp.enable('pyright')
 
 -- ------------------------------------------------------------------
 --  SCALA METALS CONFIGURATION
@@ -460,8 +512,8 @@ end
 --  TREESITTER CONFIGURATION
 -- ------------------------------------------------------------------
 require('nvim-treesitter.configs').setup({
-  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash', 'scala', 'java', 'haskell', 'go', 'gomod', 'gosum' },
-  highlight = { 
+  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash', 'scala', 'java', 'haskell', 'go', 'gomod', 'gosum', 'elixir', 'heex', 'eex', 'python' },
+  highlight = {
     enable = true,
     additional_vim_regex_highlighting = { 'scala' }
   },
@@ -689,6 +741,24 @@ if ok_devicons then
         color = "#00ADD8",
         cterm_color = "74",
         name = "Go"
+      },
+      ex = {
+        icon = "",
+        color = "#a074c4",
+        cterm_color = "140",
+        name = "Elixir"
+      },
+      exs = {
+        icon = "",
+        color = "#a074c4",
+        cterm_color = "140",
+        name = "ElixirScript"
+      },
+      heex = {
+        icon = "",
+        color = "#a074c4",
+        cterm_color = "140",
+        name = "HEEx"
       }
     }
   })
