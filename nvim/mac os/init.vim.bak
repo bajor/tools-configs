@@ -139,6 +139,18 @@ augroup ElixirFormat
   autocmd BufWritePre *.ex,*.exs lua vim.lsp.buf.format({ async = false })
 augroup END
 
+" format Python and organize imports on save
+augroup PythonFormat
+  autocmd!
+  autocmd BufWritePre *.py lua require('config.python_format').format()
+augroup END
+
+" format OCaml on save
+augroup OCamlFormat
+  autocmd!
+  autocmd BufWritePre *.ml,*.mli lua vim.lsp.buf.format({ async = false })
+augroup END
+
 augroup AutoSaveAll
   autocmd!
   autocmd TextChanged,TextChangedI,InsertLeave *
@@ -201,6 +213,14 @@ if ok_nvim_tree then
     view = {
       side = "right",
     },
+    git = {
+      enable = true,
+      ignore = false,  -- Show gitignored files (like logs/)
+    },
+    filters = {
+      dotfiles = false,
+      git_ignored = false,  -- Show gitignored files
+    },
   })
 end
 
@@ -259,7 +279,7 @@ require('mason').setup()
 -- Ensure servers are installed via Mason
 local mason_registry_ok, mason_registry = pcall(require, 'mason-registry')
 if mason_registry_ok then
-  local ensure_installed = { 'clangd', 'haskell-language-server', 'gopls', 'elixir-ls', 'pyright' }
+  local ensure_installed = { 'clangd', 'haskell-language-server', 'gopls', 'elixir-ls', 'pyright', 'ruff', 'ocaml-lsp' }
   for _, tool in ipairs(ensure_installed) do
     local pkg = mason_registry.get_package(tool)
     if not pkg:is_installed() then
@@ -271,19 +291,19 @@ end
 -- ------------------------------------------------------------------
 --  CLANGD CONFIGURATION
 -- ------------------------------------------------------------------
-vim.lsp.config('clangd', {
+vim.lsp.config.clangd = {
   cmd = { 'clangd' },
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
   root_markers = { '.clangd', 'compile_commands.json', 'compile_flags.txt', '.git' },
   capabilities = capabilities,
-})
+}
 
 vim.lsp.enable('clangd')
 
 -- ------------------------------------------------------------------
 --  HLS (HASKELL) CONFIGURATION
 -- ------------------------------------------------------------------
-vim.lsp.config('hls', {
+vim.lsp.config.hls = {
   cmd = { 'haskell-language-server-wrapper', '--lsp' },
   filetypes = { 'haskell', 'lhaskell' },
   root_markers = { 'hie.yaml', 'stack.yaml', 'cabal.project', '*.cabal', 'package.yaml', '.git' },
@@ -294,14 +314,14 @@ vim.lsp.config('hls', {
       checkProject = true,
     },
   },
-})
+}
 
 vim.lsp.enable('hls')
 
 -- ------------------------------------------------------------------
 --  GOPLS CONFIGURATION
 -- ------------------------------------------------------------------
-vim.lsp.config('gopls', {
+vim.lsp.config.gopls = {
   cmd = { 'gopls' },
   filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
   root_markers = { 'go.work', 'go.mod', '.git' },
@@ -331,14 +351,14 @@ vim.lsp.config('gopls', {
       },
     },
   },
-})
+}
 
 vim.lsp.enable('gopls')
 
 -- ------------------------------------------------------------------
 --  ELIXIR-LS CONFIGURATION
 -- ------------------------------------------------------------------
-vim.lsp.config('elixir-ls', {
+vim.lsp.config.elixirls = {
   cmd = { 'elixir-ls' },
   filetypes = { 'elixir', 'eelixir', 'heex', 'surface' },
   root_markers = { 'mix.exs', '.git' },
@@ -351,14 +371,14 @@ vim.lsp.config('elixir-ls', {
       suggestSpecs = true,
     },
   },
-})
+}
 
-vim.lsp.enable('elixir-ls')
+vim.lsp.enable('elixirls')
 
 -- ------------------------------------------------------------------
 --  PYRIGHT (PYTHON) CONFIGURATION
 -- ------------------------------------------------------------------
-vim.lsp.config('pyright', {
+vim.lsp.config.pyright = {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
   root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', '.git' },
@@ -373,9 +393,50 @@ vim.lsp.config('pyright', {
       },
     },
   },
-})
+}
 
 vim.lsp.enable('pyright')
+
+-- ------------------------------------------------------------------
+--  RUFF (PYTHON LINTER/FORMATTER) CONFIGURATION
+-- ------------------------------------------------------------------
+vim.lsp.config.ruff = {
+  cmd = { 'ruff', 'server' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml', 'setup.py', '.git' },
+  capabilities = capabilities,
+  settings = {
+    organizeImports = true,
+    fixAll = true,
+  },
+}
+
+vim.lsp.enable('ruff')
+
+-- ------------------------------------------------------------------
+--  OCAML-LSP CONFIGURATION
+-- ------------------------------------------------------------------
+vim.lsp.config.ocamllsp = {
+  cmd = { 'ocamllsp' },
+  filetypes = { 'ocaml', 'ocaml.menhir', 'ocaml.interface', 'ocaml.ocamllex', 'reason', 'dune' },
+  root_markers = { 'dune-project', 'dune-workspace', '.opam', 'esy.json', 'package.json', '.git' },
+  capabilities = capabilities,
+  settings = {
+    codelens = { enable = true },
+    inlayHints = { enable = true },
+  },
+  get_language_id = function(_, filetype)
+    local map = {
+      ['ocaml.interface'] = 'ocaml.interface',
+      ['ocaml.ocamllex'] = 'ocaml.ocamllex',
+      ['ocaml.menhir'] = 'ocaml.menhir',
+      ['reason'] = 'reason',
+    }
+    return map[filetype] or 'ocaml'
+  end,
+}
+
+vim.lsp.enable('ocamllsp')
 
 -- ------------------------------------------------------------------
 --  SCALA METALS CONFIGURATION
@@ -512,7 +573,7 @@ end
 --  TREESITTER CONFIGURATION
 -- ------------------------------------------------------------------
 require('nvim-treesitter.configs').setup({
-  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash', 'scala', 'java', 'haskell', 'go', 'gomod', 'gosum', 'elixir', 'heex', 'eex', 'python' },
+  ensure_installed = { 'c', 'lua', 'vimdoc', 'bash', 'scala', 'java', 'haskell', 'go', 'gomod', 'gosum', 'elixir', 'heex', 'eex', 'python', 'ocaml', 'ocaml_interface' },
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = { 'scala' }
