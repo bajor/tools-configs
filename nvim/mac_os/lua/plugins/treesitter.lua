@@ -1,33 +1,18 @@
--- Treesitter configuration
-require('nvim-treesitter.configs').setup({
-  ensure_installed = {
-    'c', 'lua', 'vimdoc', 'bash',
-    'scala', 'java', 'haskell',
-    'go', 'gomod', 'gosum',
-    'elixir', 'heex', 'eex',
-    'python',
-    'ocaml', 'ocaml_interface',
-  },
+-- Treesitter configuration (new API - nvim-treesitter v1.0+)
 
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = { 'scala' },
-  },
+-- Install parsers
+require('nvim-treesitter').install({
+  'c', 'lua', 'vimdoc', 'bash',
+  'scala', 'java', 'haskell',
+  'go', 'gomod', 'gosum',
+  'elixir', 'heex',
+  'python',
+  'ocaml', 'ocaml_interface',
+})
 
-  indent = { enable = true },
-
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-      },
-    },
-  },
+-- Enable treesitter highlighting for all supported filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
 })

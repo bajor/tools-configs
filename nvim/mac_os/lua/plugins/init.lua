@@ -48,7 +48,6 @@ Plug('Maan2003/lsp_lines.nvim')
 
 -- Treesitter
 Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
-Plug('nvim-treesitter/nvim-treesitter-textobjects')
 
 -- Scala tools
 Plug('ckipp01/nvim-jvmopts')
