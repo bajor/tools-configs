@@ -4,7 +4,7 @@ local opts = { silent = true }
 
 -- Telescope
 map('n', '<Leader>ff', ':Telescope find_files<CR>', opts)
-map('n', '<D-p>', ':Telescope live_grep<CR>', opts)
+map('n', '<D-p>', function() require('plugins.telescope').multi_grep() end, opts)
 map('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
 
 -- General
