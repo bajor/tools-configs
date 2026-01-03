@@ -18,3 +18,4 @@
           ├── telescope.lua       # Telescope config
           ├── ui.lua              # Theme, lualine, devicons, copilot chat
           └── tools.lua           # Toggleterm, gitsigns, comment
+
