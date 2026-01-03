@@ -14,7 +14,7 @@ lua/
   core/
     options.lua             # vim.opt settings, leader = space
     keymaps.lua             # Key mappings (Telescope, NvimTree, etc.)
-    autocmds.lua            # Format-on-save, auto-save, yank highlight
+    autocmds.lua            # Format-on-save, yank highlight
   config/
     python_format.lua       # Python-specific: organize imports then format
   plugins/
@@ -63,7 +63,3 @@ LSP servers (auto-installed via Mason):
 - `<F2>` - Rename symbol
 - `<Cmd-/>` - Toggle comment
 - `jk` - Exit insert mode
-
-## Auto-save Behavior
-
-Files auto-save on `TextChanged`, `TextChangedI`, and `InsertLeave` events. This is intentional.

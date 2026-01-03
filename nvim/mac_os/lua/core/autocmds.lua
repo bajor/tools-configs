@@ -40,13 +40,3 @@ autocmd('BufWritePre', {
   end,
 })
 
--- Auto-save on text change
-augroup('AutoSaveAll', { clear = true })
-autocmd({ 'TextChanged', 'TextChangedI', 'InsertLeave' }, {
-  group = 'AutoSaveAll',
-  callback = function()
-    if vim.bo.modifiable and vim.fn.bufname('%') ~= '' then
-      vim.cmd('silent! write')
-    end
-  end,
-})
