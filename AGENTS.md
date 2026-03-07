@@ -14,6 +14,7 @@
 10. **Commit frequently** — Many small commits over few large ones
 11. **ALWAYS create a new branch from main before starting new work** — Every new task gets a fresh branch. No working on main directly. No reusing old branches.
 12. Code Reuse Rule. Don't duplicate existing code "to be safe" and refactor later. Before writing anything new, find the existing implementation first. Reuse it directly and extend only if needed. If a new use case overlaps with existing logic, generalize the existing code rather than duplicating it with slight variations. The "make it work, make it right" two-pass pattern is banned — get it right the first time by reading what's already there.
+13. Avoid magic values — name every constant, threshold, or hardcoded literal with a descriptive identifier that makes its purpose self-evident.
 
 **DO NOT OVERCOMPLICATE. Ever.**
 **ALWAYS COMMIT AFTER FINISHING A TASK.**
@@ -184,25 +185,23 @@ Type checks and linters run on every verification cycle, not as an afterthought.
 ```makefile
 # make test should include everything
 test:
-        npm run typecheck
-        npm run lint
-        npm run test:unit
-        npm run test:e2e
+	npm run typecheck
+	npm run lint
+	npm run test:unit
+	npm run test:e2e
 ```
 
 ```makefile
 test:
-        mypy src/
-        ruff check src/
-        pytest tests/
+	mypy src/
+	ruff check src/
+	pytest tests/
 ```
 
 ---
 
 ## 6. Architecture Documentation
-
 **When architecture changes, create `ARCHITECTURE_DIFF.md` before opening a PR.**
-
 This file documents what changed structurally and why. It exists for review purposes only.
 
 **Rules:**
@@ -219,13 +218,30 @@ This file documents what changed structurally and why. It exists for review purp
 - New dependencies that affect system design
 - Changes to data flow or control flow patterns
 
-**Template:**
+**Mermaid diagrams are mandatory wherever they add clarity.** Every `ARCHITECTURE_DIFF.md` must include at least one diagram. Use the appropriate diagram type for the change:
+- **Component/module additions or removals:** Use a component diagram or flowchart showing where the new piece fits in the existing system
+- **Data flow or control flow changes:** Use a sequence diagram or flowchart showing the before/after flow
+- **Database schema changes:** Use an ER diagram showing affected entities and relationships
+- **API contract changes:** Use a sequence diagram showing the updated request/response interactions
+- **Directory structure changes:** Use a flowchart or graph representing the new layout
 
-```markdown
+If a change touches multiple categories above, include multiple diagrams — one per concern. Do not merge unrelated changes into a single diagram for brevity.
+
+**Template:**
+````markdown
 # Architecture Diff
 
 ## Summary
 One-sentence description of what changed.
+
+## Diagram(s)
+Include Mermaid diagram(s) here illustrating the change. Pick the diagram type that best fits (flowchart, sequence, ER, component, etc.). Show before/after when the change modifies existing structure.
+```mermaid
+%% example: component addition
+graph TD
+    A[Existing Service] --> B[New Module]
+    B --> C[Database]
+```
 
 ## Changes
 
@@ -237,16 +253,7 @@ One-sentence description of what changed.
 
 ### Removed
 - [component/module]: Why it was removed
-
-## Rationale
-Why this approach was chosen over alternatives.
-
-## Trade-offs
-What we gained and what we gave up.
-
-## Migration Notes (if applicable)
-Steps needed to transition from old to new.
-```
+````
 
 ---
 
@@ -327,26 +334,6 @@ git checkout -b <descriptive-branch-name>
 - Never commit directly to main
 
 **⚠️ MANDATORY: After completing ANY task, you MUST commit. The commit body MUST contain the EXACT user prompt(s) that led to the changes. This is non-negotiable. ⚠️**
-
-**Prompt-based commit messages:**
-
-After completing a task, commit using the exact user prompt(s) that led to the changes. This preserves the history of what was asked, not just what was done.
-
-- The commit summary line is a short conventional-commit description of the change
-- The commit body contains the **exact, unedited prompt(s)** that triggered the work, each prefixed with `> ` (blockquote style)
-- If multiple prompts contributed to the same logical change, include all of them in order
-- Never paraphrase, summarize, or clean up the prompts — preserve them verbatim, typos and all
-- Microcommits are fine and encouraged — one prompt = one commit when possible
-
-```bash
-# Single prompt
-git commit -m "feat: add retry logic to API client" -m "> add retry with exponential backoff to the api client, 3 attempts max"
-
-# Multiple prompts that built on each other for one logical change
-git commit -m "fix: handle null user in session middleware" -m "> why does the app crash when session expires" -m "> ok fix it, add a null check and redirect to login"
-```
-
-**This rule overrides conventional commit message practices.** The summary line is still conventional-commit style for git log readability, but the body is always the raw prompt(s). No exceptions.
 
 **Commit immediately after:**
 - Adding a new function or method
@@ -451,7 +438,3 @@ Before marking any task complete:
 - [ ] Review issues fixed and pushed to branch
 - [ ] Branch updated with latest main/master (if on feature branch)
 - [ ] `ARCHITECTURE_DIFF.md` removed before merge (if created)
-m@MacBook-Air-m .claude % jk
-zsh: command not found: jk
-m@MacBook-Air-m .claude %
-m@MacBook-Air-m .claude %
