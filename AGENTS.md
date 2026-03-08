@@ -15,10 +15,12 @@
 11. **ALWAYS create a new branch from main before starting new work** — Every new task gets a fresh branch. No working on main directly. No reusing old branches.
 12. Code Reuse Rule. Don't duplicate existing code "to be safe" and refactor later. Before writing anything new, find the existing implementation first. Reuse it directly and extend only if needed. If a new use case overlaps with existing logic, generalize the existing code rather than duplicating it with slight variations. The "make it work, make it right" two-pass pattern is banned — get it right the first time by reading what's already there.
 13. Avoid magic values — name every constant, threshold, or hardcoded literal with a descriptive identifier that makes its purpose self-evident.
+14. **Always push and create PRs** — After completing work on a branch, push it to origin and create a PR. Never leave branches local-only.
 
 **DO NOT OVERCOMPLICATE. Ever.**
 **ALWAYS COMMIT AFTER FINISHING A TASK.**
 **ALWAYS CREATE A NEW BRANCH FROM MAIN IF NOT ON OTHER BRANCH ALREADY. DO NOT PUSH DIRECTLY TO MAIN.**
+**ALWAYS PUSH THE BRANCH AND CREATE A PR AFTER COMPLETING WORK.**
 
 ---
 
@@ -48,14 +50,28 @@ Break large work into comprehensible PRs. One massive PR is a code review nightm
 **Workflow for large tasks:**
 1. Identify full task scope
 2. Break into logical chunks (feature slices, not architectural layers)
-3. For each chunk:
+3. **Number the PRs in order of merge dependency** — use `[1/N]`, `[2/N]`, etc. in PR titles so reviewers know which PR to merge first
+4. For each chunk:
    - Create new branch from main/master
    - Implement chunk completely
    - Ensure `make test` passes
    - Create PR with ARCHITECTURE_DIFF.md if needed
+   - **Push the branch and create the PR immediately**
+   - **PR title format: `[X/N] <description>` where X is the merge order and N is total PRs**
    - Get review and merge
    - Delete branch
-4. Move to next chunk from updated main/master
+5. Move to next chunk from updated main/master
+
+**PR title examples for multi-PR tasks:**
+```
+[1/5] Add user database schema and models
+[2/5] Implement auth service with JWT
+[3/5] Add login/logout API endpoints
+[4/5] Add frontend login UI
+[5/5] Add password reset flow
+```
+
+The numbers indicate **merge order**, not just sequence. `[1/5]` must be merged before `[2/5]`, and so on. If two PRs are independent and can be merged in any order, give them the same number: `[2a/5]` and `[2b/5]`.
 
 **What counts as "comprehensible PR":**
 - Reviewable in ~15 minutes
@@ -86,13 +102,13 @@ PR: "Add user authentication system"
 (2000+ lines changed)
 ```
 
-**GOOD (split into focused PRs):**
+**GOOD (split into focused PRs with merge order):**
 ```
-PR 1: "Add user database schema and models" (150 lines)
-PR 2: "Implement auth service with JWT" (200 lines)
-PR 3: "Add login/logout API endpoints" (180 lines)
-PR 4: "Add frontend login UI" (220 lines)
-PR 5: "Add password reset flow" (190 lines)
+PR 1: "[1/5] Add user database schema and models" (150 lines)
+PR 2: "[2/5] Implement auth service with JWT" (200 lines)
+PR 3: "[3/5] Add login/logout API endpoints" (180 lines)
+PR 4: "[4/5] Add frontend login UI" (220 lines)
+PR 5: "[5/5] Add password reset flow" (190 lines)
 ```
 
 **Benefits:**
@@ -101,6 +117,7 @@ PR 5: "Add password reset flow" (190 lines)
 - Easy to revert specific changes
 - Faster review cycles
 - Less merge conflict pain
+- **Merge order is explicit — no guessing which PR to land first**
 
 ---
 
@@ -333,7 +350,25 @@ git checkout -b <descriptive-branch-name>
 - Never reuse a branch for unrelated work
 - Never commit directly to main
 
-**⚠️ MANDATORY: After completing ANY task, you MUST commit. The commit body MUST contain the EXACT user prompt(s) that led to the changes. This is non-negotiable. ⚠️**
+**⚠️ MANDATORY: After completing ANY task, you MUST: (1) commit, (2) push the branch, and (3) create a PR. The commit body MUST contain the EXACT user prompt(s) that led to the changes. This is non-negotiable. ⚠️**
+
+**Push and PR workflow — do this after every completed task:**
+```bash
+# 1. Ensure all tests pass
+make test
+
+# 2. Push the branch to origin
+git push origin <branch-name>
+
+# 3. Create the PR (using gh CLI)
+# For standalone tasks:
+gh pr create --title "<descriptive title>" --body "<PR description>"
+
+# For multi-PR tasks, include merge order in title:
+gh pr create --title "[X/N] <descriptive title>" --body "<PR description>"
+```
+
+**If `gh` CLI is not available**, instruct the user to create the PR manually and provide the branch name and suggested title/body.
 
 **Commit immediately after:**
 - Adding a new function or method
@@ -374,6 +409,11 @@ git commit -m "Extract date formatting to DateUtils"
 4. Re-run `make test` after resolving conflicts
 5. Push all commits
 
+**After pushing:**
+1. Create a PR immediately — do not leave pushed branches without PRs
+2. For multi-PR tasks, include `[X/N]` merge order in the PR title
+3. Add a clear PR description explaining what changed and why
+
 **Commit message format:**
 
 ```bash
@@ -395,6 +435,7 @@ git commit -m "Fix race condition in cache invalidation" -m "The previous implem
 - You're afraid to commit because "it's not done yet" (commit with WIP prefix if needed)
 - You lose work because of uncommitted changes
 - **You finished a task and did NOT commit with the user's exact prompt(s) in the body — this is a violation of the core principles**
+- **You finished a task and did NOT push the branch and create a PR — this is a violation of the core principles**
 
 ---
 
@@ -423,6 +464,7 @@ Before marking any task complete:
 - [ ] **New branch created from main before starting work — NOT working on main directly**
 - [ ] Plan mode used (if medium/large task)
 - [ ] Large task split into focused PRs (<500 lines each)
+- [ ] **Multi-PR tasks use `[X/N]` merge order in PR titles**
 - [ ] Type-level design prevents invalid states
 - [ ] Unit tests written (happy path + edge cases)
 - [ ] E2E tests written (happy path + edge cases)
@@ -434,6 +476,8 @@ Before marking any task complete:
 - [ ] `ARCHITECTURE_DIFF.md` created (if architecture changed)
 - [ ] Commits are small and frequent (not batched)
 - [ ] **Every commit body contains the exact user prompt(s) that triggered the work — VERBATIM**
+- [ ] **Branch pushed to origin**
+- [ ] **PR created with clear title and description**
 - [ ] Code review completed in fresh session with /review
 - [ ] Review issues fixed and pushed to branch
 - [ ] Branch updated with latest main/master (if on feature branch)
