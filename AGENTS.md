@@ -13,7 +13,7 @@
 9. **Split large work** — Multiple focused PRs over one massive PR
 10. **Commit frequently** — Many small commits over few large ones
 11. **ALWAYS create a new branch from main before starting new work** — Every new task gets a fresh branch. No working on main directly. No reusing old branches.
-12. Code Reuse Rule. Don't duplicate existing code "to be safe" and refactor later. Before writing anything new, find the existing implementation first. Reuse it directly and extend only if needed. If a new use case overlaps with existing logic, generalize the existing code rather than duplicating it with slight variations. The "make it work, make it right" two-pass pattern is banned — get it right the first time by reading what's already there.
+12. **DRY — Don't Repeat Yourself.** Don't duplicate existing code "to be safe" and refactor later. Before writing anything new, find the existing implementation first. Reuse it directly and extend only if needed. If a new use case overlaps with existing logic, generalize the existing code rather than duplicating it with slight variations. The "make it work, make it right" two-pass pattern is banned — get it right the first time by reading what's already there. Extend rather than glue new code alongside old code. See [Section 11](#11-dry--dont-repeat-yourself) for full rules.
 13. Avoid magic values — name every constant, threshold, or hardcoded literal with a descriptive identifier that makes its purpose self-evident.
 14. **Always push and create PRs** — After completing work on a branch, push it to origin and create a PR. Never leave branches local-only.
 
@@ -457,6 +457,107 @@ Review all non-trivial PRs in a fresh session. Apply the same standards to AI-ge
 
 ---
 
+## 11. DRY — Don't Repeat Yourself
+
+Every piece of knowledge must have a single, authoritative representation in the codebase. Duplication is how bugs breed — fix one copy, miss the other, ship a regression.
+
+**DO NOT DUPLICATE. Extend what exists.**
+
+**Rules:**
+- **Read before writing.** Before implementing anything, search the codebase for existing logic that overlaps. Use grep, IDE search, AST search — whatever it takes. If you didn't search, you don't know it doesn't exist.
+- **Reuse directly, extend if needed.** When existing code covers 80% of your use case, generalize it to cover 100%. Do not copy it into a new file and tweak.
+- **Extend rather than glue.** If a module needs new behavior, add it to the module. Do not write a wrapper, adapter, or "helper" that calls into the original and patches on differences. The original should grow to handle the new case.
+- **One fact, one place.** Configuration values, business rules, validation logic, type definitions, error messages — each lives in exactly one place. Everything else references that place.
+- **No "temporary" duplication.** The "I'll duplicate now and refactor later" pattern is banned. Later never comes. Get it right the first time.
+- **Shared logic goes in shared modules.** If two components need the same logic, extract it once into a shared location. Do not let both components maintain their own copy.
+
+**Workflow before writing new code:**
+1. Identify what the new code needs to do
+2. Search the codebase for existing implementations of the same or similar logic
+3. If found: reuse directly, or generalize the existing code to cover the new case
+4. If not found: implement it once, in the right place, designed for reuse from the start
+5. If you find duplicates during any work: consolidate them immediately — don't leave them for a follow-up
+
+**Examples:**
+
+**BAD — duplicated validation:**
+```python
+# user_api.py
+def create_user(email: str):
+    if not re.match(r'^[\w.+-]+@[\w-]+\.[\w.]+$', email):
+        raise ValueError("Invalid email")
+    ...
+
+# invite_api.py
+def send_invite(email: str):
+    if not re.match(r'^[\w.+-]+@[\w-]+\.[\w.]+$', email):
+        raise ValueError("Invalid email")
+    ...
+```
+
+**GOOD — single source of truth:**
+```python
+# validation.py
+def validate_email(email: str) -> Email:
+    if not re.match(r'^[\w.+-]+@[\w-]+\.[\w.]+$', email):
+        raise ValueError("Invalid email")
+    return Email(email)
+
+# user_api.py
+def create_user(email: str):
+    validated = validate_email(email)
+    ...
+
+# invite_api.py
+def send_invite(email: str):
+    validated = validate_email(email)
+    ...
+```
+
+**BAD — gluing a wrapper around existing code:**
+```python
+# existing: notifications.py
+def send_notification(user_id: str, message: str, channel: str): ...
+
+# new file: urgent_notifications.py  ← DON'T DO THIS
+def send_urgent_notification(user_id: str, message: str):
+    """Wrapper that adds priority flag."""
+    enriched = f"[URGENT] {message}"
+    send_notification(user_id, enriched, channel="sms")
+    send_notification(user_id, enriched, channel="email")
+```
+
+**GOOD — extend the existing module:**
+```python
+# notifications.py (extended)
+def send_notification(
+    user_id: str,
+    message: str,
+    channel: str,
+    priority: Priority = Priority.NORMAL,
+): ...
+
+def send_urgent_notification(user_id: str, message: str):
+    """Urgent notifications go to both SMS and email."""
+    for ch in ("sms", "email"):
+        send_notification(user_id, message, channel=ch, priority=Priority.URGENT)
+```
+
+**Red flags — stop and deduplicate if you see:**
+- Copy-pasting a function or block and changing a few lines
+- Two modules with near-identical logic for "slightly different" use cases
+- The same constant, regex, or config value defined in multiple places
+- A "utils" or "helpers" file that shadows logic already in a domain module
+- A new file whose name is suspiciously close to an existing file (`user_service.py` and `user_service_v2.py`)
+- Wrapper functions that add trivial behavior around existing functions instead of extending the original
+- Test helpers that reimplement logic already available in the production code
+
+**When you find existing duplication during other work:**
+- If the duplication is in files you're already touching: fix it now, in the same PR
+- If the duplication is elsewhere: create a separate PR to consolidate, file it immediately, do not ignore it
+
+---
+
 ## Summary Checklist
 
 Before marking any task complete:
@@ -473,6 +574,8 @@ Before marking any task complete:
 - [ ] Code is simple and readable
 - [ ] Dead code removed, code simplified
 - [ ] No unnecessary dependencies added
+- [ ] **No duplicated logic — reused and extended existing code (DRY)**
+- [ ] **Searched codebase for existing implementations before writing new code**
 - [ ] `ARCHITECTURE_DIFF.md` created (if architecture changed)
 - [ ] Commits are small and frequent (not batched)
 - [ ] **Every commit body contains the exact user prompt(s) that triggered the work — VERBATIM**
