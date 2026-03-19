@@ -55,7 +55,7 @@ Break large work into comprehensible PRs. One massive PR is a code review nightm
    - Create new branch from main/master
    - Implement chunk completely
    - Ensure `make test` passes
-   - Create PR with ARCHITECTURE_DIFF.md if needed
+   - Create PR with ARCHITECTURE_DIFF.md
    - **Push the branch and create the PR immediately**
    - **PR title format: `[X/N] <description>` where X is the merge order and N is total PRs**
    - Get review and merge
@@ -218,22 +218,12 @@ test:
 ---
 
 ## 6. Architecture Documentation
-**When architecture changes, create `ARCHITECTURE_DIFF.md` before opening a PR.**
+**Create `ARCHITECTURE_DIFF.md` before opening a PR.**
 This file documents what changed structurally and why. It exists for review purposes only.
 
 **Rules:**
 - Create `ARCHITECTURE_DIFF.md` in the repository root before creating a PR
 - If `ARCHITECTURE_DIFF.md` already exists from a previous change, delete it and replace with yours
-- Delete `ARCHITECTURE_DIFF.md` before merging the PR (it must not be merged into main)
-
-**What counts as an architecture change:**
-- New modules or packages
-- Changed directory structure
-- New external services or integrations
-- Database schema changes
-- API contract changes
-- New dependencies that affect system design
-- Changes to data flow or control flow patterns
 
 **Mermaid diagrams are mandatory wherever they add clarity.** Every `ARCHITECTURE_DIFF.md` must include at least one diagram. Use the appropriate diagram type for the change:
 - **Component/module additions or removals:** Use a component diagram or flowchart showing where the new piece fits in the existing system
