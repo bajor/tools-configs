@@ -1,3 +1,14 @@
+## Mermaid
+  ┌───────────┬──────────────────────────────────────────────────┐
+  │    Key    │                      Action                      │
+  ├───────────┼──────────────────────────────────────────────────┤
+  │ <Space>dd │ Show diagram at cursor in a new tab (hover view) │
+  ├───────────┼──────────────────────────────────────────────────┤
+  │ <Space>dr │ Render all diagrams in current buffer            │
+  ├───────────┼──────────────────────────────────────────────────┤
+  │ <Space>dc │ Clear rendered diagrams from current buffer      │
+  └───────────┴──────────────────────────────────────────────────┘
+
 ## Close quick list fix `<Leader>q`
 
 ## Telescpe
