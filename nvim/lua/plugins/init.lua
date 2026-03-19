@@ -57,6 +57,13 @@ Plug('ray-x/lsp_signature.nvim')
 Plug('github/copilot.vim')
 Plug('CopilotC-Nvim/CopilotChat.nvim', { branch = 'main' })
 
+-- Diagrams (inline rendering of mermaid, plantuml, d2, gnuplot)
+Plug('3rd/image.nvim')
+Plug('3rd/diagram.nvim')
+
+-- PR Review
+Plug('~/.vim/plugged/nvim-raccoon')
+
 vim.call('plug#end')
 
 -- Load plugin configs after plug#end
@@ -66,4 +73,5 @@ require('plugins.treesitter')
 require('plugins.telescope')
 require('plugins.ui')
 require('plugins.tools')
-require('plugins.pr-review')
+require('plugins.diagram')
+require('plugins.raccoon')
