@@ -3,19 +3,19 @@
 ## Core Principles
 
 1. **Plan before coding** — Use Plan mode for medium+ tasks
-1. **Type-level correctness** — Make invalid states irrepresentable
-1. **Test thoroughly** — Unit + E2E tests, happy paths + edge cases
-1. **Keep it simple** — Readable over clever, explicit over implicit
-1. **Clean as you go** — Delete unused code immediately, simplify relentlessly
-1. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-1. **Document architecture** — Create `ARCHITECTURE_DIFF.md` before PR
-1. **Verify before committing** — `make test` must pass (tests + types + lint)
-1. **Split large work** — Multiple focused PRs (<500 lines each)
-1. **Commit frequently** — One logical change per commit
-1. **Branch from main** — Every task gets a fresh branch
-1. **DRY** — Search first, reuse and extend existing code
-1. **Name every value** — Give constants and thresholds descriptive identifiers
-1. **Push and PR** — Every completed branch gets pushed with a PR immediately
+2. **Type-level correctness** — Make invalid states irrepresentable
+3. **Test thoroughly** — Unit + E2E tests, happy paths + edge cases
+4. **Keep it simple** — Readable over clever, explicit over implicit
+5. **Clean as you go** — Delete unused code immediately, simplify relentlessly
+6. **Minimize dependencies** — Prefer standard library; every external lib is a liability
+7. **Document architecture** — Create `ARCHITECTURE_DIFF.md` before PR
+8. **Verify before committing** — `make test` must pass (tests + types + lint)
+9. **Split large work** — Multiple focused PRs (<500 lines each)
+10. **Commit frequently** — One logical change per commit
+11. **Branch from main** — Every task gets a fresh branch
+12. **DRY** — Search first, reuse and extend existing code
+13. **Name every value** — Give constants and thresholds descriptive identifiers
+14. **Push and PR** — Every completed branch gets pushed with a PR immediately
 
 **Keep it simple. Commit after every task. Branch from main. Push and PR.**
 
