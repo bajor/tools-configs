@@ -188,6 +188,6 @@ Before adding: can it be done in <50 lines? Is it well-maintained with a small d
 - [ ] Dependencies justified
 - [ ] DRY — searched codebase, reused/extended existing code
 - [ ] `ARCHITECTURE_DIFF.md` created/removed as needed
-- [ ] Commits small, frequent, user prompt(s) in body
+- [ ] Commits small, frequent.
 - [ ] Branch pushed, PR created with clear title/description
 - [ ] Code review in fresh session with `/review`
