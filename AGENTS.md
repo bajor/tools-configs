@@ -157,7 +157,7 @@ git push origin <branch-name>
 gh pr create --title "<title>" --body "<description>"
 ```
 
-Commit after: adding a function, fixing a bug, adding a test, refactoring a component, updating config, changing a dependency. Use multiple `-m` flags for details. Include the user prompt(s) that triggered the work in the commit body.
+Commit after: adding a function, fixing a bug, adding a test, refactoring a component, updating config, changing a dependency. Use multiple `-m` flags for details.
 
 Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`. After pushing: create PR immediately. Multi-PR tasks use `[X/N]` in title.
 
