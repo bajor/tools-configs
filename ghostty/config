@@ -1,3 +1,5 @@
 theme = gruvbox-dark-match-nvim
 keybind = cmd+n=ignore
+keybind = shift+enter=text:\x1b\r
 
+keybind = super+f=unbind
