@@ -9,6 +9,9 @@ local ok_tree, nvim_tree = pcall(require, 'nvim-tree')
 if ok_tree then
   nvim_tree.setup({
     view = { side = "right" },
+    renderer = {
+      group_empty = true,
+    },
     git = {
       enable = true,
       ignore = false,
