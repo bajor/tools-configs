@@ -96,8 +96,8 @@ function M.setup()
   if ok_lines then lsp_lines.setup() end
 
   vim.diagnostic.config({
-    virtual_text = false,
-    virtual_lines = ok_lines,
+    virtual_text = { spacing = 4 },
+    virtual_lines = false,
     severity_sort = true,
     update_in_insert = false,
     signs = true,
