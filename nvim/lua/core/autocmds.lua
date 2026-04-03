@@ -40,3 +40,15 @@ autocmd('BufWritePre', {
   end,
 })
 
+-- Auto-save after edits
+augroup('AutoSave', { clear = true })
+autocmd({ 'InsertLeave', 'TextChanged' }, {
+  group = 'AutoSave',
+  callback = function(ev)
+    local buf = ev.buf
+    if vim.bo[buf].modified and vim.bo[buf].buftype == '' and vim.fn.filereadable(vim.api.nvim_buf_get_name(buf)) == 1 then
+      vim.api.nvim_buf_call(buf, function() vim.cmd('silent! write') end)
+    end
+  end,
+})
+
