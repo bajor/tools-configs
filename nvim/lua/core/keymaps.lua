@@ -41,4 +41,4 @@ map('n', '<Leader>h', '<C-w>h', opts)
 
 -- Commenting (Cmd+/)
 map('n', '<D-/>', function() require('Comment.api').toggle.linewise.current() end, opts)
-map('x', '<D-/>', '<Plug>(comment_toggle_linewise_visual)', {})
+map('x', '<D-/>', "<Esc><Cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", opts)
