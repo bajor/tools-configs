@@ -1,5 +1,18 @@
 ## Close quick list fix `<Leader>q`
 
+
+## Debugging (DAP)
+`<Leader>dc`: Continue or start the debug session.
+`<Leader>db`: Toggle breakpoint on the current line.
+`<Leader>dB`: Set a conditional breakpoint.
+`<Leader>di`: Step into the current function.
+`<Leader>do`: Step over the current line.
+`<Leader>dO`: Step out of the current function.
+`<Leader>dr`: Toggle the DAP REPL.
+`<Leader>du`: Toggle the DAP UI.
+`<Leader>dt`: Terminate the debug session.
+
+
 ## Telescpe
 `<Leader>ff`: Search for files in your current working directory.
 `<C-p>`: Perform a live grep search across your project.
