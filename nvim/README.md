@@ -1,5 +1,6 @@
-## Close quick list fix `<Leader>q`
+Close quick list fix `<Leader>q`
 
+---
 
 ## Debugging (DAP)
 `<Leader>dc`: Continue or start the debug session.
@@ -12,6 +13,7 @@
 `<Leader>du`: Toggle the DAP UI.
 `<Leader>dt`: Terminate the debug session.
 
+---
 
 ## Telescpe
 `<Leader>ff`: Search for files in your current working directory.
@@ -21,6 +23,7 @@
 `:Telescope git_files`: Search files in a Git repository (requires Git).
 `Ctrl - V` - open in split tab
 
+---
 
 `gr` - go to refferences
 
