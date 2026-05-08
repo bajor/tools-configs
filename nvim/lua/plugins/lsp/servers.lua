@@ -1,6 +1,37 @@
 -- LSP Server configurations
 local M = {}
 
+local PROJECT_VENV_DIRS = { '.venv', 'venv', 'env', '.env' }
+local DEFAULT_PYTHON = 'python3'
+
+local function get_debugpy_adapter_command()
+  local mason_debugpy_python = vim.fn.stdpath('data') .. '/mason/packages/debugpy/venv/bin/python'
+  if vim.fn.executable(mason_debugpy_python) == 1 then
+    return mason_debugpy_python
+  end
+  return DEFAULT_PYTHON
+end
+
+local function resolve_python_path()
+  local active_venv = vim.env.VIRTUAL_ENV
+  if active_venv then
+    local venv_python = active_venv .. '/bin/python'
+    if vim.fn.executable(venv_python) == 1 then
+      return venv_python
+    end
+  end
+
+  local cwd = vim.fn.getcwd()
+  for _, venv_dir in ipairs(PROJECT_VENV_DIRS) do
+    local candidate = cwd .. '/' .. venv_dir .. '/bin/python'
+    if vim.fn.executable(candidate) == 1 then
+      return candidate
+    end
+  end
+
+  return DEFAULT_PYTHON
+end
+
 function M.setup(capabilities)
   -- Clangd (C/C++)
   vim.lsp.config.clangd = {
@@ -131,8 +162,58 @@ function M.setup(capabilities)
   }
   vim.lsp.enable('ocamllsp')
 
+  -- Python DAP (debugpy)
+  M.setup_python_dap()
+
   -- Scala Metals (special setup)
   M.setup_metals(capabilities)
+end
+
+function M.setup_python_dap()
+  local ok_dap, dap = pcall(require, 'dap')
+  if not ok_dap then return end
+
+  dap.adapters.python = {
+    type = 'executable',
+    command = get_debugpy_adapter_command(),
+    args = { '-m', 'debugpy.adapter' },
+  }
+
+  dap.configurations.python = {
+    {
+      type = 'python',
+      request = 'launch',
+      name = 'Python: Current File',
+      program = '${file}',
+      cwd = '${workspaceFolder}',
+      console = 'integratedTerminal',
+      justMyCode = false,
+      pythonPath = resolve_python_path,
+    },
+    {
+      type = 'python',
+      request = 'launch',
+      name = 'Python: Current File (Args)',
+      program = '${file}',
+      cwd = '${workspaceFolder}',
+      console = 'integratedTerminal',
+      justMyCode = false,
+      args = function()
+        local raw_args = vim.fn.input('Program args: ')
+        return vim.split(raw_args, '%s+', { trimempty = true })
+      end,
+      pythonPath = resolve_python_path,
+    },
+    {
+      type = 'python',
+      request = 'attach',
+      name = 'Python: Attach (localhost:5678)',
+      connect = { host = '127.0.0.1', port = 5678 },
+      cwd = '${workspaceFolder}',
+      justMyCode = false,
+      pythonPath = resolve_python_path,
+    },
+  }
 end
 
 function M.setup_metals(capabilities)

@@ -79,7 +79,7 @@ function M.setup()
   -- Ensure tools are installed
   local ok, registry = pcall(require, 'mason-registry')
   if ok then
-    local tools = { 'clangd', 'haskell-language-server', 'gopls', 'elixir-ls', 'pyright', 'ruff', 'ocaml-lsp' }
+    local tools = { 'clangd', 'haskell-language-server', 'gopls', 'elixir-ls', 'pyright', 'ruff', 'ocaml-lsp', 'debugpy' }
     for _, tool in ipairs(tools) do
       local pkg = registry.get_package(tool)
       if not pkg:is_installed() then

@@ -2,6 +2,15 @@
 local map = vim.keymap.set
 local opts = { silent = true }
 
+local function safe_require(module_name)
+  local ok, module = pcall(require, module_name)
+  if not ok then
+    vim.notify('Missing module: ' .. module_name, vim.log.levels.WARN)
+    return nil
+  end
+  return module
+end
+
 -- Telescope
 map('n', '<Leader>ff', ':Telescope find_files<CR>', opts)
 map('n', '<D-p>', function() require('plugins.telescope').multi_grep() end, opts)
@@ -38,6 +47,46 @@ map('n', 'r', '<C-r>', opts) -- redo (replaces default replace char)
 map('n', '<Leader>v', ':vsplit<CR>', opts)
 map('n', '<Leader>l', '<C-w>l', opts)
 map('n', '<Leader>h', '<C-w>h', opts)
+
+-- Debugging (DAP)
+map('n', '<Leader>dc', function()
+  local dap = safe_require('dap')
+  if dap then dap.continue() end
+end, opts)
+map('n', '<Leader>db', function()
+  local dap = safe_require('dap')
+  if dap then dap.toggle_breakpoint() end
+end, opts)
+map('n', '<Leader>dB', function()
+  local dap = safe_require('dap')
+  if not dap then return end
+  local condition = vim.fn.input('Breakpoint condition: ')
+  dap.set_breakpoint(condition)
+end, opts)
+map('n', '<Leader>di', function()
+  local dap = safe_require('dap')
+  if dap then dap.step_into() end
+end, opts)
+map('n', '<Leader>do', function()
+  local dap = safe_require('dap')
+  if dap then dap.step_over() end
+end, opts)
+map('n', '<Leader>dO', function()
+  local dap = safe_require('dap')
+  if dap then dap.step_out() end
+end, opts)
+map('n', '<Leader>dr', function()
+  local dap = safe_require('dap')
+  if dap then dap.repl.toggle() end
+end, opts)
+map('n', '<Leader>du', function()
+  local dapui = safe_require('dapui')
+  if dapui then dapui.toggle() end
+end, opts)
+map('n', '<Leader>dt', function()
+  local dap = safe_require('dap')
+  if dap then dap.terminate() end
+end, opts)
 
 -- Commenting (Cmd+/)
 map('n', '<D-/>', function() require('Comment.api').toggle.linewise.current() end, opts)
