@@ -4,23 +4,36 @@ Close quick list fix `<Leader>q`
 
 ## Debugging (DAP)
 `<Leader>dc`: Continue or start the debug session.
+<br>
 `<Leader>db`: Toggle breakpoint on the current line.
+<br>
 `<Leader>dB`: Set a conditional breakpoint.
+<br>
 `<Leader>di`: Step into the current function.
+<br>
 `<Leader>do`: Step over the current line.
+<br>
 `<Leader>dO`: Step out of the current function.
+<br>
 `<Leader>dr`: Toggle the DAP REPL.
+<br>
 `<Leader>du`: Toggle the DAP UI.
+<br>
 `<Leader>dt`: Terminate the debug session.
 
 ---
 
 ## Telescpe
 `<Leader>ff`: Search for files in your current working directory.
+<br>
 `<C-p>`: Perform a live grep search across your project.
+<br>
 `<Leader>fb`: Show a list of open buffers.
+<br>
 `<Leader>fh`: Search through Neovim help tags.
+<br>
 `:Telescope git_files`: Search files in a Git repository (requires Git).
+<br>
 `Ctrl - V` - open in split tab
 
 ---
