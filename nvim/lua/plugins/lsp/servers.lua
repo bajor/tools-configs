@@ -3,6 +3,8 @@ local M = {}
 
 local PROJECT_VENV_DIRS = { '.venv', 'venv', 'env', '.env' }
 local DEFAULT_PYTHON = 'python3'
+local DAP_UI_SIDEBAR_WIDTH = 26
+local DAP_UI_BOTTOM_HEIGHT = 12
 
 local function get_debugpy_adapter_command()
   local mason_debugpy_python = vim.fn.stdpath('data') .. '/mason/packages/debugpy/venv/bin/python'
@@ -30,6 +32,39 @@ local function resolve_python_path()
   end
 
   return DEFAULT_PYTHON
+end
+
+local function setup_dap_ui()
+  local ok_dap, dap = pcall(require, 'dap')
+  if not ok_dap then return end
+
+  local ok_ui, dapui = pcall(require, 'dapui')
+  if not ok_ui then return end
+
+  dapui.setup({
+    layouts = {
+      {
+        -- Algorithm-first layout: variable scopes + breakpoints, no watches/thread-heavy stacks.
+        elements = {
+          { id = 'scopes', size = 0.75 },
+          { id = 'breakpoints', size = 0.25 },
+        },
+        size = DAP_UI_SIDEBAR_WIDTH,
+        position = 'left',
+      },
+      {
+        elements = {
+          { id = 'repl', size = 1.0 },
+        },
+        size = DAP_UI_BOTTOM_HEIGHT,
+        position = 'bottom',
+      },
+    },
+  })
+
+  dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+  dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+  dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 end
 
 function M.setup(capabilities)
@@ -164,6 +199,7 @@ function M.setup(capabilities)
 
   -- Python DAP (debugpy)
   M.setup_python_dap()
+  setup_dap_ui()
 
   -- Scala Metals (special setup)
   M.setup_metals(capabilities)
@@ -302,27 +338,6 @@ function M.setup_scala_dap()
     },
   }
 
-  local ok_ui, dapui = pcall(require, 'dapui')
-  if not ok_ui then return end
-
-  dapui.setup({
-    layouts = {
-      {
-        elements = { 'scopes', 'breakpoints', 'stacks', 'watches' },
-        size = 40,
-        position = 'left',
-      },
-      {
-        elements = { 'repl', 'console' },
-        size = 10,
-        position = 'bottom',
-      },
-    },
-  })
-
-  dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-  dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-  dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 end
 
 return M
