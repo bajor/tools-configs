@@ -1,3 +1,8 @@
+---
+name: pr-diagram
+description: Analyze a GitHub pull request using `gh pr diff`, map changed files and dependency impact, and generate Mermaid diagrams plus a summary. Use when user wants PR analysis, PR diagrams, blast-radius analysis, or mentions `gh pr diff`.
+---
+
 Analyze PR using `gh pr diff`
 
 First, create a timestamped output directory using these EXACT commands:
