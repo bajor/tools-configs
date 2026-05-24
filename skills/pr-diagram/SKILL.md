@@ -3,10 +3,10 @@ Analyze PR #$ARGUMENTS using `gh pr diff $ARGUMENTS`.
 First, create a timestamped output directory using these EXACT commands:
 ```bash
 TIMESTAMP=$(date '+%Y-%m-%d %H-%M-%S')
-OUTPUT_DIR="/Users/m/repos/current/diagrams/${TIMESTAMP}"
+OUTPUT_DIR="./pr-diagram/${TIMESTAMP}"
 mkdir -p "$OUTPUT_DIR"
 ```
-ALL output files MUST be written to `$OUTPUT_DIR` using absolute paths (e.g., `$OUTPUT_DIR/summary.md`). Do NOT create files in the current working directory or any relative path.
+ALL output files MUST be written to `$OUTPUT_DIR` (e.g., `$OUTPUT_DIR/summary.md`).
 
 Identify:
 - All changed files and their roles (controller, service, model, config, test, etc.)
