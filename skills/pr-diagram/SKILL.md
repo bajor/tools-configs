@@ -1,4 +1,4 @@
-Analyze PR using `gh pr diff`.
+Analyze PR using `gh pr diff`
 
 First, create a timestamped output directory using these EXACT commands:
 ```bash
