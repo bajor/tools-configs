@@ -4,7 +4,7 @@
 
 1. **Plan before coding** — Use Plan mode for medium+ tasks
 2. **Type-level correctness** — Make invalid states irrepresentable
-3. **Test thoroughly** — Unit + E2E tests, happy paths + edge cases
+3. **Test thoroughly** — Unit + Component tests, happy paths + edge cases
 4. **Keep it simple** — Minimum code that solves the problem; readable over clever
 5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
 6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
