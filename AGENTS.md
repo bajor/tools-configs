@@ -97,6 +97,8 @@ One-sentence description.
 graph TD
     A[Existing Service] --> B[New Module] --> C[Database]
 ```
+
+```
 ## Changes
 ### Added / Modified / Removed
 - [component]: Why
