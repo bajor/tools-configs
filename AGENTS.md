@@ -5,19 +5,20 @@
 1. **Plan before coding** — Use Plan mode for medium+ tasks
 2. **Type-level correctness** — Make invalid states irrepresentable
 3. **Test thoroughly** — Unit + E2E tests, happy paths + edge cases
-4. **Keep it simple** — Readable over clever, explicit over implicit
-5. **Clean as you go** — Delete unused code immediately, simplify relentlessly
-6. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-7. **Document architecture** — Create `ARCHITECTURE_DIFF.md` before PR
-8. **Verify before committing** — `make test` must pass (tests + types + lint)
-9. **Split large work** — Multiple focused PRs (<500 lines each)
-10. **Commit frequently** — One logical change per commit
-11. **Branch from main** — Every task gets a fresh branch
-12. **DRY** — Search first, reuse and extend existing code
-13. **Name every value** — Give constants and thresholds descriptive identifiers
-14. **Push and PR** — Every completed branch gets pushed with a PR immediately
+4. **Keep it simple** — Minimum code that solves the problem; readable over clever
+5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
+6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
+7. **Minimize dependencies** — Prefer standard library; every external lib is a liability
+8. **Document architecture** — Create `ARCHITECTURE_DIFF.md` before PR
+9. **Verify before committing** — `make test` must pass (tests + types + lint)
+10. **Split large work** — Multiple focused PRs (<500 lines each)
+11. **Commit frequently** — One logical change per commit
+12. **Branch from main** — Every task gets a fresh branch
+13. **DRY** — Search first, reuse and extend existing code
+14. **Name every value** — Give constants and thresholds descriptive identifiers
+15. **Push and PR** — Every completed branch gets pushed with a PR immediately
 
-**Keep it simple. Commit after every task. Branch from main. Push and PR.**
+**Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.**
 
 -----
 
@@ -105,11 +106,43 @@ graph TD
 
 ## 7. Code Simplicity (KISS)
 
-Write code a junior developer can understand. One abstraction level per function. Functions under 30 lines, nesting under 3 levels. Let the code speak — if a comment explains *what* it does, rewrite it. Delete dead code, unused imports, commented-out blocks immediately. Prefer boring technology.
+Minimum code that solves the problem. Nothing speculative.
+
+Write code a junior developer can understand. One abstraction level per function. Functions under 30 lines, nesting under 3 levels. Prefer boring technology.
+
+**Rules:**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No flexibility or configurability that was not requested.
+- No error handling for impossible scenarios.
+- Let the code speak — if a comment explains *what* it does, rewrite it.
+- If you write 200 lines and it could be 50, rewrite it.
+- Ask: would a senior engineer say this is overcomplicated? If yes, simplify.
 
 -----
 
-## 8. DRY
+## 8. Surgical Changes
+
+Touch only what you must. Clean up only your own mess.
+
+When editing existing code:
+
+- Do not improve adjacent code, comments, or formatting.
+- Do not refactor code that is not broken.
+- Match existing style, even if you would do it differently.
+- If you notice unrelated dead code, mention it; do not delete it.
+
+When your changes create orphans:
+
+- Remove imports, variables, functions, files, and tests that your changes made unused.
+- Do not remove pre-existing dead code unless asked.
+
+Every changed line must trace directly to the user's request.
+
+-----
+
+## 9. DRY
 
 Every piece of logic has a single authoritative location.
 
@@ -142,7 +175,7 @@ def send_urgent_notification(user_id, message):
 
 -----
 
-## 9. Commit Discipline
+## 10. Commit Discipline
 
 Each commit = one logical unit of work. Target 1–50 lines, 50–100 acceptable, 100+ rare.
 
@@ -163,13 +196,13 @@ Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`
 
 -----
 
-## 10. Code Review
+## 11. Code Review
 
 Complete implementation → `make test` → commit/push/PR → fresh Claude session → `/review` with PR link → fix issues → `make test` → push → re-run `/review` if significant changes.
 
 -----
 
-## 11. Minimal Dependencies
+## 12. Minimal Dependencies
 
 Before adding: can it be done in <50 lines? Is it well-maintained with a small dep tree and compatible license? Prefer standard library > single-purpose lib > framework.
 
@@ -184,7 +217,9 @@ Before adding: can it be done in <50 lines? Is it well-maintained with a small d
 - [ ] Unit + E2E tests (happy path + edge cases)
 - [ ] `make test` passes (tests + types + lint)
 - [ ] CI verified locally
-- [ ] Code is simple, readable, dead code removed
+- [ ] Code is minimal: no speculative features, single-use abstractions, or unrequested configurability
+- [ ] Changed lines trace directly to the request
+- [ ] Only your own unused imports, variables, functions, files, and tests were removed
 - [ ] Dependencies justified
 - [ ] DRY — searched codebase, reused/extended existing code
 - [ ] `ARCHITECTURE_DIFF.md` created/removed as needed
