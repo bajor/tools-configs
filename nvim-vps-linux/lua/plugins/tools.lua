@@ -1,6 +1,6 @@
 -- Miscellaneous tool plugins
 
-local TOGGLE_TERM_OPEN_MAPPINGS = { [[<D-f>]], [[<M-f>]], [[<C-\>]], [[<Leader>t]] }
+local TOGGLE_TERM_OPEN_MAPPINGS = { [[<D-f>]], [[<M-f>]], [[<C-\>]] }
 
 -- Toggleterm
 local ok_term, toggleterm = pcall(require, 'toggleterm')
@@ -11,6 +11,7 @@ if ok_term then
     direction = 'float',
     float_opts = { border = 'curved' },
   })
+  vim.keymap.set('n', '<Leader>t', '<Cmd>ToggleTerm<CR>', { silent = true })
 end
 
 -- Comment.nvim

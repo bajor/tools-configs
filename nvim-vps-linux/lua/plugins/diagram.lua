@@ -10,7 +10,8 @@ local function tmux_allows_passthrough()
   end
 
   local result = vim.system({ 'tmux', 'show', '-gv', 'allow-passthrough' }, { text = true }):wait()
-  return result.code == 0 and vim.trim(result.stdout) == 'on'
+  local passthrough = vim.trim(result.stdout)
+  return result.code == 0 and (passthrough == 'on' or passthrough == 'all')
 end
 
 if not has_ui() or not tmux_allows_passthrough() then
