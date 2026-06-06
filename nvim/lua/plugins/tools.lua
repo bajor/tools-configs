@@ -3,12 +3,16 @@
 -- Toggleterm
 local ok_term, toggleterm = pcall(require, 'toggleterm')
 if ok_term then
+  local terminal_toggle_key = '<leader>j'
+
   toggleterm.setup({
     size = 15,
-    open_mapping = [[<D-f>]],
+    open_mapping = terminal_toggle_key,
     direction = 'float',
     float_opts = { border = 'curved' },
   })
+
+  vim.keymap.set({ 'i', 'v', 't' }, terminal_toggle_key, '<Cmd>ToggleTerm direction=float<CR>', { silent = true })
 end
 
 -- Comment.nvim
