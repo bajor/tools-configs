@@ -61,6 +61,13 @@ if ok_lualine then
     end,
   }
 
+  local function mode_color()
+    if vim.fn.mode():sub(1, 1) == 'i' then
+      return { bg = '#ffffff', fg = '#1d2021', gui = 'bold' }
+    end
+    return { gui = 'bold' }
+  end
+
   lualine.setup({
     options = {
       theme = 'gruvbox',
@@ -68,7 +75,12 @@ if ok_lualine then
       section_separators = { left = '', right = '' },
     },
     sections = {
-      lualine_a = { 'mode' },
+      lualine_a = {
+        {
+          'mode',
+          color = mode_color,
+        },
+      },
       lualine_b = { 'branch', 'diff', 'diagnostics', raccoon_status },
       lualine_c = { 'filename' },
       lualine_x = { 'g:metals_status', 'encoding', 'fileformat', 'filetype' },

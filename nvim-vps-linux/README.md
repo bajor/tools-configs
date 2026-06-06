@@ -1,5 +1,9 @@
 Close quick list fix `<Leader>q`
 
+## Statusline mode visibility
+INSERT mode uses a bright white lualine mode block so it is obvious over mosh.
+Cursor pipe/block shape changes are not reliable through mosh, and mosh is still preferred for stable VPS editing sessions.
+
 ---
 
 ## Debugging (DAP)
@@ -106,5 +110,4 @@ Bright colors
 if JAVA_HOME not defined correctly
 `sdk default java 17.0.8-tem`
 `sdk env`
-
 
