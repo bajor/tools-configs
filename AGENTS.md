@@ -1,94 +1,87 @@
-# Agent Coding Guidelines
+Agent Coding Guidelines
 
-## Core Principles
+Core Principles
 
-1. **Plan before coding** — Use Plan mode for medium+ tasks
-2. **Type-level correctness** — Make invalid states irrepresentable
-3. **Test thoroughly** — Unit + Component tests, happy paths + edge cases
-4. **Keep it simple** — Minimum code that solves the problem; readable over clever
-5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
-6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
-7. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-8. **Document architecture** — Create `ARCHITECTURE_DIFF.md` before PR
-9. **Verify before committing** — `make test` must pass (tests + types + lint)
-10. **Split large work** — Multiple focused PRs (<500 lines each)
-11. **Commit frequently** — One logical change per commit
-12. **Branch from main** — Every task gets a fresh branch
-13. **DRY** — Search first, reuse and extend existing code
-14. **Name every value** — Give constants and thresholds descriptive identifiers
-15. **Push and PR** — Every completed branch gets pushed with a PR immediately
+1. Plan before coding — Use Plan mode for medium+ tasks
+2. Type-level correctness — Make invalid states irrepresentable
+3. Test thoroughly — Unit + Component tests, happy paths + edge cases
+4. Keep it simple — Minimum code that solves the problem; readable over clever
+5. Make surgical changes — Touch only what the request requires; clean up only your own mess
+6. Clean as you go — Remove unused code created by your changes; simplify your own work relentlessly
+7. Minimize dependencies — Prefer standard library; every external lib is a liability
+8. Document architecture — Create ARCHITECTURE_DIFF.md before PR
+9. Verify before committing — make test must pass (tests + types + lint)
+10. Split large work — Multiple focused PRs (<500 lines each)
+11. Commit frequently — One logical change per commit
+12. Branch from main — Every task gets a fresh branch
+13. DRY — Search first, reuse and extend existing code
+14. Name every value — Give constants and thresholds descriptive identifiers
+15. Push and PR — Every completed branch gets pushed with a PR immediately
+16. Translate and explain explicitly — Use literal, unambiguous language. Avoid idioms, implied meaning, and unstated assumptions. State exact meaning, steps, and conditions.
 
-**Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.**
+Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.
 
------
+⸻
 
-## 1. Planning
+1. Planning
 
 Use Plan mode for multi-file refactors, bug investigations, multi-component changes, anything >30 minutes. Go straight to code only for trivial fixes or explicit unambiguous instructions. When in doubt, plan.
 
------
+⸻
 
-## 2. PR Strategy
+2. PR Strategy
 
 Break large work into focused PRs. Each: reviewable in ~15 min, single purpose, <500 lines, all tests pass.
 
-**Workflow:** Identify scope → break into feature-slice chunks → number by merge dependency `[1/N]`, `[2/N]` → for each: branch from main → implement → `make test` → push → create PR → merge → next chunk. Use `[2a/5]`/`[2b/5]` for independent parallel PRs.
+Workflow: Identify scope → break into feature-slice chunks → number by merge dependency [1/N], [2/N] → for each: branch from main → implement → make test → push → create PR → merge → next chunk. Use [2a/5]/[2b/5] for independent parallel PRs.
 
-**Example:**
+Example:
 
-```
 [1/5] Add user database schema and models (150 lines)
 [2/5] Implement auth service with JWT (200 lines)
 [3/5] Add login/logout API endpoints (180 lines)
 [4/5] Add frontend login UI (220 lines)
 [5/5] Add password reset flow (190 lines)
-```
 
------
+⸻
 
-## 3. Type-Level Design
+3. Type-Level Design
 
-Design types so invalid states are unconstructable. Wrap primitives in domain types (`Age` over `Int`, `UserId` over `String`). Use sum types/enums over boolean flags. Reject invalid values at construction time.
+Design types so invalid states are unconstructable. Wrap primitives in domain types (Age over Int, UserId over String). Use sum types/enums over boolean flags. Reject invalid values at construction time.
 
-**Example:**
+Example:
 
-```
 opaque type Age = Int
 object Age:
   inline def apply(inline n: Int): Age =
     inline if n < 0 then error("Age cannot be negative")
     else n
-
 birthday(Age(25))   // works
 birthday(Age(-5))   // compile error
-```
 
------
+⸻
 
-## 4. Testing
+4. Testing
 
 Ship unit + E2E tests covering happy paths and edge cases with every implementation.
 
-**Workflow:** `make test` before changes (baseline) → implement → write/update tests → `make test` after → fix regressions → verify CI locally before pushing. `make test` must include: unit tests, E2E tests, type checking, linting. If incomplete, fix it first.
+Workflow: make test before changes (baseline) → implement → write/update tests → make test after → fix regressions → verify CI locally before pushing. make test must include: unit tests, E2E tests, type checking, linting. If incomplete, fix it first.
 
------
+⸻
 
-## 5. Type Checking and Linting
+5. Type Checking and Linting
 
-Run on every verification cycle. Compiled languages: strict flags, zero warnings. Interpreted: type checker (mypy/pyright/tsc) + linter (eslint/ruff/clippy), both in `make test`.
+Run on every verification cycle. Compiled languages: strict flags, zero warnings. Interpreted: type checker (mypy/pyright/tsc) + linter (eslint/ruff/clippy), both in make test.
 
-```makefile
 test:
 	npm run typecheck && npm run lint && npm run test:unit && npm run test:e2e
-```
 
------
+⸻
 
-## 6. Architecture Documentation
+6. Architecture Documentation
 
-Create `ARCHITECTURE_DIFF.md` in repo root before opening a PR. Include at least one Mermaid diagram (flowchart for components, sequence for data flow, ER for schema). Replace any existing one.
+Create ARCHITECTURE_DIFF.md in repo root before opening a PR. Include at least one Mermaid diagram (flowchart for components, sequence for data flow, ER for schema). Replace any existing one.
 
-```markdown
 # Architecture Diff
 ## Summary
 One-sentence description.
@@ -96,24 +89,16 @@ One-sentence description.
 ```mermaid
 graph TD
     A[Existing Service] --> B[New Module] --> C[Database]
-```
 
-```
-## Changes
-### Added / Modified / Removed
-- [component]: Why
-```
+Changes
+
+Added / Modified / Removed
 
 -----
-
 ## 7. Code Simplicity (KISS)
-
 Minimum code that solves the problem. Nothing speculative.
-
 Write code a junior developer can understand. One abstraction level per function. Functions under 30 lines, nesting under 3 levels. Prefer boring technology.
-
 **Rules:**
-
 - No features beyond what was asked.
 - No abstractions for single-use code.
 - No flexibility or configurability that was not requested.
@@ -121,110 +106,88 @@ Write code a junior developer can understand. One abstraction level per function
 - Let the code speak — if a comment explains *what* it does, rewrite it.
 - If you write 200 lines and it could be 50, rewrite it.
 - Ask: would a senior engineer say this is overcomplicated? If yes, simplify.
-
 -----
-
 ## 8. Surgical Changes
-
 Touch only what you must. Clean up only your own mess.
-
 When editing existing code:
-
 - Do not improve adjacent code, comments, or formatting.
 - Do not refactor code that is not broken.
 - Match existing style, even if you would do it differently.
 - If you notice unrelated dead code, mention it; do not delete it.
-
 When your changes create orphans:
-
 - Remove imports, variables, functions, files, and tests that your changes made unused.
 - Do not remove pre-existing dead code unless asked.
-
 Every changed line must trace directly to the user's request.
-
 -----
-
 ## 9. DRY
-
 Every piece of logic has a single authoritative location.
-
 **Before writing:** search the codebase (grep/IDE/AST) → if found, reuse or generalize → if new, place in shared location designed for reuse → consolidate any duplication found during work.
-
 **Rules:** Read before writing. Extend the original module for new behavior. One fact in one place (config, rules, validation, types). Get it right the first time. Shared logic in shared modules.
-
 **Example — shared validation:**
-
 ```python
 # validation.py — single source of truth
 def validate_email(email: str) -> Email:
     if not re.match(r'^[\w.+-]+@[\w-]+\.[\w.]+$', email):
         raise ValueError("Invalid email")
     return Email(email)
-
 # user_api.py / invite_api.py — both call validate_email()
-```
 
-**Example — extending an existing module:**
+Example — extending an existing module:
 
-```python
 # notifications.py — add priority param to existing function
 def send_notification(user_id, message, channel, priority=Priority.NORMAL): ...
-
 def send_urgent_notification(user_id, message):
     for ch in ("sms", "email"):
         send_notification(user_id, message, channel=ch, priority=Priority.URGENT)
-```
 
------
+⸻
 
-## 10. Commit Discipline
+10. Commit Discipline
 
 Each commit = one logical unit of work. Target 1–50 lines, 50–100 acceptable, 100+ rare.
 
-**Every task follows this flow:**
+Every task follows this flow:
 
-```bash
 git checkout main && git pull origin main
 git checkout -b <descriptive-branch-name>
 # ... work, committing after each logical change ...
 make test
 git push origin <branch-name>
 gh pr create --title "<title>" --body "<description>"
-```
 
-Commit after: adding a function, fixing a bug, adding a test, refactoring a component, updating config, changing a dependency. Use multiple `-m` flags for details.
+Commit after: adding a function, fixing a bug, adding a test, refactoring a component, updating config, changing a dependency. Use multiple -m flags for details.
 
-Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`. After pushing: create PR immediately. Multi-PR tasks use `[X/N]` in title.
+Before pushing: fetch origin, rebase main, resolve conflicts, re-run make test. After pushing: create PR immediately. Multi-PR tasks use [X/N] in title.
 
------
+⸻
 
-## 11. Code Review
+11. Code Review
 
-Complete implementation → `make test` → commit/push/PR → fresh Claude session → `/review` with PR link → fix issues → `make test` → push → re-run `/review` if significant changes.
+Complete implementation → make test → commit/push/PR → fresh Claude session → /review with PR link → fix issues → make test → push → re-run /review if significant changes.
 
------
+⸻
 
-## 12. Minimal Dependencies
+12. Minimal Dependencies
 
 Before adding: can it be done in <50 lines? Is it well-maintained with a small dep tree and compatible license? Prefer standard library > single-purpose lib > framework.
 
------
+⸻
 
-## Checklist
+Checklist
 
-- [ ] Fresh branch from main
-- [ ] Plan mode used (if medium+ task)
-- [ ] Large task split into focused PRs with `[X/N]` merge order
-- [ ] Types prevent invalid states
-- [ ] Unit + E2E tests (happy path + edge cases)
-- [ ] `make test` passes (tests + types + lint)
-- [ ] CI verified locally
-- [ ] Code is minimal: no speculative features, single-use abstractions, or unrequested configurability
-- [ ] Changed lines trace directly to the request
-- [ ] Only your own unused imports, variables, functions, files, and tests were removed
-- [ ] Dependencies justified
-- [ ] DRY — searched codebase, reused/extended existing code
-- [ ] `ARCHITECTURE_DIFF.md` created/removed as needed
-- [ ] Commits small, frequent.
-- [ ] Branch pushed, PR created with clear title/description
-- [ ] Code review in fresh session with `/review`
+* Fresh branch from main
+* Plan mode used (if medium+ task)
+* Large task split into focused PRs with [X/N] merge order
+* Types prevent invalid states
+* Unit + E2E tests (happy path + edge cases)
+* make test passes (tests + types + lint)
+* CI verified locally
+* Code is minimal: no speculative features, single-use abstractions, or unrequested configurability
+* Changed lines trace directly to the request
+* Only your own unused imports, variables, functions, files, and tests were removed
+* Dependencies justified
+* DRY — searched codebase, reused/extended existing code
+* ARCHITECTURE_DIFF.md created/removed as needed
+* Commits small, frequent.
+* Branch pushed, PR created with clear title/description
+* Code review in fresh session with /review
