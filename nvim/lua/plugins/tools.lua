@@ -3,7 +3,7 @@
 -- Toggleterm
 local ok_term, toggleterm = pcall(require, 'toggleterm')
 if ok_term then
-  local terminal_toggle_key = '<leader>j'
+  local terminal_toggle_key = '<leader>f'
 
   toggleterm.setup({
     size = 15,
