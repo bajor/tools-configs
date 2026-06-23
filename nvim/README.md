@@ -1,4 +1,4 @@
-**Hoovernig terminal - <leader> j**
+**Floating terminal - <leader> j**
 
 ---
 
