@@ -1,4 +1,4 @@
-**Floating terminal - `<leader> j`**
+**Floating terminal - `<leader>f`**
 
 ---
 
@@ -110,5 +110,4 @@ Bright colors
 if JAVA_HOME not defined correctly
 `sdk default java 17.0.8-tem`
 `sdk env`
-
 
