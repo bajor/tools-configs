@@ -9,14 +9,13 @@
 5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
 6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
 7. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-8. **Document architecture** — Create `ARCHITECTURE_DIFF.md` before PR
-9. **Verify before committing** — `make test` must pass (tests + types + lint)
-10. **Split large work** — Multiple focused PRs (<500 lines each)
-11. **Commit frequently** — One logical change per commit
-12. **Branch from main** — Every task gets a fresh branch
-13. **DRY** — Search first, reuse and extend existing code
-14. **Name every value** — Give constants and thresholds descriptive identifiers
-15. **Push and PR** — Every completed branch gets pushed with a PR immediately
+8. **Verify before committing** — `make test` must pass (tests + types + lint)
+9. **Split large work** — Multiple focused PRs (<500 lines each)
+10. **Commit frequently** — One logical change per commit
+11. **Branch from main** — Every task gets a fresh branch
+12. **DRY** — Search first, reuse and extend existing code
+13. **Name every value** — Give constants and thresholds descriptive identifiers
+14. **Push and PR** — Every completed branch gets pushed with a PR immediately
 
 **Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.**
 
@@ -86,30 +85,7 @@ test:
 
 ---
 
-## 6. Architecture Documentation
-
-Create `ARCHITECTURE_DIFF.md` in repo root before opening a PR. Include at least one Mermaid diagram (flowchart for components, sequence for data flow, ER for schema). Replace any existing one.
-
-````markdown
-# Architecture Diff
-
-## Summary
-One-sentence description.
-
-## Diagram(s)
-```mermaid
-graph TD
-    A[Existing Service] --> B[New Module] --> C[Database]
-```
-
-## Changes
-### Added / Modified / Removed
-- [component]&#58; Why
-````
-
----
-
-## 7. Code Simplicity (KISS)
+## 6. Code Simplicity (KISS)
 
 Minimum code that solves the problem. Nothing speculative.
 
@@ -127,7 +103,7 @@ Write code a junior developer can understand. One abstraction level per function
 
 ---
 
-## 8. Surgical Changes
+## 7. Surgical Changes
 
 Touch only what you must. Clean up only your own mess.
 
@@ -147,7 +123,7 @@ Every changed line must trace directly to the user's request.
 
 ---
 
-## 9. DRY
+## 8. DRY
 
 Every piece of logic has a single authoritative location.
 
@@ -181,7 +157,7 @@ def send_urgent_notification(user_id, message):
 
 ---
 
-## 10. Commit Discipline
+## 9. Commit Discipline
 
 Each commit = one logical unit of work. Target 1–50 lines, 50–100 acceptable, 100+ rare.
 
@@ -202,19 +178,19 @@ Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`
 
 ---
 
-## 11. Code Review
+## 10. Code Review
 
 Complete implementation → `make test` → commit/push/PR → fresh Claude session → `/review` with PR link → fix issues → `make test` → push → re-run `/review` if significant changes.
 
 ---
 
-## 12. Minimal Dependencies
+## 11. Minimal Dependencies
 
 Before adding: can it be done in <50 lines? Is it well-maintained with a small dep tree and compatible license? Prefer standard library > single-purpose lib > framework.
 
 ---
 
-## 13. Explicit Communication
+## 12. Explicit Communication
 
 When explaining something, writing documentation, or creating notes, write so that a reader never has to infer missing meaning. The result must be unambiguous and directly actionable.
 
@@ -247,7 +223,6 @@ When explaining something, writing documentation, or creating notes, write so th
 * [ ] Only your own unused imports, variables, functions, files, and tests were removed
 * [ ] Dependencies justified
 * [ ] DRY — searched codebase, reused/extended existing code
-* [ ] `ARCHITECTURE_DIFF.md` created/removed as needed
 * [ ] Commits small, frequent.
 * [ ] Branch pushed, PR created with clear title/description
 * [ ] Code review in fresh session with `/review`
