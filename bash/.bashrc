@@ -1,5 +1,5 @@
 ################################################################## git 
-alias main='git checkout main && git status'
+alias main='git checkout main && git pull && git status'
 
 alias iter='git add . && git status && git diff --cached && git commit -m "update" && git push'
 
