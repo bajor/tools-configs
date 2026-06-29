@@ -9,13 +9,14 @@
 5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
 6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
 7. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-8. **Verify before committing** — `make test` must pass (tests + types + lint)
-9. **Split large work** — Multiple focused PRs (<500 lines each)
-10. **Commit frequently** — One logical change per commit
-11. **Branch from main** — Every task gets a fresh branch
-12. **DRY** — Search first, reuse and extend existing code
-13. **Name every value** — Give constants and thresholds descriptive identifiers
-14. **Push and PR** — Every completed branch gets pushed with a PR immediately
+8. **Explain structural changes visually** — For architecture, workflow, or data-flow changes, create PR-only SVG flowcharts with explicit descriptions
+9. **Verify before committing** — `make test` must pass (tests + types + lint)
+10. **Split large work** — Multiple focused PRs (<500 lines each)
+11. **Commit frequently** — One logical change per commit
+12. **Branch from main** — Every task gets a fresh branch
+13. **DRY** — Search first, reuse and extend existing code
+14. **Name every value** — Give constants and thresholds descriptive identifiers
+15. **Push and PR** — Every completed branch gets pushed with a PR immediately
 
 **Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.**
 
@@ -85,7 +86,54 @@ test:
 
 ---
 
-## 6. Code Simplicity (KISS)
+## 6. Visual Explanations
+
+Create visual explanations for changes that alter architecture, module ownership, workflows, data flow, control flow, storage layout, API contracts, or review-critical process.
+
+Visual explanations are PR review artifacts, not permanent documentation. Store committed visual explanation SVG files under `visual-explanations/`. Cleanup is owned by the reusable workflow at `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml`. Repositories that use visual explanations must call that workflow on `push` to `main` so merged SVG artifacts are deleted from `main`.
+
+Commit only SVG files for each visual explanation. Do not commit `.mmd` files, Mermaid source files, Mermaid Markdown fences, generated HTML, screenshots, PNG fallbacks, or `/tmp` render outputs. Create Mermaid source as a temporary file, render it with `mmdc`, review the SVG, then commit only the SVG:
+
+```bash
+mmdc -i "$1" -o /tmp/mermaid-out.svg
+```
+
+Caller workflow example:
+
+```yaml
+name: Delete Visual Explanation SVGs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  delete-visual-explanation-svgs:
+    uses: bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml@main
+```
+
+Use a series of flowcharts when one diagram would hide important sequencing. Include separate SVGs for separate concerns, such as before/after structure, generation or data flow, and cleanup or lifecycle flow.
+
+Every visual explanation must have a verbose written description in the PR body or in the changed documentation that links the SVG. The description must state:
+
+* what changed,
+* what existed before the change,
+* what exists after the change,
+* which files own the behavior,
+* what reviewers should verify,
+* when the SVG will be deleted from `main`.
+
+Acceptance criteria for visual explanations:
+
+* [ ] SVG files live under `visual-explanations/`
+* [ ] No Mermaid source files or `.mmd` files are tracked
+* [ ] Every SVG has a matching verbose description
+* [ ] SVG cleanup uses `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml`
+* [ ] SVG cleanup is scoped to `visual-explanations/`
+
+---
+
+## 7. Code Simplicity (KISS)
 
 Minimum code that solves the problem. Nothing speculative.
 
@@ -103,7 +151,7 @@ Write code a junior developer can understand. One abstraction level per function
 
 ---
 
-## 7. Surgical Changes
+## 8. Surgical Changes
 
 Touch only what you must. Clean up only your own mess.
 
@@ -123,7 +171,7 @@ Every changed line must trace directly to the user's request.
 
 ---
 
-## 8. DRY
+## 9. DRY
 
 Every piece of logic has a single authoritative location.
 
@@ -157,7 +205,7 @@ def send_urgent_notification(user_id, message):
 
 ---
 
-## 9. Commit Discipline
+## 10. Commit Discipline
 
 Each commit = one logical unit of work. Target 1–50 lines, 50–100 acceptable, 100+ rare.
 
@@ -178,19 +226,19 @@ Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`
 
 ---
 
-## 10. Code Review
+## 11. Code Review
 
 Complete implementation → `make test` → commit/push/PR → fresh Claude session → `/review` with PR link → fix issues → `make test` → push → re-run `/review` if significant changes.
 
 ---
 
-## 11. Minimal Dependencies
+## 12. Minimal Dependencies
 
 Before adding: can it be done in <50 lines? Is it well-maintained with a small dep tree and compatible license? Prefer standard library > single-purpose lib > framework.
 
 ---
 
-## 12. Explicit Communication
+## 13. Explicit Communication
 
 When explaining something, writing documentation, or creating notes, write so that a reader never has to infer missing meaning. The result must be unambiguous and directly actionable.
 
@@ -218,6 +266,8 @@ When explaining something, writing documentation, or creating notes, write so th
 * [ ] Unit + E2E tests (happy path + edge cases)
 * [ ] `make test` passes (tests + types + lint)
 * [ ] CI verified locally
+* [ ] Visual explanation SVGs added for architecture, workflow, data-flow, or process changes
+* [ ] Only SVG files are committed for visual explanations; no Mermaid source files are tracked
 * [ ] Code is minimal: no speculative features, single-use abstractions, or unrequested configurability
 * [ ] Changed lines trace directly to the request
 * [ ] Only your own unused imports, variables, functions, files, and tests were removed
