@@ -88,7 +88,7 @@ test:
 
 ## 6. Visual Explanations
 
-Use visual explanations instead of `ARCHITECTURE_DIFF.md` for changes that alter architecture, module ownership, workflows, data flow, control flow, storage layout, API contracts, or review-critical process.
+Create visual explanations for changes that alter architecture, module ownership, workflows, data flow, control flow, storage layout, API contracts, or review-critical process.
 
 Visual explanations are PR review artifacts, not permanent documentation. Store committed visual explanation SVG files under `visual-explanations/`. Cleanup is owned by the reusable workflow at `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml`. Repositories that use visual explanations must call that workflow on `push` to `main` so merged SVG artifacts are deleted from `main`.
 
