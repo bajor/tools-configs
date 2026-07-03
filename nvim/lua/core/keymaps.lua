@@ -21,9 +21,6 @@ map('n', '<Leader>q', ':cclose<CR>', opts)
 map('n', '<F2>', vim.lsp.buf.rename, opts)
 map('n', '<Leader>n', ':nohl<CR>', opts)
 
--- NvimTree
-map('n', '<D-S-e>', ':NvimTreeToggle<CR>', opts)
-
 -- Copilot Chat
 map('n', '<D-S-i>', function() require('CopilotChat').toggle() end, opts)
 map('v', '<D-S-i>', function() require('CopilotChat').toggle() end, opts)
