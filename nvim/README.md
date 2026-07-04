@@ -1,4 +1,4 @@
-**Floating terminal - `<leader>f`**
+**Floating terminal - `<M-f>`**
 
 ---
 
