@@ -8,9 +8,6 @@ Plug('morhetz/gruvbox')
 Plug('nvim-tree/nvim-web-devicons')
 Plug('nvim-lualine/lualine.nvim')
 
--- File Explorer
-Plug('nvim-tree/nvim-tree.lua')
-
 -- LSP & Completion
 Plug('hrsh7th/nvim-cmp')
 Plug('hrsh7th/cmp-nvim-lsp')

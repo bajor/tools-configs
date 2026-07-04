@@ -4,25 +4,6 @@
 vim.cmd('syntax enable')
 vim.cmd('colorscheme gruvbox')
 
--- Nvim-tree
-local ok_tree, nvim_tree = pcall(require, 'nvim-tree')
-if ok_tree then
-  nvim_tree.setup({
-    view = { side = "right" },
-    renderer = {
-      group_empty = true,
-    },
-    git = {
-      enable = true,
-      ignore = false,
-    },
-    filters = {
-      dotfiles = false,
-      git_ignored = false,
-    },
-  })
-end
-
 -- Lualine
 local ok_lualine, lualine = pcall(require, 'lualine')
 if ok_lualine then

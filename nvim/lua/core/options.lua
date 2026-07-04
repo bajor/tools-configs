@@ -20,7 +20,3 @@ opt.hidden = true
 opt.updatetime = 300
 opt.shortmess:append('c')
 opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
-
--- Disable netrw for nvim-tree
-g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1
