@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual Note Refactor"
+  short_description: "Turn Markdown notes into visual-first notes"
+  default_prompt: "Use $visual-note-refactor to create a sidecar visual-first version of this Markdown note."
