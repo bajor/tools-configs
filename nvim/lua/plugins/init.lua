@@ -59,7 +59,7 @@ Plug('3rd/image.nvim')
 Plug('3rd/diagram.nvim')
 
 -- PR Review
-Plug('~/.vim/plugged/nvim-raccoon')
+Plug('bajor/nvim-raccoon')
 Plug('bajor/nvim-raccoon-diffs')
 
 vim.call('plug#end')
