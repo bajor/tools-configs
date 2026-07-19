@@ -1,3 +1,5 @@
+## External editor
+
 To use Neovim as the external editor for writing OpenCode prompts, set these environment variables in your shell configuration:
 
 ```sh
