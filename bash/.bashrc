@@ -20,3 +20,6 @@ mermaid() { mmdc -i "$1" -o /tmp/mermaid-out.svg && open /tmp/mermaid-out.svg; }
 alias claudeskip="claude --dangerously-skip-permissions"
 
 alias codexskip="codex --dangerously-bypass-approvals-and-sandbox"
+alias codexread="codex --sandbox read-only --ask-for-approval never"
+
+alias openskip="opencode --yolo"
