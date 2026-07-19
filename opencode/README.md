@@ -18,4 +18,18 @@ echo "$VISUAL"
 
 Both should print `nvim`.
 
-In OpenCode, use `/editor` (or the configured editor keybinding) to compose the current prompt in Neovim.
+Setting these variables does **not** make OpenCode's built-in prompt textbox behave like Neovim. Neovim mappings such as `jk` -> `Esc` only work after OpenCode launches the external editor.
+
+In OpenCode, run:
+
+```text
+/editor
+```
+
+This opens the current prompt in Neovim. Write and edit the prompt there using your normal Neovim configuration and mappings, then save and quit with:
+
+```vim
+:wq
+```
+
+The edited text is returned to OpenCode's prompt composer, where it can be submitted normally.
