@@ -13,6 +13,10 @@ In OpenCode, run:
 /editor
 ```
 
+## Output styles plugin
+
+Install the plugin with `opencode plugin @capybearista/opencode-output-styles`, then select a style using `/output-style <name>`. I recommend the `explanatory` style for clearer technical explanations.
+
 ## LSP configuration
 
 OpenCode does not enable LSP servers unless `lsp` is configured in `opencode.json`.
