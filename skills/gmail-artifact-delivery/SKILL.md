@@ -1,6 +1,6 @@
 ---
 name: gmail-artifact-delivery
-description: Send formal, content-first plain-text artifacts through the `gmail-send-to-list-only` MCP. Use when the user asks to email, send, or deliver notes, reports, analyses, memos, findings, status updates, decisions, checklists, or similar work products. Treat email as a transport envelope for the artifact, not as conversational correspondence.
+description: Send formal, content-first artifacts through the `gmail-send-to-list-only` MCP with plain text, optional HTML, and optional attachments. Use when the user asks to email, send, or deliver notes, reports, analyses, memos, findings, status updates, decisions, checklists, or similar work products.
 ---
 
 # gmail-artifact-delivery
@@ -20,7 +20,9 @@ Writing style:
 - start immediately with the purpose, conclusion, title, or most important result
 - use formal, precise, neutral language
 - prefer dense, useful information over politeness padding
-- use plain-text headings, bullets, and numbered lists when they improve scanning
+- use headings, bullets, and numbered lists when they improve scanning
+- prefer `body_html` for Markdown, notes, reports, tables, or structured artifacts that benefit from visual hierarchy
+- always provide `body_text` as a readable fallback containing the same essential information
 - make the artifact self-contained enough to understand without prior chat context
 - distinguish facts, assumptions, risks, decisions, and recommendations when relevant
 
@@ -70,15 +72,16 @@ Recipient handling:
 Sending rules:
 - Call `gmail_send_email` only when the user explicitly asks to send, email, or deliver the artifact now.
 - If the user asks only to prepare, draft, write, or review content, do not send it.
-- The MCP sends plain text only. Do not imply HTML formatting, attachments, drafts, replies, Cc, or Bcc are available.
-- Never write "see attached" or depend on an attachment; include the useful content directly in the body.
-- Before sending, verify recipient IDs, subject, body, and that conversational filler has not crept in.
+- The MCP supports `body_text`, optional `body_html`, and optional `attachments`. It does not support drafts, replies, Cc, Bcc, raw MIME, or arbitrary recipients.
+- Put the artifact directly in the email body whenever practical. Use attachments only when they add value, such as requested source files, data files, images, or generated artifacts the user explicitly asked to receive.
+- Do not write "see attached" as the only useful content; the body must explain what is attached and include the core message.
+- Before sending, verify recipient IDs, subject, body, optional HTML, attachments, and that conversational filler has not crept in.
 - Sending is immediate and non-idempotent. Do not automatically retry after a timeout or ambiguous transport failure; report the uncertainty and require checking Gmail Sent before any resend.
 
 When the user says things like "send me the analysis", "email the report", or "deliver these notes", interpret the request as:
 1. produce the best structured artifact for the content;
 2. remove ordinary email small talk and ceremony;
 3. use a precise subject;
-4. send the artifact directly in the plain-text body through `gmail-send-to-list-only`.
+4. send the artifact directly in `body_html` when useful, with a readable `body_text` fallback through `gmail-send-to-list-only`.
 
 Only use conventional email framing when the user explicitly asks for a normal email, greeting, personal note, or conversational tone.
