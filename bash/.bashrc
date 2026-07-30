@@ -10,6 +10,7 @@ alias amend='git add . && git status && git diff --cached && git commit --amend 
 alias current="cd /Users/m/repos/current"
 
 alias vps="mosh <user>@<ip>  -- tmux new-session -A -s main"
+alias leet="mosh ubuntu@<ip> -- bash -lc 'tmux has-session -t leet 2>/dev/null || tmux new-session -d -s leet -c \"\$HOME/current-leet\" \"nvim main.py; exec \$SHELL -l\"; tmux attach-session -t leet'"
 
 
 ################################################################## diagrams
