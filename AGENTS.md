@@ -9,14 +9,15 @@
 5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
 6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
 7. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-8. **Explain structural changes visually** — For architecture, workflow, or data-flow changes, create PR-only SVG flowcharts with explicit descriptions
-9. **Verify before committing** — `make test` must pass (tests + types + lint)
-10. **Split large work** — Multiple focused PRs (<500 lines each)
-11. **Commit frequently** — One logical change per commit
-12. **Branch from main** — Every task gets a fresh branch
-13. **DRY** — Search first, reuse and extend existing code
-14. **Name every value** — Give constants and thresholds descriptive identifiers
-15. **Push and PR** — Every completed branch gets pushed with a PR immediately
+8. **Design for the long term** — Make architectural decisions for the long term; reject stopgaps meant to be replaced later
+9. **Explain structural changes visually** — For architecture, workflow, or data-flow changes, create PR-only SVG flowcharts with explicit descriptions
+10. **Verify before committing** — `make test` must pass (tests + types + lint)
+11. **Split large work** — Multiple focused PRs (<500 lines each)
+12. **Commit frequently** — One logical change per commit
+13. **Branch from main** — Every task gets a fresh branch
+14. **DRY** — Search first, reuse and extend existing code
+15. **Name every value** — Give constants and thresholds descriptive identifiers
+16. **Push and PR** — Every completed branch gets pushed with a PR immediately
 
 **Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.**
 
@@ -86,7 +87,15 @@ test:
 
 ---
 
-## 6. Visual Explanations
+## 6. Long-Term Architecture
+
+Make architectural decisions for the long term. Do not accept a stopgap that only works for now and is meant to be replaced later.
+
+If the correct architecture is larger than the current task can safely deliver, split the work into focused PRs that move directly toward the durable design. Do not add temporary abstractions, compatibility layers, duplicated paths, or throwaway implementations unless they are explicitly required for a safe migration of persisted data, shipped behavior, or external consumers.
+
+---
+
+## 7. Visual Explanations
 
 Create visual explanations for changes that alter architecture, module ownership, workflows, data flow, control flow, storage layout, API contracts, or review-critical process.
 
@@ -133,7 +142,7 @@ Acceptance criteria for visual explanations:
 
 ---
 
-## 7. Code Simplicity (KISS)
+## 8. Code Simplicity (KISS)
 
 Minimum code that solves the problem. Nothing speculative.
 
@@ -151,7 +160,7 @@ Write code a junior developer can understand. One abstraction level per function
 
 ---
 
-## 8. Surgical Changes
+## 9. Surgical Changes
 
 Touch only what you must. Clean up only your own mess.
 
@@ -171,7 +180,7 @@ Every changed line must trace directly to the user's request.
 
 ---
 
-## 9. DRY
+## 10. DRY
 
 Every piece of logic has a single authoritative location.
 
@@ -205,7 +214,7 @@ def send_urgent_notification(user_id, message):
 
 ---
 
-## 10. Commit Discipline
+## 11. Commit Discipline
 
 Each commit = one logical unit of work. Target 1–50 lines, 50–100 acceptable, 100+ rare.
 
@@ -226,19 +235,19 @@ Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`
 
 ---
 
-## 11. Code Review
+## 12. Code Review
 
 Complete implementation → `make test` → commit/push/PR → fresh Claude session → `/review` with PR link → fix issues → `make test` → push → re-run `/review` if significant changes.
 
 ---
 
-## 12. Minimal Dependencies
+## 13. Minimal Dependencies
 
 Before adding: can it be done in <50 lines? Is it well-maintained with a small dep tree and compatible license? Prefer standard library > single-purpose lib > framework.
 
 ---
 
-## 13. Explicit Communication
+## 14. Explicit Communication
 
 When explaining something, writing documentation, or creating notes, write so that a reader never has to infer missing meaning. The result must be unambiguous and directly actionable.
 
@@ -263,6 +272,7 @@ When explaining something, writing documentation, or creating notes, write so th
 * [ ] Plan mode used (if medium+ task)
 * [ ] Large task split into focused PRs with `[X/N]` merge order
 * [ ] Types prevent invalid states
+* [ ] Architecture is long-term; no stopgap is accepted if it is meant to be replaced later
 * [ ] Unit + E2E tests (happy path + edge cases)
 * [ ] `make test` passes (tests + types + lint)
 * [ ] CI verified locally
