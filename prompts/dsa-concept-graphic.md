@@ -5,17 +5,24 @@ Copy-paste the prompt below into ChatGPT. Change **only the first line** after `
 ```text
 DSA CONCEPT: MONOTONIC STACK
 
-Treat this message as self-contained. The text after `DSA CONCEPT:` is the only user-provided variable. Use that value as the algorithm/data structure/concept everywhere below.
+The text after `DSA CONCEPT:` is the only variable. Use that value as the algorithm/data structure/concept everywhere below.
 
 TASK
-Generate ONE educational diagram that explains the DSA concept named above.
+Render ONE educational DSA diagram using the image-generation tool.
 
-Generate the diagram immediately. The response to this message should be the diagram, not a plan, explanation, rewritten prompt, confirmation, or clarification question.
+TOOL CALL — REQUIRED
+Call `image_gen.text2im` immediately.
+Use these arguments for the call:
+- `prompt = null`
+- `referenced_image_ids = null`
+- `is_style_transfer = false`
+
+Do not provide prose before or after the tool call. The visible response should be the rendered diagram.
 
 GOAL
 Make the concept understandable almost entirely from the picture. Use a simple physical analogy that matches the actual mechanism of the concept, not merely its appearance.
 
-Before generating the diagram, reason through the concept internally and choose one small concrete example whose states are algorithmically correct. Verify every value, ordering, push/pop/move, pointer, comparison, transition, and final state. The labels and visible objects MUST match exactly.
+Before rendering, reason through the concept internally and choose one small concrete example whose states are algorithmically correct. Verify every value, ordering, push/pop/move, pointer, comparison, transition, and final state. The labels and visible objects MUST match exactly.
 
 VISUAL STYLE
 - clean technical line drawing / engineering sketch
@@ -41,7 +48,7 @@ VISUAL STYLE
 LAYOUT
 Use as many sequential stages as the concept actually requires.
 
-Do NOT impose a fixed number of panels or steps. Prefer the smallest number of stages that preserves correctness and makes the mechanism visually obvious. A simple concept may need only a few stages; a concept with important intermediate state changes may need more.
+Do NOT impose a fixed number of panels or steps. Prefer the smallest number of stages that preserves correctness and makes the mechanism visually obvious. Include additional intermediate stages whenever the algorithm performs meaningful repeated operations that would otherwise be ambiguous.
 
 Possible stage roles include:
 - initial state
@@ -59,7 +66,7 @@ Choose ONE physical analogy that makes the invariant or mechanism visually obvio
 Possible analogy families:
 - stack -> objects physically stacked on a rod or shelf
 - queue -> people or objects in a line
-- monotonic stack -> different-size discs/weights where physical size encodes numeric order and incompatible top elements are removed
+- monotonic stack -> different-size physical objects where size encodes value and invalid top elements are removed
 - heap -> physical tree or tournament hierarchy
 - sliding window -> movable frame over a row
 - two pointers -> two markers moving over one sequence
@@ -69,7 +76,7 @@ Possible analogy families:
 - union-find -> groups physically connected into components
 - graph shortest path -> nodes/roads with highlighted frontier/path
 
-Do not force these examples. Prefer a different analogy if it represents the concept named above more faithfully.
+Do not force these examples. Prefer a different analogy if it represents the concept more faithfully.
 
 CORRECTNESS — NON-NEGOTIABLE
 - Determine the exact invariant/mechanism first.
@@ -85,7 +92,7 @@ CORRECTNESS — NON-NEGOTIABLE
 - If the concept has increasing/decreasing, min/max, left/right, or similar variants and the variant is specified in `DSA CONCEPT:`, follow it exactly.
 
 TEXT INSIDE THE DIAGRAM
-- ALL text inside the generated diagram MUST be in English, regardless of the language of the surrounding chat.
+- ALL text inside the rendered diagram MUST be in English, regardless of the language of the surrounding chat.
 - Keep text extremely short.
 - Prefer labels like `start`, `push 5`, `pop 2`, `left`, `right`, `current`, `result`.
 - No explanatory paragraphs.
@@ -111,5 +118,5 @@ FINAL INTERNAL CHECK
 6. Is every piece of text inside the diagram in English?
 7. Are there any shadows, gradients, decoration, or unnecessary text? Remove them.
 
-Generate the diagram now.
+Call `image_gen.text2im` now with `referenced_image_ids = null` and render the diagram.
 ```
