@@ -1,16 +1,31 @@
 # DSA concept graphic prompt
 
-Use this prompt by replacing `{{ALGORITHM}}` with the DSA algorithm/data structure/concept you want to explain.
+Copy-paste the prompt below into ChatGPT. Change **only the first line** after `DSA CONCEPT:`.
 
 ```text
-Create a single educational diagram that explains this DSA concept:
+DSA CONCEPT: MONOTONIC STACK
 
-{{ALGORITHM}}
+The text after `DSA CONCEPT:` above is the only user-editable input. Treat that value as the algorithm/data structure/concept to explain everywhere below. Do not ask the user to repeat or substitute it anywhere else.
 
-Goal:
-Make the concept understandable almost entirely from the picture. Use a simple physical analogy that matches the actual mechanism of the algorithm/data structure, not just its appearance.
+TASK
+Create and render ONE brand-new educational image that explains the DSA concept named above.
 
-Before drawing, reason through the algorithm and choose one small concrete example whose states are mathematically and algorithmically correct. Verify every value, ordering, push/pop/move, pointer, comparison, and final state before rendering. The written labels and the objects visible in the drawing MUST match exactly.
+EXECUTION MODE — CRITICAL
+- This is a NEW text-to-image generation request.
+- Generate the image immediately.
+- Do NOT treat this as an edit of a previous image.
+- Do NOT ask for a reference image, previous diagram, upload, attachment, or image target.
+- Do NOT say that an image must be uploaded before you can continue.
+- Ignore previous images in the conversation as edit targets unless the user explicitly says: "edit this attached image".
+- Phrases such as "same style", "similar to the previous one", "like before", or contextual references to earlier diagrams describe STYLE ONLY. They must never convert this task into image editing.
+- Recreate the required style entirely from the written instructions below.
+- Do NOT answer with a plan, explanation, rewritten prompt, or clarification question.
+- If an image-generation tool is available, CALL IT directly and return the generated image.
+
+GOAL
+Make the concept understandable almost entirely from the picture. Use a simple physical analogy that matches the actual mechanism of the concept, not merely its appearance.
+
+Before rendering, reason through the concept internally and choose one small concrete example whose states are algorithmically correct. Verify every value, ordering, push/pop/move, pointer, comparison, transition, and final state. The labels and visible objects MUST match exactly.
 
 VISUAL STYLE
 - clean technical line drawing / engineering sketch
@@ -26,81 +41,80 @@ VISUAL STYLE
 - green only for the new/current/successful element
 - red only for removed/rejected/invalidated elements or arrows
 - everything else black/white
-- thick enough outlines to be easy to trace manually from an iPad screen in Freeform
-- large simple shapes with generous spacing
+- thick outlines, easy to manually trace from an iPad screen in Freeform
+- large simple shapes
+- generous spacing
 - minimal text
-- avoid paragraphs
+- no paragraphs inside the image
 - prefer labels, arrows, numbers, and state transitions
 
 LAYOUT
-Use 3-5 horizontal numbered panels showing the concept step by step.
+Use 3-5 simple numbered panels showing the concept step by step.
 
 Typical structure:
 1. initial state
-2. a new input/action arrives
-3. the algorithm performs its key operation(s)
+2. new input/action
+3. key algorithm operation(s)
 4. final state
 
-If the concept is better explained with another sequence, adapt the panels, but keep the diagram simple and sequential.
+Adapt this sequence when another layout explains the concept more faithfully, but keep it simple and sequential.
 
 ANALOGY
-Choose ONE physical analogy that makes the invariant/mechanism obvious.
-Examples of acceptable analogy types:
-- stack -> objects physically stacked on a rod/shelf
-- queue -> people/objects in a line
-- monotonic stack -> different-size discs/weights stacked so physical size encodes numeric order; a new disc removes incompatible discs from the top
-- heap -> physical tree / tournament hierarchy
-- sliding window -> movable frame over a row of objects
+Choose ONE physical analogy that makes the invariant or mechanism visually obvious.
+
+Possible analogy families:
+- stack -> objects physically stacked on a rod or shelf
+- queue -> people or objects in a line
+- monotonic stack -> different-size discs/weights where physical size encodes numeric order and incompatible top elements are removed
+- heap -> physical tree or tournament hierarchy
+- sliding window -> movable frame over a row
 - two pointers -> two markers moving over one sequence
-- binary search -> progressively narrowed physical search interval
-- BFS -> expanding wave/frontier
+- binary search -> progressively narrowed search interval
+- BFS -> expanding frontier/wave
 - DFS -> one path explored deeply before backtracking
 - union-find -> groups physically connected into components
-- graph shortest path -> simple nodes/roads with highlighted frontier/path
+- graph shortest path -> nodes/roads with highlighted frontier/path
 
-Do NOT force any of these if another analogy represents {{ALGORITHM}} more faithfully.
+Do not force these examples. Prefer a different analogy if it represents the concept named above more faithfully.
 
-IMPORTANT CORRECTNESS RULES
-- First determine the exact invariant of {{ALGORITHM}}.
-- Pick a tiny example, usually 4-7 elements.
+CORRECTNESS — NON-NEGOTIABLE
+- Determine the exact invariant/mechanism first.
+- Use a tiny example, usually 4-7 elements.
 - Simulate every step internally before drawing.
-- Every object drawn must have the correct label/value.
-- If a state says `[9, 7, 4, 2]`, the image must visibly contain exactly 9, 7, 4, 2 in that order.
-- If elements are removed, show only those exact elements as removed.
-- The final state must be exactly what the algorithm produces.
-- Do not invent an operation merely because it makes the visual nicer.
-- If the algorithm has increasing/decreasing variants, infer the requested one from the name; if explicitly specified, follow it exactly.
+- Every visible object must have the correct value/label.
+- Written state and drawn state must contain EXACTLY the same elements in EXACTLY the same order.
+- Example: if the state is `[9, 7, 4, 2]`, the drawing must visibly contain 9, 7, 4, and 2 in that order — no missing 7, no extra value, no reordered objects.
+- If elements are removed, show only the exact elements that the algorithm removes.
+- The final state must be exactly correct.
+- Never invent an operation because it makes the picture look better.
+- If the concept has increasing/decreasing, min/max, left/right, or similar variants and the variant is specified in `DSA CONCEPT:`, follow it exactly.
 
-TEXT
-- ALL text rendered inside the image MUST be in English, regardless of the language of the user's request.
+TEXT INSIDE THE IMAGE
+- ALL text inside the generated image MUST be in English, regardless of the language of the surrounding chat.
 - Keep text extremely short.
-- Prefer labels such as:
-  - `1. start`
-  - `2. enters 5`
-  - `3. pop 2, pop 4`
-  - `4. push 5`
-  - `stack: 9, 7, 5`
-- Do not include explanatory paragraphs inside the image.
-- At most one short English sentence at the bottom summarizing the invariant.
+- Prefer labels like `start`, `push 5`, `pop 2`, `left`, `right`, `current`, `result`.
+- No explanatory paragraphs.
+- At most one short English sentence summarizing the invariant.
 
 COMPOSITION
 - landscape orientation
-- each panel separated by a thin horizontal line or simple border
-- main diagram centered/left
-- small textual state summary on the right when useful
-- arrows should clearly show direction of change
-- removed objects may be moved to a small `OUT` area and outlined in red
-- keep numeric/value labels large and readable
+- simple panel separation
+- main visual centered or left-aligned
+- small state summary on the right only when useful
+- arrows clearly indicate motion or state change
+- removed/rejected objects may move to a small `OUT` area and use red outlines/arrows
+- large readable numeric labels
 
-The result should look like a textbook/whiteboard teaching diagram designed for manual tracing, not like an infographic poster.
+The result should look like a clean textbook/whiteboard teaching diagram designed for manual tracing, NOT like a polished marketing infographic.
 
-Final internal check before rendering:
-1. Is the analogy faithful to the algorithm's actual mechanism?
-2. Do all visible values exactly match the stated state?
+FINAL INTERNAL CHECK BEFORE RENDERING
+1. Does the analogy faithfully model the real mechanism?
+2. Do all visible values exactly match the intended state?
 3. Are all transitions valid?
 4. Is the final state correct?
 5. Is every piece of text inside the image in English?
-6. Is there any unnecessary text, shading, decoration, or visual noise? Remove it.
+6. Are there any shadows, gradients, decoration, or unnecessary text? Remove them.
+7. Is this being generated as a NEW image rather than treated as an edit? It must be a NEW image.
 
-Generate the image only after these checks pass.
+After these checks, GENERATE THE IMAGE. Do not ask for an image upload or confirmation.
 ```
