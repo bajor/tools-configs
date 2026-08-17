@@ -5,22 +5,20 @@ Copy-paste the prompt below into ChatGPT. Change **only the first line** after `
 ```text
 DSA CONCEPT: MONOTONIC STACK
 
-The text after `DSA CONCEPT:` above is the only user-editable input. Treat that value as the algorithm/data structure/concept to explain everywhere below. Do not ask the user to repeat or substitute it anywhere else.
+The text after `DSA CONCEPT:` above is the only user-provided variable. Treat that value as the algorithm/data structure/concept to explain everywhere below. Do not ask the user to repeat or substitute it anywhere else.
 
 TASK
 Create and render ONE brand-new educational image that explains the DSA concept named above.
 
-EXECUTION MODE — CRITICAL
-- This is a NEW text-to-image generation request.
-- Generate the image immediately.
-- Do NOT treat this as an edit of a previous image.
-- Do NOT ask for a reference image, previous diagram, upload, attachment, or image target.
-- Do NOT say that an image must be uploaded before you can continue.
-- Ignore previous images in the conversation as edit targets unless the user explicitly says: "edit this attached image".
-- Phrases such as "same style", "similar to the previous one", "like before", or contextual references to earlier diagrams describe STYLE ONLY. They must never convert this task into image editing.
-- Recreate the required style entirely from the written instructions below.
-- Do NOT answer with a plan, explanation, rewritten prompt, or clarification question.
-- If an image-generation tool is available, CALL IT directly and return the generated image.
+EXECUTION ROUTING — CRITICAL
+- This is a TEXT-TO-IMAGE generation task.
+- Generate ONE entirely new image from scratch from the written instructions in this message.
+- Use only the text in this message as generation input.
+- Invoke the image-generation tool immediately.
+- Run the generation with no visual input from conversation history.
+- The output of this turn must be the generated image itself.
+- Do NOT answer with a plan, explanation, prompt rewrite, confirmation, or clarification question.
+- Do NOT return prose instead of invoking the image-generation tool.
 
 GOAL
 Make the concept understandable almost entirely from the picture. Use a simple physical analogy that matches the actual mechanism of the concept, not merely its appearance.
@@ -114,7 +112,7 @@ FINAL INTERNAL CHECK BEFORE RENDERING
 4. Is the final state correct?
 5. Is every piece of text inside the image in English?
 6. Are there any shadows, gradients, decoration, or unnecessary text? Remove them.
-7. Is this being generated as a NEW image rather than treated as an edit? It must be a NEW image.
+7. Is the output being produced directly from the written instructions in this message? It must be.
 
-After these checks, GENERATE THE IMAGE. Do not ask for an image upload or confirmation.
+After these checks, GENERATE THE IMAGE NOW.
 ```
