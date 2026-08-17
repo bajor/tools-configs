@@ -72,16 +72,16 @@ IMPORTANT CORRECTNESS RULES
 - If the algorithm has increasing/decreasing variants, infer the requested one from the name; if explicitly specified, follow it exactly.
 
 TEXT
-Keep text extremely short. Prefer labels such as:
-- `1. start`
-- `2. enters 5`
-- `3. pop 2, pop 4`
-- `4. push 5`
-- `stack: 9, 7, 5`
-
-Use the language of the user's request for labels.
-Do not include explanatory paragraphs inside the image.
-At most one short sentence at the bottom summarizing the invariant.
+- ALL text rendered inside the image MUST be in English, regardless of the language of the user's request.
+- Keep text extremely short.
+- Prefer labels such as:
+  - `1. start`
+  - `2. enters 5`
+  - `3. pop 2, pop 4`
+  - `4. push 5`
+  - `stack: 9, 7, 5`
+- Do not include explanatory paragraphs inside the image.
+- At most one short English sentence at the bottom summarizing the invariant.
 
 COMPOSITION
 - landscape orientation
@@ -99,7 +99,8 @@ Final internal check before rendering:
 2. Do all visible values exactly match the stated state?
 3. Are all transitions valid?
 4. Is the final state correct?
-5. Is there any unnecessary text, shading, decoration, or visual noise? Remove it.
+5. Is every piece of text inside the image in English?
+6. Is there any unnecessary text, shading, decoration, or visual noise? Remove it.
 
 Generate the image only after these checks pass.
 ```
