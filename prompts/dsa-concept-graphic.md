@@ -5,25 +5,17 @@ Copy-paste the prompt below into ChatGPT. Change **only the first line** after `
 ```text
 DSA CONCEPT: MONOTONIC STACK
 
-The text after `DSA CONCEPT:` above is the only user-provided variable. Treat that value as the algorithm/data structure/concept to explain everywhere below. Do not ask the user to repeat or substitute it anywhere else.
+Treat this message as self-contained. The text after `DSA CONCEPT:` is the only user-provided variable. Use that value as the algorithm/data structure/concept everywhere below.
 
 TASK
-Create and render ONE brand-new educational image that explains the DSA concept named above.
+Generate ONE educational diagram that explains the DSA concept named above.
 
-EXECUTION ROUTING — CRITICAL
-- This is a TEXT-TO-IMAGE generation task.
-- Generate ONE entirely new image from scratch from the written instructions in this message.
-- Use only the text in this message as generation input.
-- Invoke the image-generation tool immediately.
-- Run the generation with no visual input from conversation history.
-- The output of this turn must be the generated image itself.
-- Do NOT answer with a plan, explanation, prompt rewrite, confirmation, or clarification question.
-- Do NOT return prose instead of invoking the image-generation tool.
+Generate the diagram immediately. The response to this message should be the diagram, not a plan, explanation, rewritten prompt, confirmation, or clarification question.
 
 GOAL
 Make the concept understandable almost entirely from the picture. Use a simple physical analogy that matches the actual mechanism of the concept, not merely its appearance.
 
-Before rendering, reason through the concept internally and choose one small concrete example whose states are algorithmically correct. Verify every value, ordering, push/pop/move, pointer, comparison, transition, and final state. The labels and visible objects MUST match exactly.
+Before generating the diagram, reason through the concept internally and choose one small concrete example whose states are algorithmically correct. Verify every value, ordering, push/pop/move, pointer, comparison, transition, and final state. The labels and visible objects MUST match exactly.
 
 VISUAL STYLE
 - clean technical line drawing / engineering sketch
@@ -43,19 +35,23 @@ VISUAL STYLE
 - large simple shapes
 - generous spacing
 - minimal text
-- no paragraphs inside the image
+- no paragraphs inside the diagram
 - prefer labels, arrows, numbers, and state transitions
 
 LAYOUT
-Use 3-5 simple numbered panels showing the concept step by step.
+Use as many sequential stages as the concept actually requires.
 
-Typical structure:
-1. initial state
-2. new input/action
-3. key algorithm operation(s)
-4. final state
+Do NOT impose a fixed number of panels or steps. Prefer the smallest number of stages that preserves correctness and makes the mechanism visually obvious. A simple concept may need only a few stages; a concept with important intermediate state changes may need more.
 
-Adapt this sequence when another layout explains the concept more faithfully, but keep it simple and sequential.
+Possible stage roles include:
+- initial state
+- incoming value or action
+- comparison or decision
+- state-changing operation
+- repeated operation when required by the algorithm
+- final state or result
+
+Choose only the stages that are useful for the specific concept.
 
 ANALOGY
 Choose ONE physical analogy that makes the invariant or mechanism visually obvious.
@@ -83,12 +79,13 @@ CORRECTNESS — NON-NEGOTIABLE
 - Written state and drawn state must contain EXACTLY the same elements in EXACTLY the same order.
 - Example: if the state is `[9, 7, 4, 2]`, the drawing must visibly contain 9, 7, 4, and 2 in that order — no missing 7, no extra value, no reordered objects.
 - If elements are removed, show only the exact elements that the algorithm removes.
+- If one incoming value causes several repeated operations, show every algorithmically necessary operation or combine them only when the resulting transition remains unambiguous.
 - The final state must be exactly correct.
 - Never invent an operation because it makes the picture look better.
 - If the concept has increasing/decreasing, min/max, left/right, or similar variants and the variant is specified in `DSA CONCEPT:`, follow it exactly.
 
-TEXT INSIDE THE IMAGE
-- ALL text inside the generated image MUST be in English, regardless of the language of the surrounding chat.
+TEXT INSIDE THE DIAGRAM
+- ALL text inside the generated diagram MUST be in English, regardless of the language of the surrounding chat.
 - Keep text extremely short.
 - Prefer labels like `start`, `push 5`, `pop 2`, `left`, `right`, `current`, `result`.
 - No explanatory paragraphs.
@@ -96,7 +93,7 @@ TEXT INSIDE THE IMAGE
 
 COMPOSITION
 - landscape orientation
-- simple panel separation
+- simple visual separation between sequential stages when useful
 - main visual centered or left-aligned
 - small state summary on the right only when useful
 - arrows clearly indicate motion or state change
@@ -105,14 +102,14 @@ COMPOSITION
 
 The result should look like a clean textbook/whiteboard teaching diagram designed for manual tracing, NOT like a polished marketing infographic.
 
-FINAL INTERNAL CHECK BEFORE RENDERING
+FINAL INTERNAL CHECK
 1. Does the analogy faithfully model the real mechanism?
 2. Do all visible values exactly match the intended state?
 3. Are all transitions valid?
-4. Is the final state correct?
-5. Is every piece of text inside the image in English?
-6. Are there any shadows, gradients, decoration, or unnecessary text? Remove them.
-7. Is the output being produced directly from the written instructions in this message? It must be.
+4. Are all algorithmically necessary intermediate operations represented clearly?
+5. Is the final state correct?
+6. Is every piece of text inside the diagram in English?
+7. Are there any shadows, gradients, decoration, or unnecessary text? Remove them.
 
-After these checks, GENERATE THE IMAGE NOW.
+Generate the diagram now.
 ```
