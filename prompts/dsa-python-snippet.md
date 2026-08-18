@@ -13,15 +13,19 @@ Generate exactly TWO separate snippets that teach how this DSA is used in LeetCo
 The output is intended to be copied into Apple Freeform on iOS, so formatting must be simple and stable.
 
 GOAL
-Teach a reusable problem-solving pattern, not the solution to a particular known problem.
+Teach a reusable problem-solving pattern, not the solution to a particular known problem. Give the synthetic example a light real-world flavor so the mechanism is easier to remember.
 
 GENERIC EXAMPLE — CRITICAL
 - Do NOT reproduce or closely paraphrase a specific well-known LeetCode solution.
 - Do NOT mention LeetCode problem numbers or titles.
 - Use a small synthetic example created only to demonstrate the reusable technique.
-- Prefer generic values, nodes, tasks, states, intervals, events, or positions.
-- The example must transfer naturally to many problems.
-- For `STACK`, prefer a generic deferred-work / iterative DFS / backtracking-state pattern over matching-brackets examples unless parsing is explicitly requested.
+- Give the example a simple real-world setting that naturally matches the DSA mechanism, such as rooms, tasks, deliveries, browser history, folders, jobs, roads, customers, containers, or events.
+- The real-world setting is only a memory aid. Keep the algorithmic structure explicit and transferable to abstract problems.
+- Do NOT force an analogy that changes the real behavior of the DSA.
+- Avoid cute stories, long narratives, fictional characters, or decorative details.
+- Prefer short domain names in code such as `rooms`, `tasks`, `routes`, `jobs`, `history`, `next_stops`, or `pending_work` instead of meaningless `A`, `B`, `x`, `state1` when a natural real-world name exists.
+- The example must still transfer naturally to many problems.
+- For `STACK`, prefer a generic deferred-work / iterative DFS / backtracking-state pattern with a realistic setting, such as exploring connected rooms, nested folders, or deferred repair tasks, over matching-brackets examples unless parsing is explicitly requested.
 
 NORMAL VS SPECIALIZED VARIANTS
 Do not silently turn the requested concept into a specialized variant.
@@ -37,10 +41,12 @@ SNIPPET 1 — CODE EXAMPLE
 - Python 3, standard library only unless genuinely necessary.
 - Keep it compact and runnable.
 - Demonstrate one canonical reusable technique for this DSA.
+- Use a small real-world-flavored synthetic example whose physical/logical behavior genuinely matches the technique.
 - Include concise inline comments explaining WHY each important operation is done.
 - Comments must explain the stored state, invariant, deferred work, or decision point — not merely restate the code.
 - Clearly explain in comments what each pushed/stored element represents.
-- Use a tiny synthetic input, usually 4-8 values/nodes/states.
+- Keep comments algorithmic even when variable names use real-world flavor.
+- Use a tiny input, usually 4-8 values/nodes/states.
 - Show a small output only if it helps understanding.
 - No prose before or after this code block except Snippet 2 below.
 
@@ -51,7 +57,7 @@ Use exactly this heading:
 When to think of it
 
 Under it, write 2-4 short bullet points describing recognition signals for this DSA in a new problem.
-Focus on mechanism, not a named problem.
+Focus on the abstract mechanism, NOT the real-world example, so the recognition clues transfer to LeetCode-style problems.
 Examples of the right abstraction level:
 - I need the most recently deferred state first.
 - I need to return to the latest unfinished choice.
@@ -78,7 +84,8 @@ Choose one reusable pattern, for example:
 OUTPUT FORMAT — EXACTLY TWO SNIPPETS
 
 ```python
-# runnable generic example with explanatory comments
+# runnable generic example with light real-world flavor
+# and explanatory algorithmic comments
 ```
 
 When to think of it
