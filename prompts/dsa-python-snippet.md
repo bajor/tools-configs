@@ -25,7 +25,6 @@ GENERIC EXAMPLE — CRITICAL
 - Avoid cute stories, long narratives, fictional characters, or decorative details.
 - Prefer short domain names in code such as `rooms`, `tasks`, `routes`, `jobs`, `history`, `next_stops`, or `pending_work` instead of meaningless `A`, `B`, `x`, `state1` when a natural real-world name exists.
 - The example must still transfer naturally to many problems.
-- For `STACK`, prefer a generic deferred-work / iterative DFS / backtracking-state pattern with a realistic setting, such as exploring connected rooms, nested folders, or deferred repair tasks, over matching-brackets examples unless parsing is explicitly requested.
 
 NORMAL VS SPECIALIZED VARIANTS
 Do not silently turn the requested concept into a specialized variant.
