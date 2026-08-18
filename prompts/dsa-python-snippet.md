@@ -69,20 +69,35 @@ Do not add `What to notice`, `Complexity`, or a conclusion.
 SNIPPET 3 — FULL DRY RUN
 Immediately after Snippet 2, output ONE separate fenced `text` code block that dry-runs the exact example from Snippet 1.
 
-Requirements:
-- Show EVERY loop iteration / processing step in execution order. Do not skip iterations.
-- Number them `Iteration 1`, `Iteration 2`, and so on.
-- Separate consecutive iterations with a line containing exactly:
-----------
-- For each iteration, show the important state BEFORE the operation, the current item/value being processed, the important decision/action, and the resulting state AFTER the operation.
-- For a stack/queue/heap/deque, explicitly show its contents before and after each iteration.
-- For pointer/window/traversal techniques, explicitly show the relevant indices/pointers/window/frontier/state before and after each iteration.
-- Show visited/seen/result/output state when it materially changes.
-- Use the same values, names, ordering, and behavior as Snippet 1. The dry run must exactly match the code.
-- Keep each iteration compact and easy to scan in Freeform.
+Use a compact execution-trace style like this:
+- Begin with `START`.
+- Show the important initial data structures directly underneath.
+- Then show each loop iteration or processing step in execution order using the loop/index/current-value variables from the code, for example `i = 2, size = 6` or `room = kitchen`.
+- Under each step, show the actual checks, comparisons, pushes, pops, skips, updates, or pointer moves one after another in the exact order they execute.
+- Write comparisons explicitly when useful, for example `4 < 6 ? yes`.
+- After the operations for that step, show the resulting important data structures.
+- Separate consecutive iterations with a line containing exactly `----------`.
+- End with `FINAL`, then show the final result/state.
+
+Do NOT use artificial labels such as:
+- `Iteration 1`
+- `state before:`
+- `current:`
+- `action:`
+- `state after:`
+
+The trace should read like a human manually stepping through the code, not like a generic logging template.
+
+Additional dry-run requirements:
+- Show EVERY loop iteration / processing step. Do not skip iterations.
+- If one iteration performs several repeated operations, show every one in order.
+- For a stack/queue/heap/deque, explicitly show its contents whenever they change and at the end of each outer iteration.
+- For pointer/window/traversal techniques, explicitly show the relevant indices/pointers/window/frontier whenever they change.
+- Show visited/seen/result/output state whenever it materially changes.
+- Use exactly the same values, names, ordering, and behavior as Snippet 1.
 - Do NOT use a Markdown table.
 - Do NOT omit duplicate/skip/continue iterations if they really occur in the code.
-- End with the final state/result after the last iteration.
+- Keep blank lines between logical groups so the trace is easy to scan in Freeform.
 
 POPULAR TECHNIQUE GUIDANCE
 Choose one reusable pattern, for example:
@@ -112,19 +127,30 @@ When to think of it
 - optional recognition signal
 
 ```text
-Iteration 1
-state before: ...
-current: ...
-action: ...
-state after: ...
+START
+important_state = ...
+result = ...
+
+loop/index/current = ...
+
+check / comparison
+operation
+update
+
+important_state = ...
+result = ...
 ----------
-Iteration 2
-state before: ...
-current: ...
-action: ...
-state after: ...
-...
-final: ...
+loop/index/current = ...
+
+check / comparison
+operation
+update
+
+important_state = ...
+result = ...
+
+FINAL
+result = ...
 ```
 
 Nothing else.
