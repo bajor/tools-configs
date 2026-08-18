@@ -8,7 +8,7 @@ DSA CONCEPT: STACK
 Treat this message as self-contained. The text after `DSA CONCEPT:` is the only user-provided variable. Use that value as the algorithm/data structure/concept everywhere below.
 
 TASK
-Generate exactly TWO separate snippets that teach how this DSA is used in LeetCode-style problem solving.
+Generate exactly THREE separate snippets that teach how this DSA is used in LeetCode-style problem solving.
 
 The output is intended to be copied into Apple Freeform on iOS, so formatting must be simple and stable.
 
@@ -48,7 +48,7 @@ SNIPPET 1 — CODE EXAMPLE
 - Keep comments algorithmic even when variable names use real-world flavor.
 - Use a tiny input, usually 4-8 values/nodes/states.
 - Show a small output only if it helps understanding.
-- No prose before or after this code block except Snippet 2 below.
+- No prose before or after this code block except Snippet 2 and Snippet 3 below.
 
 SNIPPET 2 — WHEN TO THINK OF IT
 Immediately after the code block, output normal proportional-font text, NOT another code block.
@@ -64,7 +64,25 @@ Examples of the right abstraction level:
 - I repeatedly need the best-priority candidate.
 - I need FIFO processing in discovery order.
 
-Do not add `What to notice`, `Complexity`, a conclusion, or any third section.
+Do not add `What to notice`, `Complexity`, or a conclusion.
+
+SNIPPET 3 — FULL DRY RUN
+Immediately after Snippet 2, output ONE separate fenced `text` code block that dry-runs the exact example from Snippet 1.
+
+Requirements:
+- Show EVERY loop iteration / processing step in execution order. Do not skip iterations.
+- Number them `Iteration 1`, `Iteration 2`, and so on.
+- Separate consecutive iterations with a line containing exactly:
+----------
+- For each iteration, show the important state BEFORE the operation, the current item/value being processed, the important decision/action, and the resulting state AFTER the operation.
+- For a stack/queue/heap/deque, explicitly show its contents before and after each iteration.
+- For pointer/window/traversal techniques, explicitly show the relevant indices/pointers/window/frontier/state before and after each iteration.
+- Show visited/seen/result/output state when it materially changes.
+- Use the same values, names, ordering, and behavior as Snippet 1. The dry run must exactly match the code.
+- Keep each iteration compact and easy to scan in Freeform.
+- Do NOT use a Markdown table.
+- Do NOT omit duplicate/skip/continue iterations if they really occur in the code.
+- End with the final state/result after the last iteration.
 
 POPULAR TECHNIQUE GUIDANCE
 Choose one reusable pattern, for example:
@@ -81,7 +99,7 @@ Choose one reusable pattern, for example:
 - union-find -> dynamically merging connected components
 - trie -> prefix state while consuming characters
 
-OUTPUT FORMAT — EXACTLY TWO SNIPPETS
+OUTPUT FORMAT — EXACTLY THREE SNIPPETS
 
 ```python
 # runnable generic example with light real-world flavor
@@ -92,6 +110,22 @@ When to think of it
 - recognition signal
 - recognition signal
 - optional recognition signal
+
+```text
+Iteration 1
+state before: ...
+current: ...
+action: ...
+state after: ...
+----------
+Iteration 2
+state before: ...
+current: ...
+action: ...
+state after: ...
+...
+final: ...
+```
 
 Nothing else.
 ````
