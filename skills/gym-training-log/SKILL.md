@@ -30,7 +30,11 @@ relative path before creating any new file.
    `Cwiczenie | Serie x powtorzenia | Obciazenie | Notatki`.
 7. Preserve per-set differences in reps, load, side, bodyweight, or notes.
 8. Append the new workout under `## Wpisy`; keep existing entries unchanged.
-9. Run `git diff --check` when the diary is inside a Git repository.
+9. When the diary is inside a Git repository, run `git diff --check`. If it
+   passes, inspect `git status --short`, the diary diff, and `git log --oneline
+   -10`; stage only the diary file, commit it on `main` with a concise message
+   such as `Dodaj trening z RRRR-MM-DD`, synchronize with `origin/main`, and
+   push with `git push origin main`.
 
 ## Parsing Rules
 
