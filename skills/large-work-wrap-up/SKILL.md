@@ -1,6 +1,6 @@
 ---
 name: large-work-wrap-up
-description: Use when the user asks to finish, wrap up, close, end, or reflect on a substantial piece of completed work. Review the work and answer two evidence-based questions about confidence and missing context.
+description: Use when the user asks to wrap up, close out, or reflect on a substantial piece of work that is already complete. Review the work and answer two evidence-based questions about confidence and missing context.
 ---
 
 # Large Work Wrap-up
