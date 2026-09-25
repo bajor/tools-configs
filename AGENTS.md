@@ -91,6 +91,15 @@ domain rather than adding wrappers without a correctness benefit.
 
 ## 6. Long-Term Architecture
 
+Use iDesign-style volatility-based decomposition. Structure the system around
+parts that change for different reasons and at different rates, so each unit owns
+one stable responsibility and can evolve with minimal impact on others.
+
+Prefer boundaries that isolate likely change: policy from mechanism, domain logic
+from infrastructure, orchestration from execution, and stable contracts from
+volatile implementations. Optimize for low coupling and high cohesion, not for
+technology layers, framework boundaries, or speculative microservices.
+
 Choose a durable design that satisfies current requirements. If the correct
 architecture exceeds the task's scope, split it into focused pull requests (PRs)
 that move directly toward that design.
