@@ -1,129 +1,155 @@
 # Agent Coding Guidelines
 
-## Core Principles
+## 1. Writing Code
 
-1. **Plan before coding** — Use Plan mode for medium+ tasks
-2. **Type-level correctness** — Make invalid states irrepresentable
-3. **Test thoroughly** — Unit + Component tests, happy paths + edge cases
-4. **Keep it simple** — Minimum code that solves the problem; readable over clever
-5. **Make surgical changes** — Touch only what the request requires; clean up only your own mess
-6. **Clean as you go** — Remove unused code created by your changes; simplify your own work relentlessly
-7. **Minimize dependencies** — Prefer standard library; every external lib is a liability
-8. **Design for the long term** — Make architectural decisions for the long term; reject stopgaps meant to be replaced later
-9. **Explain structural changes visually** — For architecture, workflow, or data-flow changes, create PR-only SVG flowcharts with explicit descriptions
-10. **Verify before committing** — `make test` must pass (tests + types + lint)
-11. **Split large work** — Multiple focused PRs (<500 lines each)
-12. **Commit frequently** — One logical change per commit
-13. **Branch from main** — Every task gets a fresh branch
-14. **DRY** — Search first, reuse and extend existing code
-15. **Name every value** — Give constants and thresholds descriptive identifiers
-16. **Push and PR** — Every completed branch gets pushed with a PR immediately
+Prefer the smallest clear, correct change that fully solves the task.
 
-**Keep it simple. Make surgical changes. Commit after every task. Branch from main. Push and PR.**
+Before editing, understand the affected flow and check whether existing code,
+the standard library, native platform features, or installed dependencies
+already solve it.
 
----
+* Build only what the task requires. Avoid speculative abstractions, flexibility,
+  boilerplate, and unnecessary dependencies.
+* Avoid magic values. Name any literal whose meaning is not obvious at the call site.
+* For bug fixes, inspect every caller of the function being changed. Fix the shared
+  root cause and check affected sibling paths.
+* Prefer deletion and reuse. Never sacrifice correctness or readability to reduce
+  line count or diff size.
+* Suggest a simpler approach when it meets the same requirements. Make routine
+  implementation decisions without stopping for approval.
+* Comment only on non-obvious intent or constraints. Mark deliberate shortcuts with
+  a `ponytail` comment naming the limit and upgrade path. For example:
+  `// ponytail: Loads the bounded export in memory; stream it if exports become unbounded.`
+* Keep hand-written source files at 1,000 lines or fewer. Split before exceeding
+  the limit. Exclude generated files, lockfiles, and fixtures.
+* Keep functions focused and at one abstraction level. Prefer functions under
+  30 lines and fewer than 3 nesting levels when that improves readability.
+* Keep each rule or piece of logic in one authoritative place. Extend existing
+  modules and consolidate duplication affected by the task. Do not create shared
+  abstractions for hypothetical reuse.
+* Before adding a dependency, check whether a small, clear implementation suffices.
+  Require a maintained package, a compatible license, and a justified dependency tree.
 
-## 1. Planning
+### Change Scope
 
-Use Plan mode for multi-file refactors, bug investigations, multi-component changes, anything >30 minutes. Go straight to code only for trivial fixes or explicit unambiguous instructions. When in doubt, plan.
+* Touch only what the request requires. Match the surrounding structure and style.
+* Do not refactor unrelated code or change adjacent comments and formatting.
+* Remove imports, variables, functions, files, and tests made unused by your changes.
+* Mention unrelated dead code when relevant; do not delete it without a request.
+* Preserve unrelated user changes. Every changed line must trace to the task.
 
----
+## 2. Writing Tests
 
-## 2. PR Strategy
+Do not write excessive tests. Only add a test if its failure would tell you
+something is actually broken.
 
-Break large work into focused PRs. Each: reviewable in ~15 min, single purpose, <500 lines, all tests pass.
+* Test observable behavior and contracts. Assertions on styling values, colors,
+  or internal structure fail on harmless changes and pass on real bugs, so leave
+  them out.
+* Choose unit, component, integration, or end-to-end tests according to the failure
+  being checked. Do not add every test layer to every change.
+* Cover meaningful happy paths, failure paths, and edge cases without duplicating
+  existing coverage or mirroring the implementation.
+* For a bug fix, add a focused regression test when it can reproduce the real failure.
+* For documentation or low-impact configuration changes, use relevant validation
+  instead of inventing application tests.
 
-**Workflow:** Identify scope → break into feature-slice chunks → number by merge dependency `[1/N]`, `[2/N]` → for each: branch from main → implement → `make test` → push → create PR → merge → next chunk. Use `[2a/5]`/`[2b/5]` for independent parallel PRs.
+## 3. Writing Style
 
-**Example:**
+No em-dashes. No mannered prose. Use direct, literal language instead of metaphor
+or flourish. Write "a parameter worth varying," not "a dial worth turning," and
+"still matters," not "earns its keep." Say what you mean.
 
-```text
-[1/5] Add user database schema and models (150 lines)
-[2/5] Implement auth service with JWT (200 lines)
-[3/5] Add login/logout API endpoints (180 lines)
-[4/5] Add frontend login UI (220 lines)
-[5/5] Add password reset flow (190 lines)
-```
+* Define non-obvious terms, acronyms, and domain concepts before using them.
+* State relevant scope, assumptions, prerequisites, inputs, outputs, units, defaults,
+  constraints, exceptions, and ownership explicitly.
+* Give procedures as ordered steps. Identify the actor, action, tool or location,
+  expected result, and failure condition when relevant.
+* Distinguish facts, assumptions, requirements, recommendations, and examples.
+* Use concrete dates with timezones, versions, paths, commands, and thresholds.
+  Replace vague references with the exact subject when their meaning is unclear.
+* Include an example when an abstract rule or edge case needs one. State its result.
+* End instructions with explicit acceptance criteria. Prefer a necessary repetition
+  over ambiguity, but omit filler and repeated summaries.
 
----
+## 4. Planning
 
-## 3. Type-Level Design
+Use Plan mode for medium or larger tasks: multi-file refactors, bug investigations,
+multi-component changes, or work expected to exceed 30 minutes. Proceed directly
+for trivial fixes or explicit, unambiguous instructions.
 
-Design types so invalid states are unconstructable. Wrap primitives in domain types (`Age` over `Int`, `UserId` over `String`). Use sum types/enums over boolean flags. Reject invalid values at construction time.
+State consequential assumptions. Ask for clarification when competing interpretations
+would materially change the result; decide routine implementation details yourself.
 
-**Example:**
+## 5. Type-Level Design
 
-```scala
-opaque type Age = Int
-
-object Age:
-  inline def apply(inline n: Int): Age =
-    inline if n < 0 then error("Age cannot be negative") else n
-
-birthday(Age(25))   // works
-birthday(Age(-5))   // compile error
-```
-
----
-
-## 4. Testing
-
-Ship unit + E2E tests covering happy paths and edge cases with every implementation.
-
-**Workflow:** `make test` before changes (baseline) → implement → write/update tests → `make test` after → fix regressions → verify CI locally before pushing.
-
-`make test` must include: unit tests, E2E tests, type checking, linting. If incomplete, fix it first.
-
----
-
-## 5. Type Checking and Linting
-
-Run on every verification cycle. Compiled languages: strict flags, zero warnings. Interpreted: type checker (mypy/pyright/tsc) + linter (eslint/ruff/clippy), both in `make test`.
-
-```makefile
-test:
-	npm run typecheck && npm run lint && npm run test:unit && npm run test:e2e
-```
-
----
+Design types so invalid states are unconstructable. Use domain types where they
+enforce a real invariant, such as a non-negative `Age` or distinct `UserId`.
+Use sum types or enums instead of boolean combinations that permit invalid states.
+Reject invalid values at construction time. Keep these types proportional to the
+domain rather than adding wrappers without a correctness benefit.
 
 ## 6. Long-Term Architecture
 
-Make architectural decisions for the long term. Do not accept a stopgap that only works for now and is meant to be replaced later.
+Choose a durable design that satisfies current requirements. If the correct
+architecture exceeds the task's scope, split it into focused pull requests (PRs)
+that move directly toward that design.
 
-If the correct architecture is larger than the current task can safely deliver, split the work into focused PRs that move directly toward the durable design. Do not add temporary abstractions, compatibility layers, duplicated paths, or throwaway implementations unless they are explicitly required for a safe migration of persisted data, shipped behavior, or external consumers.
+Do not add temporary abstractions, compatibility layers, duplicated paths, or
+throwaway implementations unless required for a safe migration of persisted data,
+shipped behavior, or external consumers. A deliberate shortcut must still satisfy
+current requirements; a `ponytail` comment does not justify incorrect behavior.
 
----
+## 7. Verification
 
-## 7. Visual Explanations
+1. Run the relevant existing checks before editing to establish a baseline.
+2. After editing, run the repository's required checks. Use `make test` where it is
+   defined; otherwise use the documented equivalent. Include applicable tests,
+   type checking, and linting. Use strict compiler settings where supported and
+   introduce no warnings.
+3. Fix regressions caused by the change. Report pre-existing failures or unavailable
+   checks explicitly instead of claiming a pass. Do not build unrelated test
+   infrastructure for a documentation-only change.
+4. Verify the applicable continuous integration (CI) checks locally before pushing.
+   Repeat checks after further changes or failures, not after an unchanged pass.
+
+## 8. PRs and Commit Discipline
+
+Keep each PR focused on one purpose and reviewable in about 15 minutes. Target fewer
+than 500 changed lines per PR, but do not harm correctness or readability to meet
+a diff-size target. Commit completed logical changes frequently, one purpose per commit.
+
+1. Inspect the working tree and preserve unrelated work.
+2. Update `main` from `origin` and create a fresh, descriptive branch from `main`.
+3. Implement the focused change, verify it, and commit it.
+4. Before pushing, fetch `origin` and rebase onto `origin/main`. Resolve conflicts
+   and rerun affected checks if the code changed.
+5. Push the branch and create a PR immediately with a clear title, description,
+   and verification results.
+6. Complete the review below, fix findings, verify the fixes, and push them.
+
+For dependent PRs, number titles by merge order, such as `[1/3]` and `[2/3]`.
+Merge each dependency before starting the next branch from updated `main`.
+Use labels such as `[2a/5]` and `[2b/5]` for independent parallel PRs.
+
+## 9. Visual Explanations
 
 Create visual explanations for changes that alter architecture, module ownership, workflows, data flow, control flow, storage layout, API contracts, or review-critical process.
 
-Visual explanations are PR review artifacts, not permanent documentation. Store committed visual explanation SVG files under `visual-explanations/`. Cleanup is owned by the reusable workflow at `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml`. Repositories that use visual explanations must call that workflow on `push` to `main` so merged SVG artifacts are deleted from `main`.
+Visual explanations are PR review artifacts, not permanent documentation.
 
-Commit only SVG files for each visual explanation. Do not commit `.mmd` files, Mermaid source files, Mermaid Markdown fences, generated HTML, screenshots, PNG fallbacks, or `/tmp` render outputs. Create Mermaid source as a temporary file, render it with `mmdc`, review the SVG, then commit only the SVG:
+1. Write Mermaid source in a temporary file and render it with `mmdc`.
+2. Review the rendered diagram. Use separate diagrams when one would hide important
+   sequencing or combine unrelated concerns.
+3. Commit only the resulting SVG files under `visual-explanations/`. Do not commit
+   Mermaid source, `.mmd` files, Mermaid Markdown fences, generated HTML,
+   screenshots, PNG fallbacks, or temporary render outputs.
+4. Configure cleanup on `push` to `main` through
+   `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml@main`.
+   The caller must grant `contents: write`, pass the required `REMOVE_VISUALS_MAIN`
+   secret, and keep deletion scoped to `visual-explanations/`.
 
-```bash
-mmdc -i "$1" -o /tmp/mermaid-out.svg
-```
-
-Caller workflow example:
-
-```yaml
-name: Delete Visual Explanation SVGs
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  delete-visual-explanation-svgs:
-    uses: bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml@main
-```
-
-Use a series of flowcharts when one diagram would hide important sequencing. Include separate SVGs for separate concerns, such as before/after structure, generation or data flow, and cleanup or lifecycle flow.
-
-Every visual explanation must have a verbose written description in the PR body or in the changed documentation that links the SVG. The description must state:
+Link each SVG in the PR body or changed documentation and explicitly describe:
 
 * what changed,
 * what existed before the change,
@@ -132,157 +158,18 @@ Every visual explanation must have a verbose written description in the PR body 
 * what reviewers should verify,
 * when the SVG will be deleted from `main`.
 
-Acceptance criteria for visual explanations:
+## 10. Code Review
 
-* [ ] SVG files live under `visual-explanations/`
-* [ ] No Mermaid source files or `.mmd` files are tracked
-* [ ] Every SVG has a matching verbose description
-* [ ] SVG cleanup uses `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml`
-* [ ] SVG cleanup is scoped to `visual-explanations/`
+After creating the PR, start a fresh Claude session and run `/review` with the PR
+link. Fix findings, rerun relevant checks, and push the fixes. Repeat the review
+after significant changes. Report explicitly if the review tool is unavailable.
 
----
+## Completion Checklist
 
-## 8. Code Simplicity (KISS)
-
-Minimum code that solves the problem. Nothing speculative.
-
-Write code a junior developer can understand. One abstraction level per function. Functions under 30 lines, nesting under 3 levels. Prefer boring technology.
-
-**Rules:**
-
-* No features beyond what was asked.
-* No abstractions for single-use code.
-* No flexibility or configurability that was not requested.
-* No error handling for impossible scenarios.
-* Let the code speak — if a comment explains *what* it does, rewrite it.
-* If you write 200 lines and it could be 50, rewrite it.
-* Ask: would a senior engineer say this is overcomplicated? If yes, simplify.
-
----
-
-## 9. Surgical Changes
-
-Touch only what you must. Clean up only your own mess.
-
-When editing existing code:
-
-* Do not improve adjacent code, comments, or formatting.
-* Do not refactor code that is not broken.
-* Match existing style, even if you would do it differently.
-* If you notice unrelated dead code, mention it; do not delete it.
-
-When your changes create orphans:
-
-* Remove imports, variables, functions, files, and tests that your changes made unused.
-* Do not remove pre-existing dead code unless asked.
-
-Every changed line must trace directly to the user's request.
-
----
-
-## 10. DRY
-
-Every piece of logic has a single authoritative location.
-
-**Before writing:** search the codebase (grep/IDE/AST) → if found, reuse or generalize → if new, place in shared location designed for reuse → consolidate any duplication found during work.
-
-**Rules:** Read before writing. Extend the original module for new behavior. One fact in one place (config, rules, validation, types). Get it right the first time. Shared logic in shared modules.
-
-**Example — shared validation:**
-
-```python
-# validation.py — single source of truth
-def validate_email(email: str) -> Email:
-    if not re.match(r'^[\w.+-]+@[\w-]+\.[\w.]+$', email):
-        raise ValueError("Invalid email")
-    return Email(email)
-
-# user_api.py / invite_api.py — both call validate_email()
-```
-
-**Example — extending an existing module:**
-
-```python
-# notifications.py — add priority param to existing function
-def send_notification(user_id, message, channel, priority=Priority.NORMAL):
-    ...
-
-def send_urgent_notification(user_id, message):
-    for ch in ("sms", "email"):
-        send_notification(user_id, message, channel=ch, priority=Priority.URGENT)
-```
-
----
-
-## 11. Commit Discipline
-
-Each commit = one logical unit of work. Target 1–50 lines, 50–100 acceptable, 100+ rare.
-
-**Every task follows this flow:**
-
-```bash
-git checkout main && git pull origin main
-git checkout -b <descriptive-branch-name>
-# ... work, committing after each logical change ...
-make test
-git push origin <branch-name>
-gh pr create --title "<title>" --body "<description>"
-```
-
-Commit after: adding a function, fixing a bug, adding a test, refactoring a component, updating config, changing a dependency. Use multiple `-m` flags for details.
-
-Before pushing: fetch origin, rebase main, resolve conflicts, re-run `make test`. After pushing: create PR immediately. Multi-PR tasks use `[X/N]` in title.
-
----
-
-## 12. Code Review
-
-Complete implementation → `make test` → commit/push/PR → fresh Claude session → `/review` with PR link → fix issues → `make test` → push → re-run `/review` if significant changes.
-
----
-
-## 13. Minimal Dependencies
-
-Before adding: can it be done in <50 lines? Is it well-maintained with a small dep tree and compatible license? Prefer standard library > single-purpose lib > framework.
-
----
-
-## 14. Explicit Communication
-
-When explaining something, writing documentation, or creating notes, write so that a reader never has to infer missing meaning. The result must be unambiguous and directly actionable.
-
-**Rules:**
-
-* Define every non-obvious term, acronym, and domain concept before using it.
-* State scope, assumptions, prerequisites, inputs, outputs, units, defaults, constraints, exceptions, and ownership explicitly when relevant.
-* Give procedures as ordered steps. For each step, state the actor, action, location or tool, input, expected result, and failure condition when relevant.
-* Separate facts, assumptions, requirements, options, recommendations, and examples. Label them explicitly.
-* Use exact values instead of vague language: concrete dates with timezones, versions, file paths, commands, input formats, thresholds, and identifiers where applicable.
-* Do not rely on implication, omitted context, “obvious”, “usually”, “etc.”, “appropriate”, “as needed”, or ambiguous references such as “this”, “that”, “above”, or “the previous step”.
-* When more than one interpretation is possible, list the interpretations and either choose one with a stated reason or ask for clarification. Do not silently guess.
-* Include a concrete example for abstract rules and edge cases, and state the expected result.
-* End instructions with explicit acceptance criteria: what must be true for the work to be considered complete.
-* Prefer repetition over ambiguity.
-
----
-
-## Checklist
-
-* [ ] Fresh branch from main
-* [ ] Plan mode used (if medium+ task)
-* [ ] Large task split into focused PRs with `[X/N]` merge order
-* [ ] Types prevent invalid states
-* [ ] Architecture is long-term; no stopgap is accepted if it is meant to be replaced later
-* [ ] Unit + E2E tests (happy path + edge cases)
-* [ ] `make test` passes (tests + types + lint)
-* [ ] CI verified locally
-* [ ] Visual explanation SVGs added for architecture, workflow, data-flow, or process changes
-* [ ] Only SVG files are committed for visual explanations; no Mermaid source files are tracked
-* [ ] Code is minimal: no speculative features, single-use abstractions, or unrequested configurability
-* [ ] Changed lines trace directly to the request
-* [ ] Only your own unused imports, variables, functions, files, and tests were removed
-* [ ] Dependencies justified
-* [ ] DRY — searched codebase, reused/extended existing code
-* [ ] Commits small, frequent.
-* [ ] Branch pushed, PR created with clear title/description
-* [ ] Code review in fresh session with `/review`
+* [ ] The requested behavior is complete, clear, and correct.
+* [ ] Existing code was checked for reuse; scope and dependencies are justified.
+* [ ] Types enforce relevant invariants; source files respect the size limit.
+* [ ] Added tests detect real failures; applicable checks pass or blockers are reported.
+* [ ] Required SVGs and their descriptions are included, with cleanup configured.
+* [ ] Writing is direct, unambiguous, and free of em-dashes.
+* [ ] Changes are committed on a fresh branch, pushed, and submitted as a reviewed PR.
