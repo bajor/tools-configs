@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "fallbackMode": "wait",
+  "cooldownMs": 60000
+}
