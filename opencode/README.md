@@ -1,3 +1,9 @@
+## CLI keybindings
+
+[`cli.json`](cli.json) is a template for the global OpenCode CLI settings file. Merge its `keybinds` object into `~/.config/opencode/cli.json`, or `$XDG_CONFIG_HOME/opencode/cli.json` when `XDG_CONFIG_HOME` is set. It binds `Tab` to cycle to the next agent.
+
+`Tab` is also OpenCode's default shortcut for accepting prompt autocomplete. This overlap is intentional for agent cycling; use `Return` to accept an autocomplete candidate.
+
 ## External editor
 
 To use Neovim as the external editor for writing OpenCode prompts, set these environment variables in your shell configuration:
