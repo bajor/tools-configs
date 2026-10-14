@@ -1,4 +1,8 @@
-**Floating terminal - `<leader>f`**
+**Floating terminal - Cmd+F (`<D-f>`)**
+
+On macOS, the popup and its border occupy only the right half of the Neovim window,
+leaving the left half visible. The layout follows window resizing. Other platforms
+keep the default floating layout.
 
 ---
 
