@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1] - 2026-10-18
+
+### Changed
+
+- Require frequent, descriptive logical commits and preservation of explanatory history.
+- Document artifact-only Raccoon publication on PR branches and opt-in merge cleanup.
+
 ## [0.1] - 2026-06-29
 
 ### Added

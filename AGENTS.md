@@ -128,6 +128,19 @@ Keep each PR focused on one purpose and reviewable in about 15 minutes. Target f
 than 500 changed lines per PR, but do not harm correctness or readability to meet
 a diff-size target. Commit completed logical changes frequently, one purpose per commit.
 
+Commit after completing and verifying each logical change, not only at the end of
+the task. Use a descriptive subject naming the behavior or mechanism changed.
+Explain the reason and non-obvious trade-offs in the body. When reversing an
+earlier approach, record what was rejected and why; do not make readers infer intent.
+Keep one cohesive functionality per PR and do not mix unrelated changes.
+Preserve meaningful commit history with merge or rebase merges rather than squash.
+
+When explicitly asked to generate Raccoon learning artifacts, put them in
+`raccoon-artifacts/` and publish them in a separate artifact-only commit on the PR
+branch. Pin the source snapshot before that commit. Never mix generated materials
+with source changes or commit the private reader profile. Recommend the shared
+workflow's opt-in Raccoon cleanup after merge to `main`.
+
 1. Inspect the working tree and preserve unrelated work.
 2. Update `main` from `origin` and create a fresh, descriptive branch from `main`.
 3. Implement the focused change, verify it, and commit it.
