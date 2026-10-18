@@ -124,22 +124,29 @@ current requirements; a `ponytail` comment does not justify incorrect behavior.
 
 ## 8. PRs and Commit Discipline
 
-Keep each PR focused on one purpose and reviewable in about 15 minutes. Target fewer
-than 500 changed lines per PR, but do not harm correctness or readability to meet
-a diff-size target. Commit completed logical changes frequently, one purpose per commit.
-
-Commit after completing and verifying each logical change, not only at the end of
-the task. Use a descriptive subject naming the behavior or mechanism changed.
+Keep each PR focused on one cohesive functionality and reviewable in about 15 minutes.
+Target fewer than 500 hand-written changed lines per PR, but do not harm correctness
+or readability to meet a diff-size target. Commit after completing and verifying
+each logical change, not only at the end of the task, with one purpose per commit.
+Use a descriptive subject naming the behavior or mechanism changed.
 Explain the reason and non-obvious trade-offs in the body. When reversing an
 earlier approach, record what was rejected and why; do not make readers infer intent.
-Keep one cohesive functionality per PR and do not mix unrelated changes.
-Preserve meaningful commit history with merge or rebase merges rather than squash.
+Do not mix unrelated changes. Preserve meaningful commit history rather than squash,
+unless the repository's own policy requires it. Use merge commits when published
+artifacts pin source SHAs, so those commits remain reachable.
 
-When explicitly asked to generate Raccoon learning artifacts, put them in
-`raccoon-artifacts/` and publish them in a separate artifact-only commit on the PR
-branch. Pin the source snapshot before that commit. Never mix generated materials
-with source changes or commit the private reader profile. Recommend the shared
-workflow's opt-in Raccoon cleanup after merge to `main`.
+Raccoon learning artifacts contain explanations, diagrams and copied Git source.
+Generate and publish them only on explicit request and only to an authorized PR
+branch. Use the Raccoon skill's versioned `raccoon-artifacts/catalog.json` and
+`raccoon-artifacts/pr-N/` layout, not loose notes. Pin the final reviewed source SHA
+before a separate artifact-only commit; do not mix Raccoon output with source edits.
+Keep the private profile at `~/.config/raccoon/READER.md`, outside the repository.
+If source changes or is rebased afterward, regenerate explicitly rather than claim
+the old snapshot covers the new source. Inspect the artifact commit before pushing.
+Recommend `delete-raccoon-artifacts: true` in
+`bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml@main`.
+Cleanup removes the current main tree, not Git history or browser caches. Completion
+requires a valid artifact-only commit on the intended branch and no private profile.
 
 1. Inspect the working tree and preserve unrelated work.
 2. Update `main` from `origin` and create a fresh, descriptive branch from `main`.
