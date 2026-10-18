@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Remove mandatory PR visual explanations; generate them only on explicit request.
 - Require frequent, descriptive logical commits and preservation of explanatory history.
 - Document artifact-only Raccoon publication on PR branches and opt-in merge cleanup.
 

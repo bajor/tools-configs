@@ -37,6 +37,7 @@ already solve it.
 * Remove imports, variables, functions, files, and tests made unused by your changes.
 * Mention unrelated dead code when relevant; do not delete it without a request.
 * Preserve unrelated user changes. Every changed line must trace to the task.
+* Do not create PR visual explanations unless the user explicitly requests them.
 
 ## 2. Writing Tests
 
@@ -161,33 +162,7 @@ For dependent PRs, number titles by merge order, such as `[1/3]` and `[2/3]`.
 Merge each dependency before starting the next branch from updated `main`.
 Use labels such as `[2a/5]` and `[2b/5]` for independent parallel PRs.
 
-## 9. Visual Explanations
-
-Create visual explanations for changes that alter architecture, module ownership, workflows, data flow, control flow, storage layout, API contracts, or review-critical process.
-
-Visual explanations are PR review artifacts, not permanent documentation.
-
-1. Write Mermaid source in a temporary file and render it with `mmdc`.
-2. Review the rendered diagram. Use separate diagrams when one would hide important
-   sequencing or combine unrelated concerns.
-3. Commit only the resulting SVG files under `visual-explanations/`. Do not commit
-   Mermaid source, `.mmd` files, Mermaid Markdown fences, generated HTML,
-   screenshots, PNG fallbacks, or temporary render outputs.
-4. Configure cleanup on `push` to `main` through
-   `bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml@main`.
-   The caller must grant `contents: write`, pass the required `REMOVE_VISUALS_MAIN`
-   secret, and keep deletion scoped to `visual-explanations/`.
-
-Link each SVG in the PR body or changed documentation and explicitly describe:
-
-* what changed,
-* what existed before the change,
-* what exists after the change,
-* which files own the behavior,
-* what reviewers should verify,
-* when the SVG will be deleted from `main`.
-
-## 10. Code Review
+## 9. Code Review
 
 After creating the PR, start a fresh Claude session and run `/review` with the PR
 link. Fix findings, rerun relevant checks, and push the fixes. Repeat the review
@@ -199,6 +174,5 @@ after significant changes. Report explicitly if the review tool is unavailable.
 * [ ] Existing code was checked for reuse; scope and dependencies are justified.
 * [ ] Types enforce relevant invariants; source files respect the size limit.
 * [ ] Added tests detect real failures; applicable checks pass or blockers are reported.
-* [ ] Required SVGs and their descriptions are included, with cleanup configured.
 * [ ] Writing is direct, unambiguous, and free of em-dashes.
 * [ ] Changes are committed on a fresh branch, pushed, and submitted as a reviewed PR.
