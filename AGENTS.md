@@ -132,9 +132,9 @@ each logical change, not only at the end of the task, with one purpose per commi
 Use a descriptive subject naming the behavior or mechanism changed.
 Explain the reason and non-obvious trade-offs in the body. When reversing an
 earlier approach, record what was rejected and why; do not make readers infer intent.
-Do not mix unrelated changes. Preserve meaningful commit history rather than squash,
-unless the repository's own policy requires it. Use merge commits when published
-artifacts pin source SHAs, so those commits remain reachable.
+Do not mix unrelated changes. Merge PRs only with rebase and merge (`gh pr merge --rebase`).
+Do not use merge commits or squash merges. If repository settings block rebase merging,
+report the blocker instead of switching merge methods.
 
 Raccoon learning artifacts contain explanations, diagrams and copied Git source.
 Generate and publish them only on explicit request and only to an authorized PR
