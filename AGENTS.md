@@ -125,10 +125,26 @@ current requirements; a `ponytail` comment does not justify incorrect behavior.
 
 ## 8. PRs and Commit Discipline
 
-Keep each PR focused on one cohesive functionality and reviewable in about 15 minutes.
-Target fewer than 500 hand-written changed lines per PR, but do not harm correctness
-or readability to meet a diff-size target. Commit after completing and verifying
-each logical change, not only at the end of the task, with one purpose per commit.
+Each PR must be small enough for a reviewer to read and understand in 15 minutes.
+Optimize for comprehension: one clear purpose, limited context, and an explanation
+of the behavior, rationale, risks, and verification. Count the time needed to read
+the description, understand the affected code and dependencies, and assess tests.
+
+Before implementation, divide work that exceeds this budget into an ordered series
+of small PRs. A single user request does not imply a single PR. Split by cohesive
+behavior or prerequisite change, not arbitrary file or line counts. Each PR must
+be independently understandable, pass its applicable checks, and leave the project
+in a working state. Keep tests and documentation with the behavior they cover.
+
+Reassess the complete diff before opening each PR and whenever its scope grows.
+If understanding it would take more than 15 minutes, split it again before asking
+for review. Several commits in one large PR do not satisfy this rule. Target fewer
+than 300 hand-written changed lines as a sizing signal, not proof of readability:
+even a smaller diff must be split if it requires too much context. Do not compress
+code, omit tests, or introduce throwaway abstractions to meet the budget.
+
+Commit after completing and verifying each logical change, not only at the end of
+the task, with one purpose per commit.
 Use a descriptive subject naming the behavior or mechanism changed.
 Explain the reason and non-obvious trade-offs in the body. When reversing an
 earlier approach, record what was rejected and why; do not make readers infer intent.
@@ -155,7 +171,8 @@ requires a valid artifact-only commit on the intended branch and no private prof
 4. Before pushing, fetch `origin` and rebase onto `origin/main`. Resolve conflicts
    and rerun affected checks if the code changed.
 5. Push the branch and create a PR immediately with a clear title, description,
-   and verification results.
+   verification results, and a suggested reading order. For a series, state this
+   PR's scope, dependencies, and remaining PRs.
 6. Complete the review below, fix findings, verify the fixes, and push them.
 
 For dependent PRs, number titles by merge order, such as `[1/3]` and `[2/3]`.
@@ -175,4 +192,6 @@ after significant changes. Report explicitly if the review tool is unavailable.
 * [ ] Types enforce relevant invariants; source files respect the size limit.
 * [ ] Added tests detect real failures; applicable checks pass or blockers are reported.
 * [ ] Writing is direct, unambiguous, and free of em-dashes.
+* [ ] Each PR fits the 15-minute comprehension budget; oversized changes are split
+  into cohesive, independently understandable PRs.
 * [ ] Changes are committed on a fresh branch, pushed, and submitted as a reviewed PR.
