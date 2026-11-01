@@ -113,12 +113,14 @@ or flourish. Write "a parameter worth varying," not "a dial worth turning," and
 * Include an example when an abstract rule or edge case needs one. State its result.
 * End instructions with explicit acceptance criteria. Prefer a necessary repetition
   over ambiguity, but omit filler and repeated summaries.
-* In Markdown hosted on Entire, draw diagrams as fixed-width text in a `text` fenced
-  block, at most 80 columns wide, with a legend for any non-obvious line style. Entire
-  does not render Mermaid: a `mermaid` block displays as source code (checked in the
-  entire.com web bundle on 2026-11-01 UTC). Use Mermaid only where the host renders
-  it, such as GitHub. Example: a `text` block with labeled boxes and `-->` arrows
-  displays as a chart on an Entire trail page.
+* In Markdown that readers view on Entire, including repository files, trail
+  descriptions, and trail comments, draw diagrams as fixed-width text in a `text`
+  fenced block, at most 80 columns wide, with a legend for any non-obvious line style.
+  Entire does not render Mermaid: a `mermaid` block displays as source code (checked
+  in the entire.com web bundle on 2026-11-01 UTC, not in a browser). Elsewhere, use
+  Mermaid only if the destination renders it, such as GitHub or a local renderer.
+  Example: a `text` block with labeled boxes and `-->` arrows displays on Entire as
+  monospace text with its spacing kept.
 
 ## 4. Planning
 
