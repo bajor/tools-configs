@@ -7,7 +7,7 @@
 - Remove mandatory PR visual explanations; generate them only on explicit request.
 - Require frequent, descriptive logical commits and preservation of explanatory history.
 - Document artifact-only Raccoon publication on PR branches and opt-in merge cleanup.
-- Require text diagrams instead of Mermaid in Markdown hosted on Entire, which does not render Mermaid.
+- Require text diagrams instead of Mermaid in Markdown that readers view on Entire, which does not render Mermaid.
 
 ## [0.1] - 2026-06-29
 
