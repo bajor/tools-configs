@@ -49,6 +49,14 @@ already solve it.
 
 ### Implementation
 
+* Always prefer explicit named/keyword arguments using actual API parameter names
+  in function, method, and constructor calls whenever supported. Apply automatically
+  to all newly written or modified code in every language, including production
+  code, tests, scripts, and examples. Without native named arguments, prefer an
+  existing options/configuration object API; do not add wrappers or change signatures
+  solely to simulate them. Use positional arguments when required (including
+  positional-only and variadic APIs) or needed for compatibility, correctness, or
+  idiomatic language conventions.
 * Build only what the task requires. Avoid speculative abstractions, flexibility,
   boilerplate, and unnecessary dependencies.
 * Avoid magic values. Name any literal whose meaning is not obvious at the call site.
