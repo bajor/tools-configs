@@ -3,7 +3,11 @@
 Keep one global instruction file at `~/AGENTS.md`, in the root of your home
 directory, not the filesystem root. Use [AGENTS.md](AGENTS.md) as the template.
 
-1. Copy or merge the template into `~/AGENTS.md`, preserving existing local rules.
+Migrating from `<checkout>/AGENTS.md`? Repoint existing links before updating the
+checkout; the template now lives in `agents/AGENTS.md`.
+
+1. Create or update `~/AGENTS.md` by merging the template with any existing rules
+   from that file and the harness instruction files below.
 2. Back up existing harness instruction files, then replace them with direct
    symlinks to `~/AGENTS.md`:
 
