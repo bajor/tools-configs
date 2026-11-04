@@ -32,14 +32,6 @@ map('n', '<Leader>n', ':nohl<CR>', opts)
 -- NvimTree
 map_all('n', { '<Leader>e' }, ':NvimTreeToggle<CR>', opts)
 
--- Copilot Chat
-map_all('n', { '<Leader>ai' }, function()
-  require('CopilotChat').toggle()
-end, opts)
-map_all('v', { '<Leader>ai' }, function()
-  require('CopilotChat').toggle()
-end, opts)
-
 -- Jump list navigation
 map_all('n', { '[b' }, '<C-o>', opts)
 map_all('n', { ']b' }, '<C-i>', opts)
@@ -52,9 +44,7 @@ map('n', 'r', '<C-r>', opts) -- redo (replaces default replace char)
 map('n', '<Leader>v', ':vsplit<CR>', opts)
 map('n', '<Leader>l', '<C-w>l', opts)
 map('n', '<Leader>h', '<C-w>h', opts)
-map('n', '<Leader>j', '<Cmd>ToggleTerm<CR>', opts)
-map('i', '<Leader>j', '<Esc><Cmd>ToggleTerm<CR>', opts)
-map('t', '<Leader>j', '<Cmd>ToggleTerm<CR>', opts)
+map('n', '<Leader>j', '<C-w>j', opts)
 map('n', '<Leader>k', '<C-w>k', opts)
 
 -- Debugging (DAP)
@@ -104,3 +94,10 @@ map('n', '<leader>rt', function() require('config.python_run').test_file() end,
   { desc = 'Test Python file with pytest' })
 map('n', '<leader>rl', function() require('config.python_run').rerun() end,
   { desc = 'Rerun last Python command' })
+
+-- Priority 4: terminal navigation uses Ctrl+letters, never leader.
+for _, direction in ipairs({ 'h', 'j', 'k', 'l' }) do
+  map('t', '<C-' .. direction .. '>', '<C-\\><C-n><C-w>' .. direction,
+    { desc = 'Terminal window ' .. direction })
+end
+map('t', '<C-q>', '<C-\\><C-n>', { desc = 'Terminal normal mode' })

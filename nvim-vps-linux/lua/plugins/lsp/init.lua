@@ -38,7 +38,7 @@ function M.setup()
   vim.api.nvim_create_user_command('VpsInstallTools', function()
     local registry = require('mason-registry')
     registry.refresh(function()
-      for _, name in ipairs({ 'pyright', 'ruff', 'debugpy' }) do
+      for _, name in ipairs({ 'pyright', 'ruff', 'debugpy', 'copilot-language-server' }) do
         local package = registry.get_package(name)
         if not package:is_installed() and not package:is_installing() then
           package:install()
