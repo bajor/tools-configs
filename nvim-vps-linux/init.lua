@@ -8,7 +8,7 @@
         keymaps.lua    - Key mappings
         autocmds.lua   - Autocommands
       config/
-        python_format.lua - Python formatting helper
+        (project helpers)
       plugins/
         init.lua       - Plugin list (vim-plug)
         lsp/
@@ -24,6 +24,7 @@
 
 -- Load core settings
 require('core.options')
+require('core.clipboard')
 require('core.keymaps')
 require('core.autocmds')
 

@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Reload external edits without focus events, block autosave on disk drift,
+  format explicit writes with Conform/Ruff, and use OSC 52 copy/local paste.
+
 - Remove VPS graphics, redundant snippets/comments/diagnostics/signature
   plugins and Raccoon integrations; isolate the VPS plugin directory.
 

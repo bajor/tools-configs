@@ -17,6 +17,7 @@ opt.ignorecase = true
 
 -- Behavior
 opt.hidden = true
+opt.autoread = true
 opt.updatetime = 300
 opt.shortmess:append('c')
 opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
