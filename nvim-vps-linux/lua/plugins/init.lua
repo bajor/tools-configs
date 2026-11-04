@@ -45,8 +45,7 @@ Plug('williamboman/mason.nvim')
 Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
 
 
--- Copilot
-Plug('neovim/nvim-lspconfig')
+-- Agent pane
 Plug('folke/sidekick.nvim')
 
 

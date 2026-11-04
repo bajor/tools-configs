@@ -1,6 +1,4 @@
 -- Run with the real config: nvim --headless '+luafile .../edit-safety.lua'
--- These regressions do not require an authenticated external AI service.
-vim.lsp.enable('copilot', false)
 local path = vim.fn.tempname() .. '.py'
 local function event(name)
   vim.api.nvim_exec_autocmds(name, { buffer = 0 })
