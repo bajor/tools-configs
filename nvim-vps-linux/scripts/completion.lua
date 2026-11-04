@@ -1,4 +1,10 @@
 -- Exercise batched terminal input with the real config and no popup menu.
+local TIMEOUT_MS = 20000
+vim.defer_fn(function()
+  io.stderr:write('Completion regression timed out\n')
+  vim.cmd('cquit 1')
+end, TIMEOUT_MS)
+
 vim.schedule(function()
   local ok, err = xpcall(function()
     local function type_text(keys, expected)
