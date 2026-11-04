@@ -4,8 +4,9 @@
 
 ### Changed
 
-- Add a real-config keymap JSON export and transport/Sweep regression
-  checks; describe insert completion keys for generated documentation.
+- Add a real-config keymap regression check with optional JSON export, and
+  give the insert completion keys descriptions without changing their
+  behavior. Disable Telescope's normal-mode Tab so the check passes.
 
 - Use Sweep letter groups, native comment keys, Flash jumps, described
   Git/code/window/debug maps and no insert/terminal Space prefix mappings.
