@@ -185,7 +185,7 @@
 <text x="221.50" y="57.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,o,x</text>
 <text x="229.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">s</text>
 <text x="239.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Flash jump</text>
-<text x="151.50" y="70.80" font-size="1.7" fill="#66767c" font-weight="normal" text-anchor="start">n normal, i insert, x visual, s select, o operator, t terminal</text>
+<text x="151.50" y="70.80" font-size="1.7" fill="#66767c" font-weight="normal" text-anchor="start">n normal, i insert, x visual, s select, o operator, t terminal, c command line, l language</text>
 <text x="7.50" y="79.50" font-size="3.6" fill="#1b2b30" font-weight="bold" text-anchor="start">Space a: AI</text>
 <rect x="7.50" y="81.80" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="8.30" y="84.80" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">Q</text>
