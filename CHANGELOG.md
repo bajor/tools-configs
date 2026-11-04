@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Add a real-config keymap JSON export and transport/Sweep regression
+  checks; describe insert completion keys for generated documentation.
+
 - Use Sweep letter groups, native comment keys, Flash jumps, described
   Git/code/window/debug maps and no insert/terminal Space prefix mappings.
 
