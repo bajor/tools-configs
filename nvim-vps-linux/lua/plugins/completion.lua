@@ -41,25 +41,27 @@ cmp.setup({
   },
 })
 
--- A fallback key is queued before pending typeahead ('i'), so batched input
--- stays in order over mosh, and it is not remapped ('n'), so it cannot call
--- these maps again.
+-- A fallback key is queued before pending typeahead ('i') and is not
+-- remapped ('n'), so it cannot call these maps again. This keeps batched
+-- input in order on the fallback paths only. With the menu open, cmp still
+-- applies a selection or confirmation after pending typeahead.
 local function fallback(keys)
   vim.api.nvim_feedkeys(vim.keycode(keys), 'in', false)
 end
 
-vim.keymap.set('i', '<C-n>', function()
-  if cmp.visible() then cmp.select_next_item() else cmp.complete() end
-end, { desc = 'Completion next' })
-vim.keymap.set('i', '<C-p>', function()
-  if cmp.visible() then cmp.select_prev_item() else cmp.complete() end
-end, { desc = 'Completion previous' })
-vim.keymap.set('i', '<Down>', function()
-  if cmp.visible() then cmp.select_next_item() else fallback('<Down>') end
-end, { desc = 'Completion next or cursor down' })
-vim.keymap.set('i', '<Up>', function()
-  if cmp.visible() then cmp.select_prev_item() else fallback('<Up>') end
-end, { desc = 'Completion previous or cursor up' })
+-- Move the menu selection while it is open, otherwise run `otherwise`.
+local function menu_map(lhs, select_item, desc, otherwise)
+  vim.keymap.set('i', lhs, function()
+    if cmp.visible() then select_item() else otherwise() end
+  end, { desc = desc })
+end
+
+menu_map('<C-n>', cmp.select_next_item, 'Completion next', cmp.complete)
+menu_map('<C-p>', cmp.select_prev_item, 'Completion previous', cmp.complete)
+menu_map('<Down>', cmp.select_next_item, 'Completion next or cursor down',
+  function() fallback('<Down>') end)
+menu_map('<Up>', cmp.select_prev_item, 'Completion previous or cursor up',
+  function() fallback('<Up>') end)
 vim.keymap.set('i', '<CR>', function()
   -- <C-]> expands an abbreviation first, as a plain Enter would.
   if not cmp.confirm({ select = true }) then fallback('<C-]><CR>') end
