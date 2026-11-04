@@ -43,14 +43,7 @@ local function on_attach(client, bufnr)
 
   vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = bufnr })
 
-  -- Signature help
-  local ok_sig, lsp_signature = pcall(require, 'lsp_signature')
-  if ok_sig then
-    lsp_signature.on_attach({
-      bind = true,
-      handler_opts = { border = "rounded" }
-    }, bufnr)
-  end
+
 end
 
 -- Get LSP capabilities with nvim-cmp support
@@ -92,9 +85,6 @@ function M.setup()
   require('plugins.lsp.servers').setup(M.get_capabilities())
 
   -- Diagnostic config
-  local ok_lines, lsp_lines = pcall(require, 'lsp_lines')
-  if ok_lines then lsp_lines.setup() end
-
   vim.diagnostic.config({
     virtual_text = { spacing = 4 },
     virtual_lines = false,

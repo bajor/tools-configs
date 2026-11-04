@@ -19,7 +19,7 @@ end
 
 -- Telescope
 map('n', '<Leader>ff', ':Telescope find_files<CR>', opts)
-map_all('n', { '<D-p>', '<M-p>', '<Leader>fg' }, function()
+map_all('n', { '<Leader>fg' }, function()
   require('plugins.telescope').multi_grep()
 end, opts)
 map('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
@@ -30,19 +30,19 @@ map('n', '<F2>', vim.lsp.buf.rename, opts)
 map('n', '<Leader>n', ':nohl<CR>', opts)
 
 -- NvimTree
-map_all('n', { '<D-S-e>', '<M-S-e>', '<Leader>e' }, ':NvimTreeToggle<CR>', opts)
+map_all('n', { '<Leader>e' }, ':NvimTreeToggle<CR>', opts)
 
 -- Copilot Chat
-map_all('n', { '<D-S-i>', '<M-S-i>', '<Leader>ai' }, function()
+map_all('n', { '<Leader>ai' }, function()
   require('CopilotChat').toggle()
 end, opts)
-map_all('v', { '<D-S-i>', '<M-S-i>', '<Leader>ai' }, function()
+map_all('v', { '<Leader>ai' }, function()
   require('CopilotChat').toggle()
 end, opts)
 
 -- Jump list navigation
-map_all('n', { '<D-h>', '<D-[>', '<M-Left>', '<M-h>', '<M-[>', '[b' }, '<C-o>', opts)
-map_all('n', { '<D-]>', '<M-Right>', '<M-l>', '<M-]>', ']b' }, '<C-i>', opts)
+map_all('n', { '[b' }, '<C-o>', opts)
+map_all('n', { ']b' }, '<C-i>', opts)
 
 -- Editing
 map('i', 'jk', '<Esc>')
@@ -96,9 +96,3 @@ map('n', '<Leader>dt', function()
   local dap = safe_require('dap')
   if dap then dap.terminate() end
 end, opts)
-
--- Commenting
-map_all('n', { '<D-/>', '<M-/>' }, function()
-  require('Comment.api').toggle.linewise.current()
-end, opts)
-map_all('x', { '<D-/>', '<M-/>' }, "<Esc><Cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", opts)

@@ -71,7 +71,10 @@ Acceptance: `nvim --headless '+qa'` exits 0 with empty stderr.
 
 ## 5. How the pieces fit
 
-Paths below are relative to this folder. All plugins load at startup through
+Paths below are relative to this folder. Plugins install in `stdpath("data")/plugged`, separate from the old shared
+`~/.vim/plugged` directory. Core `gc` and `gcc` handle comments; signature
+help uses core LSP. Graphics and Raccoon review integrations are removed.
+All plugins load at startup through
 vim-plug. There is no lazy-loading framework.
 
 | File | Owns |
@@ -86,9 +89,7 @@ vim-plug. There is no lazy-loading framework.
 | `lua/plugins/treesitter.lua` | Parser installation and highlighting |
 | `lua/plugins/telescope.lua` | Telescope and custom files+content picker |
 | `lua/plugins/ui.lua` | Gruvbox, tree, statusline and Copilot Chat |
-| `lua/plugins/tools.lua` | Terminal, Git signs and comments |
-| `lua/plugins/diagram.lua` | Current inline diagrams |
-| `lua/plugins/raccoon.lua` | Current optional PR review integration |
+| `lua/plugins/tools.lua` | Terminal and Git signs |
 | `lua/plugins/lsp/init.lua` | LSP attachment, Mason and diagnostics |
 | `lua/plugins/lsp/servers.lua` | Servers and DAP |
 | `lua/plugins/lsp/colors.lua` | Diagnostic highlight overrides |
@@ -112,8 +113,6 @@ no reason to keep the plugin in the target config.
 | cmp-nvim-lsp | P3: LSP completion source | Yes, native completion |
 | cmp-buffer | P3: words from buffers | Yes, Ctrl+n completion |
 | cmp-path | P3: path completion | Yes, Ctrl+x Ctrl+f |
-| cmp-vsnip | Remove: unused source | Not needed |
-| vim-vsnip | Remove: duplicates LuaSnip | Native snippets also exist |
 | LuaSnip | P3: existing snippets | Yes, native snippets |
 | cmp_luasnip | P3: snippets in menu | Not with this menu |
 | nvim-dap | P3: Python debugging | No DAP client |
@@ -123,17 +122,11 @@ no reason to keep the plugin in the target config.
 | telescope.nvim | P3: files+content picker | No combined picker |
 | telescope-fzf-native.nvim | P3: fast picker sorting | No fuzzy native sorter |
 | toggleterm.nvim | P3: reusable command output | Yes, more terminal glue |
-| Comment.nvim | Remove: core gc/gcc | Yes |
 | gitsigns.nvim | P3: review and stage hunks | No hunk staging UI |
 | mason.nvim | P2: tool installation | No server package manager |
-| lsp_lines.nvim | Remove: unused virtual lines | Yes, since 0.11 |
 | nvim-treesitter | P3: parser installation | Highlighting yes, installer no |
-| lsp_signature.nvim | Remove: core signature help | Yes |
 | copilot.vim | P3: current inline AI | Replaced by native LSP client |
 | CopilotChat.nvim | Remove: replaced by sidekick | No agent pane in core |
-| image.nvim | Remove: mosh drops graphics | Graphics cannot cross mosh |
-| diagram.nvim | Remove: depends on graphics | Same transport limit |
-| local nvim-raccoon | Remove: separate review workflow | Use Git hunks here |
 
 ## 6. Python pairing loop
 
