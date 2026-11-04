@@ -9,8 +9,9 @@ label does not fit its key or a map would be dropped.
     python3 nvim-vps-linux/docs/keymap_sheet.py --check   fail when the SVG or table is stale
     python3 nvim-vps-linux/docs/keymap_sheet.py --json F  use an existing export
 
-Set NVIM to choose the Neovim binary. Neovim runs with this repository's
-config, whatever ~/.config/nvim holds. The PDF needs cairosvg or rsvg-convert.
+Set VPS_NVIM to choose the Neovim binary (not NVIM: Neovim sets that to its
+server address inside :terminal). Neovim runs with this repository's config,
+whatever ~/.config/nvim holds. The PDF needs cairosvg or rsvg-convert.
 """
 import argparse
 import html
@@ -47,7 +48,8 @@ LEADER = "<Space>"
 GROUPS = {"a": ("AI", "blue"), "c": ("Code", "green"), "d": ("Debug", "yellow"),
           "f": ("Find", "red"), "g": ("Git", "magenta"), "r": ("Run", "cyan")}
 SPACE_COLOR = "#66767c"
-MODE_LEGEND = "n normal, i insert, x visual, s select, o operator, t terminal"
+MODE_LEGEND = ("n normal, i insert, x visual, s select, o operator, t terminal, "
+               "c command line, l language")
 
 # Millimetres on an A4 landscape page.
 PAGE_W, PAGE_H = 297, 210
@@ -366,15 +368,19 @@ def export_keymaps():
         config_home.mkdir()
         (config_home / "nvim").symlink_to(CONFIG)
         target = Path(tmp) / "keymaps.json"
+        binary = os.environ.get("VPS_NVIM", "nvim")
         try:
             subprocess.run(
-                [os.environ.get("NVIM", "nvim"), "--headless",
-                 f"+luafile {CONFIG / 'scripts' / 'keymaps.lua'}"],
+                [binary, "--headless", f"+luafile {CONFIG / 'scripts' / 'keymaps.lua'}"],
                 check=True, cwd=REPO, timeout=EXPORT_TIMEOUT_S,
                 env={**os.environ, "XDG_CONFIG_HOME": str(config_home), "VPS_KEYMAP_JSON": str(target)})
+        except FileNotFoundError:
+            raise SystemExit(f"cannot run {binary!r}; set VPS_NVIM to the Neovim binary")
+        except subprocess.TimeoutExpired:
+            raise SystemExit(f"Neovim took longer than {EXPORT_TIMEOUT_S} s to export the maps")
         except subprocess.CalledProcessError:
-            raise SystemExit("Neovim could not export the maps; its output is above. "
-                             "Run :PlugInstall and :VpsInstallTools first.")
+            raise SystemExit("Neovim could not export the maps; its output is above. Install the "
+                             "plugins and tools (README section 4) and fix any map the check rejects.")
         return json.loads(target.read_text(encoding=ENCODING))
 
 

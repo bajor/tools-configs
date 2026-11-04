@@ -361,7 +361,7 @@ check creates a temporary uv project and installs pytest:
    closed and that Enter still expands abbreviations.
 6. Regenerate the cheat sheet and the key table above:
    `python3 nvim-vps-linux/docs/keymap_sheet.py`. It starts Neovim headless
-   with this repository's config (set `NVIM` to choose the binary), lays the
+   with this repository's config (set `VPS_NVIM` to choose the binary), lays the
    exported maps out on the Sweep, and writes the SVG, the PDF and the table
    between the markers. It builds all three before writing any of them and
    exits nonzero when a label does not fit its key (shorten the `desc`), a
