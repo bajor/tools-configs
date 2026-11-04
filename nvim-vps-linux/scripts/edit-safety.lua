@@ -41,6 +41,13 @@ end
 
 vim.schedule(function()
   local ok, err = xpcall(function()
+    for _, kind in ipairs({ 'v', 'V', '\0223' }) do
+      vim.fn.setreg('"', { 'first', '' }, kind)
+      local pasted = vim.g.clipboard.paste['+']()
+      assert(vim.deep_equal(pasted[1], vim.fn.getreg('', 1, true)),
+        'clipboard paste lost register lines')
+      assert(pasted[2] == vim.fn.getregtype(''), 'clipboard paste lost register type')
+    end
     check_formatting()
     check_external_edits()
   end, debug.traceback)
