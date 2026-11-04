@@ -29,6 +29,10 @@ Avoid relying on `"+p` to read the Mac clipboard.
 Graphics passthrough and extended keyboard settings are removed together
 with their VPS Neovim consumers. Mosh cannot forward either protocol.
 
+The status line uses a transparent background and Solarized Dark - Vivid
+accents, referencing craftzdog/dotfiles `dot_config/tmux/statusline.conf`.
+Pane borders use the same palette. Import the matching Ghostty theme in Rex.
+
 ## Keys
 
 Press Ctrl+a, release it, then press the action key.

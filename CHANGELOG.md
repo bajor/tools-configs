@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Match Neovim and tmux to Rex Solarized Dark - Vivid, with transparent
+  surfaces, global status, per-window file names and indent guides.
+
 - Share Python interpreter selection across Pyright, DAP and run/pytest
   commands; split Ruff/Pyright roles and install Mason tools explicitly.
 

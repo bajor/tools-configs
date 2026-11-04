@@ -16,6 +16,7 @@ end
 local ok_git, gitsigns = pcall(require, 'gitsigns')
 if ok_git then
   gitsigns.setup({
+    preview_config = { border = 'rounded' },
     signs = {
       add = { text = '+' },
       change = { text = '~' },
