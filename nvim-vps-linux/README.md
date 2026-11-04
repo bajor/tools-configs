@@ -122,7 +122,7 @@ no reason to keep the plugin in the target config.
 | nvim-tree.lua | P4: file tree | Netrw, with different behavior |
 | nvim-cmp | P3: completion menu | Yes, fewer menu controls |
 | cmp-nvim-lsp | P3: LSP completion source | Yes, native completion |
-| cmp-buffer | P3: words from buffers | Yes, Ctrl+n completion |
+| cmp-buffer | P3: words from buffers | Yes, native Ctrl+n completion (Ctrl+n opens the cmp menu here) |
 | cmp-path | P3: path completion | Yes, Ctrl+x Ctrl+f |
 | LuaSnip | P3: existing snippets | Yes, native snippets |
 | cmp_luasnip | P3: snippets in menu | Not with this menu |
@@ -268,16 +268,19 @@ and suggestions are checked separately after sign-in:
 5. Run the keyboard regression with
    `nvim --headless "+luafile nvim-vps-linux/scripts/keymaps.lua"`.
    It exits nonzero for any of these public maps: a Space prefix in insert,
-   terminal, select or command-line mode; Cmd, Alt or F-keys, alone or with
-   another modifier; a global or leader map without a description; a normal
-   Tab or Ctrl+i map. It opens the file tree, a terminal and a Telescope
-   prompt to check their buffer-local maps. Native unchanged defaults and
+   terminal, select, command-line or language-argument mode; Cmd, Alt or
+   F-keys, alone or with another modifier; a global or leader map without a
+   description; a normal Tab or Ctrl+i map. It checks the global maps and the
+   buffer-local maps of the file tree, a terminal and a Telescope prompt.
+   Buffers of other plugins (the Sidekick pane, DAP UI, Git previews) are not
+   opened, so their maps are not checked. Native unchanged defaults and
    internal Plug targets are excluded; core gc/gcc are included. Set
-   `VPS_KEYMAP_JSON=/path/keymaps.json` to also write the public maps and the
-   colorscheme's ANSI palette as JSON with sorted keys.
+   `VPS_KEYMAP_JSON=/path/keymaps.json` to also write the global maps and the
+   colorscheme's red, green, yellow and blue ANSI colors as JSON with sorted
+   keys. Nothing is written when a check fails.
    Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
-   to verify that batched Enter and Tab input stays in order and that Enter
-   still expands abbreviations.
+   to verify that batched Enter and Tab input stays in order when the menu is
+   closed and that Enter still expands abbreviations.
 6. The printable generator and README key table follow in the final PR.
 
 Acceptance: documented behavior agrees with the config and startup succeeds.

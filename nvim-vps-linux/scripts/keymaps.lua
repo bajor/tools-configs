@@ -1,25 +1,34 @@
 -- Real config: nvim --headless '+luafile nvim-vps-linux/scripts/keymaps.lua'
--- Set VPS_KEYMAP_JSON to a file path to also export the public maps and palette.
-local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c' }
+-- Set VPS_KEYMAP_JSON to a file path to also export the global maps and the
+-- colorscheme's red, green, yellow and blue ANSI colors.
+local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }
 -- Modes where typed text arrives, so a Space prefix would wait for timeoutlen.
-local TYPING_MODES = { i = true, t = true, s = true, c = true }
+local TYPING_MODES = { i = true, t = true, s = true, c = true, l = true }
+-- Modifiers that do not reach the VPS through mosh: Cmd (D), Meta (M), Alt (A).
+local UNSUPPORTED_MODIFIERS = { D = true, M = true, A = true }
+local KEY_SEPARATOR = '\0'
 local BASELINE_ENV = 'VPS_KEYMAP_BASELINE'
 local BASELINE_TIMEOUT_MS = 20000
 local PICKER_TIMEOUT_MS = 5000
 local ANSI_INDEX = { red = 1, green = 2, yellow = 3, blue = 4 }
 
+local function scope_of(buf)
+  local filetype = vim.bo[buf].filetype
+  return filetype ~= '' and filetype or 'buffer'
+end
+
 local function collect_maps()
   local result = {}
-  for _, mode in ipairs(MAP_MODES) do
-    for _, map in ipairs(vim.api.nvim_get_keymap(mode)) do
-      result[#result + 1] = { mode = mode, scope = 'global', map = map }
+  local function add(mode, scope, maps)
+    for _, map in ipairs(maps) do
+      result[#result + 1] = { mode = mode, scope = scope, map = map }
     end
+  end
+  for _, mode in ipairs(MAP_MODES) do
+    add(mode, 'global', vim.api.nvim_get_keymap(mode))
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       if vim.api.nvim_buf_is_loaded(buf) then
-        local scope = vim.bo[buf].filetype ~= '' and vim.bo[buf].filetype or 'buffer'
-        for _, map in ipairs(vim.api.nvim_buf_get_keymap(buf, mode)) do
-          result[#result + 1] = { mode = mode, scope = scope, map = map }
-        end
+        add(mode, scope_of(buf), vim.api.nvim_buf_get_keymap(buf, mode))
       end
     end
   end
@@ -30,7 +39,12 @@ local function fingerprint(entry)
   local map = entry.map
   local info = map.callback and debug.getinfo(map.callback, 'S') or {}
   return table.concat({ entry.mode, entry.scope, map.lhs, map.desc or '', map.rhs or '',
-    info.source or '', tostring(info.linedefined or 0), tostring(map.expr), tostring(map.nowait) }, '\0')
+    info.source or '', tostring(info.linedefined or 0), tostring(map.expr), tostring(map.nowait) },
+    KEY_SEPARATOR)
+end
+
+local function display_lhs(lhs)
+  return (lhs:gsub('^ ', '<Space>'))
 end
 
 local function fail(message)
@@ -61,13 +75,13 @@ local function load_baseline()
   return vim.json.decode(child.stdout)
 end
 
--- Cmd, Alt and F-keys do not reach the VPS through mosh, with or without
--- another modifier: <D-x>, <C-D-x>, <M-C-x>, <F5>, <C-F5>.
+-- Cmd, Alt and F-keys, alone or with another modifier: <D-x>, <C-D-x>,
+-- <M-C-x>, <F5>, <C-F5>.
 local function has_unsupported_key(lhs)
   for token in lhs:upper():gmatch('<([^>]+)>') do
     local parts = vim.split(token, '-', { plain = true })
     for index = 1, #parts - 1 do
-      if vim.tbl_contains({ 'D', 'M', 'A' }, parts[index]) then return true end
+      if UNSUPPORTED_MODIFIERS[parts[index]] then return true end
     end
     if parts[#parts]:match('^F%d+$') then return true end
   end
@@ -101,9 +115,9 @@ local function to_rows(entries)
   local grouped = {}
   for _, entry in ipairs(entries) do
     local desc = entry.map.desc or ''
-    local key = table.concat({ entry.scope, entry.map.lhs, desc }, '\0')
+    local key = table.concat({ entry.scope, entry.map.lhs, desc }, KEY_SEPARATOR)
     grouped[key] = grouped[key] or {
-      lhs = entry.map.lhs:gsub('^ ', '<Space>'), desc = desc, scope = entry.scope, modes = {},
+      lhs = display_lhs(entry.map.lhs), desc = desc, scope = entry.scope, modes = {},
     }
     grouped[key].modes[entry.mode] = true
   end
@@ -113,7 +127,10 @@ local function to_rows(entries)
     row.modes = nil
     rows[#rows + 1] = row
   end
-  table.sort(rows, function(a, b) return a.lhs .. a.mode .. a.scope < b.lhs .. b.mode .. b.scope end)
+  table.sort(rows, function(a, b)
+    return table.concat({ a.lhs, a.mode, a.scope, a.desc }, KEY_SEPARATOR)
+      < table.concat({ b.lhs, b.mode, b.scope, b.desc }, KEY_SEPARATOR)
+  end)
   return rows
 end
 
@@ -126,7 +143,8 @@ local function ansi_palette()
   return palette
 end
 
--- Persistent buffer-local maps exist only while their window does.
+-- Persistent buffer-local maps exist only while their window does. Only the
+-- file tree, a terminal and a Telescope prompt are opened here.
 local function open_contexts()
   require('nvim-tree.api').tree.open()
   local terminal = open_terminal()
@@ -138,6 +156,7 @@ end
 
 local function check()
   assert(vim.g.mapleader == ' ', 'mapleader must be Space for the leader rules to apply')
+  local palette = ansi_palette()
   local baseline = load_baseline()
   local terminal = open_contexts()
   local public, violations = {}, {}
@@ -146,19 +165,23 @@ local function check()
       public[#public + 1] = entry
       local reasons = violations_for(entry)
       if #reasons > 0 then
-        violations[#violations + 1] = entry.mode .. ' ' .. entry.map.lhs .. ': ' .. table.concat(reasons, ', ')
+        violations[#violations + 1] = entry.mode .. ' ' .. display_lhs(entry.map.lhs)
+          .. ': ' .. table.concat(reasons, ', ')
       end
     end
   end
   vim.fn.jobstop(terminal)
-  local rows = to_rows(public)
+  if #violations > 0 then fail(table.concat(violations, '\n')) end
+  -- Plugin-internal buffer maps are validated above but not exported: their
+  -- descriptions and set change with the plugin version.
+  local global = vim.tbl_filter(function(entry) return entry.scope == 'global' end, public)
+  local rows = to_rows(global)
   local path = vim.env.VPS_KEYMAP_JSON
   if path and path ~= '' then
-    local json = vim.json.encode({ keymaps = rows, palette = ansi_palette() }, { sort_keys = true })
-    vim.fn.writefile({ json }, path)
+    vim.fn.writefile({ vim.json.encode({ keymaps = rows, palette = palette }, { sort_keys = true }) }, path)
   end
-  if #violations > 0 then fail(table.concat(violations, '\n')) end
-  io.stdout:write(('Keymaps: %d public maps, no violations\n'):format(#rows))
+  io.stdout:write(('Keymaps: %d public maps checked, %d global rows, no violations\n')
+    :format(#public, #rows))
 end
 
 vim.schedule(function()
