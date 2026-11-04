@@ -9,7 +9,6 @@ if ok_term then
     direction = 'float',
     float_opts = { border = 'curved' },
   })
-  vim.keymap.set('n', '<Leader>t', '<Cmd>ToggleTerm<CR>', { silent = true })
 end
 
 -- Gitsigns
