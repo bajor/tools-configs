@@ -61,9 +61,11 @@ in an empty buffer and warned about non-Python filetypes.
    Mason and Treesitter install only when requested; restart after installation.
 5. Sign into the Claude and opencode CLIs separately; the agent pane uses
    their own authentication.
-6. Use `:PlugUpdate`, restart Neovim, and check `:PlugStatus` and
+6. On a machine that ran the earlier Copilot version, run `:PlugClean` and
+   `:MasonUninstall copilot-language-server` once to remove what is left.
+7. Use `:PlugUpdate`, restart Neovim, and check `:PlugStatus` and
    `:checkhealth vim.lsp`. Run `:TSUpdate` when parser updates are needed.
-7. Roll back a repository change with `git revert <commit>` on a branch,
+8. Roll back a repository change with `git revert <commit>` on a branch,
    review it, and merge the PR. `:PlugSnapshot` can save plugin revisions
    before updates; use `:source <snapshot.vim>` to restore that snapshot.
 
@@ -182,7 +184,7 @@ letter: f find, c code, r run, g Git, a AI, d debug. Single-letter Space
 maps handle windows, terminal, tree, quickfix and search highlighting.
 There are no leader maps in insert or terminal mode, Cmd/Alt/F-key maps,
 symbol-led feature maps, or normal Tab/Ctrl+i maps. Ctrl+letters are used
-for terminal/insert input and AI acceptance. Every custom map has a description.
+for terminal and insert input only. Every custom map has a description.
 
 The Sweep base is QWERTY with home-row Shift/Alt/Ctrl/GUI on
 pinky/ring/middle/index fingers. Space is right inner thumb, Enter left
@@ -221,8 +223,12 @@ The VPS can verify settings, but cannot verify Rex's actual appearance.
 ## 9. Troubleshooting
 
 - Agent pane: run `:checkhealth sidekick` to check that `claude` and
-  `opencode` are installed. In a Python buffer, `:checkhealth vim.lsp`
-  should list pyright and ruff.
+  `opencode` are installed. Ignore its "Copilot LSP" error: Copilot is not
+  used here. In a Python buffer, `:checkhealth vim.lsp` should list pyright
+  and ruff.
+- Pyright uses the wrong interpreter after `uv sync` created or changed a
+  venv in a running session: run `:lsp restart`. The interpreter is read when
+  the server starts.
 
 Check `:messages`, `:PlugStatus`, `:checkhealth vim.lsp` and
 `:checkhealth provider`. Missing optional language providers do not prevent

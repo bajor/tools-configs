@@ -59,7 +59,8 @@ function M.setup(capabilities)
     end,
     capabilities = capabilities,
     settings = {
-      pyright = { disableOrganizeImports = true },
+      -- Ruff reports unused imports and variables; hints would duplicate them.
+      pyright = { disableOrganizeImports = true, disableTaggedHints = true },
       python = {
         analysis = {
           autoSearchPaths = true,
