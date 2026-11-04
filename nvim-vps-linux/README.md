@@ -112,6 +112,7 @@ no reason to keep the plugin in the target config.
 | Plugin | Why | Could core Neovim do this? |
 | --- | --- | --- |
 | solarized-osaka.nvim | P5: palette synced to Rex | This palette no |
+| flash.nvim | P4: letter jumps and syntax selection | Search yes, labels no |
 | incline.nvim | P5: file name per window | Yes, custom floating windows |
 | snacks.nvim (indent only) | P3/P5: indentation guides | No persistent guides |
 | nvim-web-devicons | P5: file icons | No icon registry |
@@ -162,8 +163,8 @@ stale text.
    then return to the selection and press Space a v to send it. Space a p
    offers four prompts: explain selection, fix diagnostics, write one test,
    review the current file's diff. Ask for one small change.
-4. Leave terminal input with Ctrl+q. Review changes as Git hunks; the keyboard
-   PR adds Space g n/p/v/s/r for next/previous/preview/stage/reset.
+4. Leave terminal input with Ctrl+q. Review changes as Git hunks; the
+   maps are Space g n/p/v/s/r for next/previous/preview/stage/reset.
 5. Run the current test file with Space r t. Select a failure in the terminal's
    normal mode, then Space a v to send it to the agent.
 
@@ -181,8 +182,23 @@ and basic type checking remain enabled.
 
 ## 7. Keymaps
 
-The authoritative mappings are in Lua. A generated table and printable Sweep
-cheat sheet will replace this placeholder after the keyboard PR.
+Leader is Space. Feature maps use Space, a group letter, then an action
+letter: f find, c code, r run, g Git, a AI, d debug. Single-letter Space
+maps handle windows, terminal, tree, quickfix and search highlighting.
+There are no leader maps in insert or terminal mode, Cmd/Alt/F-key maps,
+symbol-led feature maps, or normal Tab/Ctrl+i maps. Ctrl+letters are used
+for terminal/insert input and AI acceptance. Every custom map has a description.
+
+The Sweep base is QWERTY with home-row Shift/Alt/Ctrl/GUI on
+pinky/ring/middle/index fingers. Space is right inner thumb, Enter left
+inner thumb; left outer thumb is Tab/symbol layer, right outer thumb is
+Backspace/number-navigation layer. Esc is the Enter thumb on that layer.
+The layout source is [bajor/zmk-config-ferris](https://github.com/bajor/zmk-config-ferris/blob/main/config/cradio.keymap).
+Letters stay in their proposed groups because they are all on the base
+layer. Flash s/S replaces long counted jumps. Redo stays on r by choice.
+Nvim-tree uses o to open and q to close; Tab remains jump-forward in editors.
+
+The generated table and printable Sweep diagrams follow in the final PR.
 
 <!-- keymaps:start -->
 <!-- keymaps:end -->

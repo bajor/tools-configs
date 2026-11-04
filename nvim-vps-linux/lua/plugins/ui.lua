@@ -11,7 +11,13 @@ require('solarized-osaka').setup({
 })
 vim.cmd('colorscheme solarized-osaka')
 
+require('flash').setup({ modes = { char = { enabled = false }, search = { enabled = false } } })
 require('nvim-tree').setup({
+  on_attach = function(buf)
+    local api = require('nvim-tree.api')
+    vim.keymap.set('n', 'o', api.node.open.edit, { buffer = buf, desc = 'Tree open' })
+    vim.keymap.set('n', 'q', api.tree.close, { buffer = buf, desc = 'Tree close' })
+  end,
   disable_netrw = true,
   hijack_netrw = false,
   view = { side = 'right' },

@@ -4,6 +4,10 @@ local telescope = require('telescope')
 telescope.setup({
   defaults = {
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+    mappings = {
+      i = { ['<M-f>'] = false, ['<M-k>'] = false, ['<M-q>'] = false },
+      n = { ['<M-f>'] = false, ['<M-k>'] = false, ['<M-q>'] = false },
+    },
     file_ignore_patterns = {
       "node_modules",
       "%.venv/",

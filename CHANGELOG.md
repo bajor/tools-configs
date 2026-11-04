@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Use Sweep letter groups, native comment keys, Flash jumps, described
+  Git/code/window/debug maps and no insert/terminal Space prefix mappings.
+
 - Replace the old Copilot clients with native inline completion plus
   Sidekick next edits and a scoped Claude/opencode pane without nested tmux.
 

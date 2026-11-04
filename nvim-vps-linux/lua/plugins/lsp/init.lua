@@ -3,12 +3,6 @@ local M = {}
 
 -- Common on_attach for all LSP servers
 local function on_attach(client, bufnr)
-  local o = { buffer = bufnr, silent = true }
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, o)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, o)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, o)
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, o)
-
   vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = bufnr })
 
 

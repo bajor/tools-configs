@@ -7,6 +7,7 @@ vim.call('plug#begin', vim.fn.stdpath('data') .. '/plugged')
 Plug('craftzdog/solarized-osaka.nvim')
 Plug('b0o/incline.nvim')
 Plug('folke/snacks.nvim')
+Plug('folke/flash.nvim')
 Plug('nvim-tree/nvim-web-devicons')
 Plug('nvim-lualine/lualine.nvim')
 
