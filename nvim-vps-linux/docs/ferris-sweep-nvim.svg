@@ -13,11 +13,11 @@
 <text x="21.80" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">W</text>
 <rect x="34.50" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="35.30" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">E</text>
-<text x="35.30" y="32.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">File</text>
-<text x="35.30" y="34.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">tree</text>
+<text x="35.30" y="32.54" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">File</text>
+<text x="35.30" y="35.37" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">tree</text>
 <rect x="48.00" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#d2f2f0" stroke="#34c5b9" stroke-width="0.35"/>
 <text x="48.80" y="29.50" font-size="2.4" fill="#1d6c66" font-weight="bold" text-anchor="start">R</text>
-<text x="48.80" y="32.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Run</text>
+<text x="48.80" y="32.54" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Run</text>
 <rect x="61.50" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="62.30" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">T</text>
 <text x="62.30" y="32.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Toggle</text>
@@ -30,14 +30,14 @@
 <text x="105.80" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">I</text>
 <rect x="118.50" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="119.30" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">O</text>
-<text x="119.30" y="32.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Only</text>
-<text x="119.30" y="34.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">window</text>
+<text x="119.30" y="32.54" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Only</text>
+<text x="119.30" y="35.37" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">window</text>
 <rect x="132.00" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="132.80" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">P</text>
 <rect x="7.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#dbedfe" stroke="#5aaefa" stroke-width="0.35"/>
 <text x="8.30" y="40.70" font-size="2.4" fill="#32608a" font-weight="bold" text-anchor="start">A</text>
 <text x="19.70" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Sft</text>
-<text x="8.30" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">AI</text>
+<text x="8.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">AI</text>
 <rect x="21.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="21.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">S</text>
 <text x="33.20" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Alt</text>
@@ -46,33 +46,33 @@
 <rect x="34.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f7ebc7" stroke="#dba500" stroke-width="0.35"/>
 <text x="35.30" y="40.70" font-size="2.4" fill="#785b00" font-weight="bold" text-anchor="start">D</text>
 <text x="46.70" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Ctl</text>
-<text x="35.30" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Debug</text>
+<text x="35.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Debug</text>
 <rect x="48.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="48.80" y="40.70" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">F</text>
 <text x="60.20" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Gui</text>
-<text x="48.80" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Find</text>
+<text x="48.80" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Find</text>
 <rect x="61.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="62.30" y="40.70" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">G</text>
-<text x="62.30" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Git</text>
+<text x="62.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Git</text>
 <rect x="78.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="78.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">H</text>
-<text x="78.80" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="78.80" y="46.17" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">left</text>
+<text x="78.80" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
+<text x="78.80" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">left</text>
 <rect x="91.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="92.30" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">J</text>
 <text x="103.70" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Gui</text>
-<text x="92.30" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="92.30" y="46.17" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">down</text>
+<text x="92.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
+<text x="92.30" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">down</text>
 <rect x="105.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="105.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">K</text>
 <text x="117.20" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Ctl</text>
-<text x="105.80" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="105.80" y="46.17" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">up</text>
+<text x="105.80" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
+<text x="105.80" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">up</text>
 <rect x="118.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="119.30" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">L</text>
 <text x="130.70" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Alt</text>
-<text x="119.30" y="43.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="119.30" y="46.17" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">right</text>
+<text x="119.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
+<text x="119.30" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">right</text>
 <rect x="132.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="132.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">'</text>
 <text x="144.20" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Sft</text>
@@ -80,11 +80,11 @@
 <text x="8.30" y="51.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">Z</text>
 <rect x="21.00" y="48.90" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="21.80" y="51.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">X</text>
-<text x="21.80" y="54.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Close</text>
-<text x="21.80" y="57.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">window</text>
+<text x="21.80" y="54.94" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Close</text>
+<text x="21.80" y="57.77" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">window</text>
 <rect x="34.50" y="48.90" width="13.0" height="10.7" rx="1.2" fill="#ebf0c7" stroke="#a2bb00" stroke-width="0.35"/>
 <text x="35.30" y="51.90" font-size="2.4" fill="#596700" font-weight="bold" text-anchor="start">C</text>
-<text x="35.30" y="54.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Code</text>
+<text x="35.30" y="54.94" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Code</text>
 <rect x="48.00" y="48.90" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="48.80" y="51.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">V</text>
 <text x="48.80" y="54.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Vertical</text>
@@ -110,10 +110,10 @@
 <text x="48.80" y="68.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">hold Sym</text>
 <rect x="61.50" y="60.10" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="62.30" y="63.10" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start"></text>
-<text x="62.30" y="65.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Enter</text>
-<rect x="78.00" y="60.10" width="13.0" height="10.7" rx="1.2" fill="#dbedfe" stroke="#5aaefa" stroke-width="0.35"/>
-<text x="78.80" y="63.10" font-size="2.4" fill="#32608a" font-weight="bold" text-anchor="start"></text>
-<text x="78.80" y="65.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Space</text>
+<text x="62.30" y="66.14" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Enter</text>
+<rect x="78.00" y="60.10" width="13.0" height="10.7" rx="1.2" fill="#dde1e2" stroke="#66767c" stroke-width="0.35"/>
+<text x="78.80" y="63.10" font-size="2.4" fill="#384144" font-weight="bold" text-anchor="start"></text>
+<text x="78.80" y="66.14" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Space</text>
 <rect x="91.50" y="60.10" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="92.30" y="63.10" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start"></text>
 <text x="92.30" y="65.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Bksp</text>
@@ -224,12 +224,12 @@
 <text x="21.80" y="101.06" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">agent CLI</text>
 <rect x="34.50" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#dbedfe" stroke="#5aaefa" stroke-width="0.35"/>
 <text x="35.30" y="96.00" font-size="2.4" fill="#32608a" font-weight="bold" text-anchor="start">D</text>
-<text x="35.30" y="98.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Detach</text>
-<text x="35.30" y="101.47" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">agent</text>
+<text x="35.30" y="99.04" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Detach</text>
+<text x="35.30" y="101.87" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">agent</text>
 <rect x="48.00" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#dbedfe" stroke="#5aaefa" stroke-width="0.35"/>
 <text x="48.80" y="96.00" font-size="2.4" fill="#32608a" font-weight="bold" text-anchor="start">F</text>
-<text x="48.80" y="98.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Send</text>
-<text x="48.80" y="101.47" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">file</text>
+<text x="48.80" y="99.04" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Send</text>
+<text x="48.80" y="101.87" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">file</text>
 <rect x="61.50" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="62.30" y="96.00" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">G</text>
 <rect x="78.00" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -248,8 +248,8 @@
 <text x="21.80" y="107.20" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">X</text>
 <rect x="34.50" y="104.20" width="13.0" height="10.7" rx="1.2" fill="#dbedfe" stroke="#5aaefa" stroke-width="0.35"/>
 <text x="35.30" y="107.20" font-size="2.4" fill="#32608a" font-weight="bold" text-anchor="start">C</text>
-<text x="35.30" y="110.07" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Open</text>
-<text x="35.30" y="112.67" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Claude</text>
+<text x="35.30" y="110.24" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Open</text>
+<text x="35.30" y="113.07" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Claude</text>
 <rect x="48.00" y="104.20" width="13.0" height="10.7" rx="1.2" fill="#dbedfe" stroke="#5aaefa" stroke-width="0.35"/>
 <text x="48.80" y="107.20" font-size="2.4" fill="#32608a" font-weight="bold" text-anchor="start">V</text>
 <text x="48.80" y="109.90" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Send</text>
@@ -275,8 +275,8 @@
 <text x="179.30" y="84.80" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">E</text>
 <rect x="192.00" y="81.80" width="13.0" height="10.7" rx="1.2" fill="#ebf0c7" stroke="#a2bb00" stroke-width="0.35"/>
 <text x="192.80" y="84.80" font-size="2.4" fill="#596700" font-weight="bold" text-anchor="start">R</text>
-<text x="192.80" y="87.67" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Rename</text>
-<text x="192.80" y="90.27" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">symbol</text>
+<text x="192.80" y="87.84" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Rename</text>
+<text x="192.80" y="90.67" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">symbol</text>
 <rect x="205.50" y="81.80" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="206.30" y="84.80" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">T</text>
 <rect x="222.00" y="81.80" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -293,7 +293,7 @@
 <text x="276.80" y="89.45" font-size="1.8" fill="#1b2b30" font-weight="normal" text-anchor="start">diagnostic</text>
 <rect x="151.50" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#ebf0c7" stroke="#a2bb00" stroke-width="0.35"/>
 <text x="152.30" y="96.00" font-size="2.4" fill="#596700" font-weight="bold" text-anchor="start">A</text>
-<text x="152.30" y="98.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">action</text>
+<text x="152.30" y="99.04" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">action</text>
 <rect x="165.00" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="165.80" y="96.00" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">S</text>
 <rect x="178.50" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#ebf0c7" stroke="#a2bb00" stroke-width="0.35"/>
@@ -302,8 +302,8 @@
 <text x="179.30" y="100.45" font-size="1.7" fill="#1b2b30" font-weight="normal" text-anchor="start">diagnostics</text>
 <rect x="192.00" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#ebf0c7" stroke="#a2bb00" stroke-width="0.35"/>
 <text x="192.80" y="96.00" font-size="2.4" fill="#596700" font-weight="bold" text-anchor="start">F</text>
-<text x="192.80" y="98.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Format</text>
-<text x="192.80" y="101.47" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">buffer</text>
+<text x="192.80" y="99.04" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Format</text>
+<text x="192.80" y="101.87" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">buffer</text>
 <rect x="205.50" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="206.30" y="96.00" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">G</text>
 <rect x="222.00" y="93.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -347,7 +347,7 @@
 <text x="35.30" y="128.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">E</text>
 <rect x="48.00" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f7ebc7" stroke="#dba500" stroke-width="0.35"/>
 <text x="48.80" y="128.90" font-size="2.4" fill="#785b00" font-weight="bold" text-anchor="start">R</text>
-<text x="48.80" y="131.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">REPL</text>
+<text x="48.80" y="131.94" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">REPL</text>
 <rect x="61.50" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f7ebc7" stroke="#dba500" stroke-width="0.35"/>
 <text x="62.30" y="128.90" font-size="2.4" fill="#785b00" font-weight="bold" text-anchor="start">T</text>
 <text x="62.30" y="131.60" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">terminate</text>
@@ -355,11 +355,11 @@
 <text x="78.80" y="128.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">Y</text>
 <rect x="91.50" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f7ebc7" stroke="#dba500" stroke-width="0.35"/>
 <text x="92.30" y="128.90" font-size="2.4" fill="#785b00" font-weight="bold" text-anchor="start">U</text>
-<text x="92.30" y="131.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">UI</text>
+<text x="92.30" y="131.94" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">UI</text>
 <rect x="105.00" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f7ebc7" stroke="#dba500" stroke-width="0.35"/>
 <text x="105.80" y="128.90" font-size="2.4" fill="#785b00" font-weight="bold" text-anchor="start">I</text>
-<text x="105.80" y="131.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">step</text>
-<text x="105.80" y="134.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">into</text>
+<text x="105.80" y="131.94" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">step</text>
+<text x="105.80" y="134.77" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">into</text>
 <rect x="118.50" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f7ebc7" stroke="#dba500" stroke-width="0.35"/>
 <text x="119.30" y="128.90" font-size="2.4" fill="#785b00" font-weight="bold" text-anchor="start">O</text>
 <text x="119.30" y="131.43" font-size="1.8" fill="#1b2b30" font-weight="normal" text-anchor="start">step over</text>
@@ -419,8 +419,8 @@
 <text x="179.30" y="128.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">E</text>
 <rect x="192.00" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="192.80" y="128.90" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">R</text>
-<text x="192.80" y="131.77" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Resume</text>
-<text x="192.80" y="134.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">picker</text>
+<text x="192.80" y="131.94" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Resume</text>
+<text x="192.80" y="134.77" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">picker</text>
 <rect x="205.50" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="206.30" y="128.90" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">T</text>
 <rect x="222.00" y="125.90" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -437,20 +437,20 @@
 <text x="152.30" y="140.10" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">A</text>
 <rect x="165.00" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="165.80" y="140.10" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">S</text>
-<text x="165.80" y="142.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">symbols</text>
+<text x="165.80" y="143.14" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">symbols</text>
 <rect x="178.50" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="179.30" y="140.10" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">D</text>
 <text x="179.30" y="142.54" font-size="1.7" fill="#1b2b30" font-weight="normal" text-anchor="start">diagnostics</text>
 <rect x="192.00" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="192.80" y="140.10" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">F</text>
-<text x="192.80" y="142.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">files</text>
+<text x="192.80" y="143.14" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">files</text>
 <rect x="205.50" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="206.30" y="140.10" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">G</text>
 <text x="206.30" y="142.80" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">files and</text>
 <text x="206.30" y="145.16" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">content</text>
 <rect x="222.00" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="222.80" y="140.10" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">H</text>
-<text x="222.80" y="142.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">help</text>
+<text x="222.80" y="143.14" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">help</text>
 <rect x="235.50" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="236.30" y="140.10" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">J</text>
 <rect x="249.00" y="137.10" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -469,7 +469,7 @@
 <text x="192.80" y="151.30" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">V</text>
 <rect x="205.50" y="148.30" width="13.0" height="10.7" rx="1.2" fill="#ffdfde" stroke="#ff6c6a" stroke-width="0.35"/>
 <text x="206.30" y="151.30" font-size="2.4" fill="#8c3b3a" font-weight="bold" text-anchor="start">B</text>
-<text x="206.30" y="154.17" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">buffers</text>
+<text x="206.30" y="154.34" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">buffers</text>
 <rect x="222.00" y="148.30" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="222.80" y="151.30" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">N</text>
 <rect x="235.50" y="148.30" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -489,8 +489,8 @@
 <text x="35.30" y="173.00" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">E</text>
 <rect x="48.00" y="170.00" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="48.80" y="173.00" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">R</text>
-<text x="48.80" y="175.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Reset</text>
-<text x="48.80" y="178.47" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
+<text x="48.80" y="176.04" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Reset</text>
+<text x="48.80" y="178.87" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
 <rect x="61.50" y="170.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="62.30" y="173.00" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">T</text>
 <rect x="78.00" y="170.00" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -509,12 +509,12 @@
 <text x="8.30" y="184.20" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">A</text>
 <rect x="21.00" y="181.20" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="21.80" y="184.20" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">S</text>
-<text x="21.80" y="187.07" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Stage</text>
-<text x="21.80" y="189.67" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
+<text x="21.80" y="187.24" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Stage</text>
+<text x="21.80" y="190.07" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
 <rect x="34.50" y="181.20" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="35.30" y="184.20" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">D</text>
-<text x="35.30" y="187.07" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Diff</text>
-<text x="35.30" y="189.67" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">file</text>
+<text x="35.30" y="187.24" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Diff</text>
+<text x="35.30" y="190.07" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">file</text>
 <rect x="48.00" y="181.20" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="48.80" y="184.20" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">F</text>
 <rect x="61.50" y="181.20" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -537,8 +537,8 @@
 <text x="35.30" y="195.40" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">C</text>
 <rect x="48.00" y="192.40" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="48.80" y="195.40" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">V</text>
-<text x="48.80" y="198.27" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Preview</text>
-<text x="48.80" y="200.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
+<text x="48.80" y="198.44" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Preview</text>
+<text x="48.80" y="201.27" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
 <rect x="61.50" y="192.40" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="62.30" y="195.40" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">B</text>
 <text x="62.30" y="197.93" font-size="1.8" fill="#1b2b30" font-weight="normal" text-anchor="start">Blame line</text>
@@ -546,8 +546,8 @@
 <text x="62.30" y="202.18" font-size="1.8" fill="#1b2b30" font-weight="normal" text-anchor="start">buffer</text>
 <rect x="78.00" y="192.40" width="13.0" height="10.7" rx="1.2" fill="#ffdeec" stroke="#fe67a8" stroke-width="0.35"/>
 <text x="78.80" y="195.40" font-size="2.4" fill="#8c395c" font-weight="bold" text-anchor="start">N</text>
-<text x="78.80" y="198.27" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Next</text>
-<text x="78.80" y="200.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
+<text x="78.80" y="198.44" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Next</text>
+<text x="78.80" y="201.27" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">hunk</text>
 <rect x="91.50" y="192.40" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="92.30" y="195.40" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">M</text>
 <rect x="105.00" y="192.40" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
@@ -565,8 +565,8 @@
 <text x="179.30" y="173.00" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">E</text>
 <rect x="192.00" y="170.00" width="13.0" height="10.7" rx="1.2" fill="#d2f2f0" stroke="#34c5b9" stroke-width="0.35"/>
 <text x="192.80" y="173.00" font-size="2.4" fill="#1d6c66" font-weight="bold" text-anchor="start">R</text>
-<text x="192.80" y="175.87" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Python</text>
-<text x="192.80" y="178.47" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">file</text>
+<text x="192.80" y="176.04" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Python</text>
+<text x="192.80" y="178.87" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">file</text>
 <rect x="205.50" y="170.00" width="13.0" height="10.7" rx="1.2" fill="#d2f2f0" stroke="#34c5b9" stroke-width="0.35"/>
 <text x="206.30" y="173.00" font-size="2.4" fill="#1d6c66" font-weight="bold" text-anchor="start">T</text>
 <text x="206.30" y="175.44" font-size="1.7" fill="#1b2b30" font-weight="normal" text-anchor="start">Test Python</text>

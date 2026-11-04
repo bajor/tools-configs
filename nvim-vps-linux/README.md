@@ -197,9 +197,9 @@ Nvim-tree uses o to open and q to close; Tab remains jump-forward in editors.
 
 Printable cheat sheet, A4 landscape, drawn on the real Sweep layout:
 [SVG](docs/ferris-sweep-nvim.svg) and [PDF](docs/ferris-sweep-nvim.pdf).
-The sheet and the table below are generated from the live Neovim maps, so
-they cannot drift from the config. Change a key or its `desc` in Lua, then
-run step 6 of the maintenance list.
+The sheet and the table below are generated from the live Neovim maps.
+Change a key or its `desc` in Lua, then run step 6 of the maintenance list;
+`--check` reports a sheet or table that no longer matches the config.
 
 <!-- keymaps:start -->
 | Mode | Keys | Action |
@@ -361,14 +361,16 @@ check creates a temporary uv project and installs pytest:
    closed and that Enter still expands abbreviations.
 6. Regenerate the cheat sheet and the key table above:
    `python3 nvim-vps-linux/docs/keymap_sheet.py`. It starts Neovim headless
-   (set `NVIM` to choose the binary), lays the exported maps out on the
-   Sweep and writes the SVG, the PDF and the table between the markers. It
-   exits nonzero when a label does not fit its key (shorten the `desc`), when
-   a leader letter is both an action and a group prefix, or when a map could
-   not be placed. The PDF needs `cairosvg` (`pip install cairosvg`) or
-   `rsvg-convert` (`sudo apt install librsvg2-bin`). Run it with `--check` to
-   fail when the SVG, the table or the PDF is stale. The PDF holds a
-   creation date, so `--check` tests only that it exists.
+   with this repository's config (set `NVIM` to choose the binary), lays the
+   exported maps out on the Sweep, and writes the SVG, the PDF and the table
+   between the markers. It builds all three before writing any of them and
+   exits nonzero when a label does not fit its key (shorten the `desc`), a
+   leader group is not named in `GROUPS` in the script, a leader key is not a
+   lowercase base-layer letter, or a map could not be placed. The PDF needs
+   `cairosvg` (`pip install cairosvg`) or `rsvg-convert` (`sudo apt install
+   librsvg2-bin`), and the DejaVu Sans Mono font. `--check` fails when the SVG
+   or the table is stale or the PDF is missing. The PDF holds a creation
+   date, so `--check` cannot compare its content: regenerate after a change.
 
 Acceptance: documented behavior agrees with the config and startup succeeds.
 
