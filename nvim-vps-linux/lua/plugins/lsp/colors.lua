@@ -14,11 +14,9 @@ local underline_color = '#5a524c'
 function M.setup()
   local set = vim.api.nvim_set_hl
 
-  -- Virtual text and lsp_lines: muted colors
+  -- Keep diagnostic text muted.
   for _, sev in ipairs({ 'Error', 'Warn', 'Info', 'Hint' }) do
     set(0, 'DiagnosticVirtualText' .. sev, { fg = vt_color })
-    set(0, 'LspLines' .. sev, { fg = vt_color })
-    set(0, 'LspLinesVirtualText' .. sev, { fg = vt_color })
     set(0, 'DiagnosticFloating' .. sev, { fg = vt_color })
     set(0, 'DiagnosticUnderline' .. sev, { undercurl = true, sp = underline_color })
   end

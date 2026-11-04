@@ -26,6 +26,9 @@ Neovim rebuild explicitly uses an OSC 52 write provider and local-register
 paste; until that PR lands, the existing provider may use tmux buffers.
 Avoid relying on `"+p` to read the Mac clipboard.
 
+Graphics passthrough and extended keyboard settings are removed together
+with their VPS Neovim consumers. Mosh cannot forward either protocol.
+
 ## Keys
 
 Press Ctrl+a, release it, then press the action key.

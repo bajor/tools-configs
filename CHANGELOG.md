@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Remove VPS graphics, redundant snippets/comments/diagnostics/signature
+  plugins and Raccoon integrations; isolate the VPS plugin directory.
+
 - Keep Python as the only VPS project language; remove other servers,
   language plugins, parsers, debug targets and formatting rules.
 

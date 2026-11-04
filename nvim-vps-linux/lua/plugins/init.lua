@@ -1,7 +1,7 @@
 -- Plugin installation with vim-plug
 local Plug = vim.fn['plug#']
 
-vim.call('plug#begin', '~/.vim/plugged')
+vim.call('plug#begin', vim.fn.stdpath('data') .. '/plugged')
 
 -- UI / Theme
 Plug('morhetz/gruvbox')
@@ -16,8 +16,6 @@ Plug('hrsh7th/nvim-cmp')
 Plug('hrsh7th/cmp-nvim-lsp')
 Plug('hrsh7th/cmp-buffer')
 Plug('hrsh7th/cmp-path')
-Plug('hrsh7th/cmp-vsnip')
-Plug('hrsh7th/vim-vsnip')
 Plug('L3MON4D3/LuaSnip')
 Plug('saadparwaiz1/cmp_luasnip')
 
@@ -31,33 +29,23 @@ Plug('nvim-lua/plenary.nvim')
 Plug('nvim-telescope/telescope.nvim')
 Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 
--- Terminal, Comment, Git
+-- Terminal and Git
 Plug('akinsho/toggleterm.nvim')
-Plug('numToStr/Comment.nvim')
 Plug('lewis6991/gitsigns.nvim')
 
 -- Mason (LSP installer)
 Plug('williamboman/mason.nvim')
 
--- Inline diagnostics
-Plug('Maan2003/lsp_lines.nvim')
 
 -- Treesitter
 Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
 
--- Signature help
-Plug('ray-x/lsp_signature.nvim')
 
 -- Copilot
 Plug('github/copilot.vim')
 Plug('CopilotC-Nvim/CopilotChat.nvim', { branch = 'main' })
 
--- Diagrams (inline rendering of mermaid, plantuml, d2, gnuplot)
-Plug('3rd/image.nvim')
-Plug('3rd/diagram.nvim')
 
--- PR Review
-Plug('~/.vim/plugged/nvim-raccoon')
 
 vim.call('plug#end')
 
@@ -68,5 +56,3 @@ require('plugins.treesitter')
 require('plugins.telescope')
 require('plugins.ui')
 require('plugins.tools')
-require('plugins.diagram')
-require('plugins.raccoon')

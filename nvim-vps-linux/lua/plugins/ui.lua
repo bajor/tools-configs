@@ -28,39 +28,6 @@ end
 -- Lualine
 local ok_lualine, lualine = pcall(require, 'lualine')
 if ok_lualine then
-  -- Raccoon sync status component (safe if raccoon not installed)
-  local function get_raccoon()
-    local ok, raccoon = pcall(require, 'raccoon')
-    if ok and type(raccoon) == 'table' and type(raccoon.is_active) == 'function' then
-      return raccoon
-    end
-    return nil
-  end
-
-  local raccoon_status = {
-    function()
-      local raccoon = get_raccoon()
-      if raccoon and raccoon.is_active() then
-        return raccoon.statusline()
-      end
-      return ''
-    end,
-    cond = function()
-      local raccoon = get_raccoon()
-      return raccoon ~= nil and raccoon.is_active()
-    end,
-    color = function()
-      local raccoon = get_raccoon()
-      if raccoon and raccoon.is_active() then
-        local status = raccoon.statusline() or ''
-        if status:find('CONFLICTS') or status:find('behind') then
-          return { fg = '#fb4934', gui = 'bold' }  -- red for out of sync
-        end
-        -- In sync: no special color, blends with statusline
-      end
-    end,
-  }
-
   local function mode_color()
     if vim.fn.mode():sub(1, 1) == 'i' then
       return { bg = '#ffffff', fg = '#1d2021', gui = 'bold' }
@@ -81,7 +48,7 @@ if ok_lualine then
           color = mode_color,
         },
       },
-      lualine_b = { 'branch', 'diff', 'diagnostics', raccoon_status },
+      lualine_b = { 'branch', 'diff', 'diagnostics' },
       lualine_c = { 'filename' },
       lualine_x = { 'encoding', 'fileformat', 'filetype' },
       lualine_y = { 'progress' },
