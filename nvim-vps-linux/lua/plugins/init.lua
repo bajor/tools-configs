@@ -45,8 +45,8 @@ Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
 
 
 -- Copilot
-Plug('github/copilot.vim')
-Plug('CopilotC-Nvim/CopilotChat.nvim', { branch = 'main' })
+Plug('neovim/nvim-lspconfig')
+Plug('folke/sidekick.nvim')
 
 
 
@@ -60,3 +60,4 @@ require('plugins.telescope')
 require('plugins.ui')
 require('plugins.tools')
 require('plugins.formatting')
+require('plugins.ai')

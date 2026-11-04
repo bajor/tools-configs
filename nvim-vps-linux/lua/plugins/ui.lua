@@ -44,11 +44,3 @@ require('incline').setup({})
 require('snacks').setup({ indent = { enabled = true, animate = { enabled = false } } })
 require('nvim-web-devicons').setup({})
 pcall(function() require('vim._core.ui2').enable({}) end)
-
--- Replaced by sidekick in the next PR.
-require('CopilotChat').setup({
-  window = {
-    layout = 'float', width = 0.8, height = 0.6, relative = 'editor',
-    row = 2, border = 'rounded',
-  },
-})

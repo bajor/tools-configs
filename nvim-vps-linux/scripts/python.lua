@@ -1,4 +1,6 @@
 -- Integration check: requires uv and the tools installed by VpsInstallTools.
+-- These regressions do not require an authenticated external AI service.
+vim.lsp.enable('copilot', false)
 local project = vim.fn.tempname()
 local file = project .. '/test_pair.py'
 local function command(argv)
@@ -22,7 +24,8 @@ local function check_python()
   assert(python.resolve() == project .. '/.venv/bin/python', 'wrong project interpreter')
   assert(require('dap').configurations.python[1].pythonPath() == python.resolve(), 'DAP drift')
   assert(vim.wait(15000, function()
-    return #vim.lsp.get_clients({ bufnr = 0 }) >= 2
+    return #vim.lsp.get_clients({ bufnr = 0, name = 'pyright' }) == 1
+      and #vim.lsp.get_clients({ bufnr = 0, name = 'ruff' }) == 1
   end), 'Python LSP clients did not attach')
   local pyright = assert(vim.lsp.get_clients({ bufnr = 0, name = 'pyright' })[1])
   local ruff = assert(vim.lsp.get_clients({ bufnr = 0, name = 'ruff' })[1])

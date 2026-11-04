@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Replace the old Copilot clients with native inline completion plus
+  Sidekick next edits and a scoped Claude/opencode pane without nested tmux.
+
 - Match Neovim and tmux to Rex Solarized Dark - Vivid, with transparent
   surfaces, global status, per-window file names and indent guides.
 

@@ -59,8 +59,9 @@ in an empty buffer and warned about non-Python filetypes.
 3. Install vim-plug's `plug.vim` in Neovim's `site/autoload` directory.
 4. Run `:PlugInstall`, then `:VpsInstallTools` and `:VpsInstallParsers`.
    Mason and Treesitter install only when requested; restart after installation.
-5. Run `:Copilot setup` for the current Copilot client. Native LSP Copilot
-   and `:LspCopilotSignIn` arrive later in this rebuild.
+5. Open a Python file and run `:LspCopilotSignIn` once. Copilot inline
+   completion and next edits need an eligible GitHub account/subscription.
+   The Claude/opencode pane works independently; sign into those CLIs separately.
 6. Use `:PlugUpdate`, restart Neovim, and check `:PlugStatus` and
    `:checkhealth vim.lsp`. Run `:TSUpdate` when parser updates are needed.
 7. Roll back a repository change with `git revert <commit>` on a branch,
@@ -90,6 +91,7 @@ vim-plug. There is no lazy-loading framework.
 | `lua/core/clipboard.lua` | OSC 52 copy, unnamed-register paste |
 | `lua/plugins/formatting.lua` | Explicit-save Conform formatting |
 | `lua/plugins/init.lua` | Authoritative plugin list and config loading |
+| `lua/plugins/ai.lua` | Copilot inline/NES, agent pane and AI maps |
 | `lua/plugins/completion.lua` | Completion menu and snippets |
 | `lua/plugins/treesitter.lua` | Parser installation and highlighting |
 | `lua/plugins/telescope.lua` | Telescope and custom files+content picker |
@@ -132,8 +134,8 @@ no reason to keep the plugin in the target config.
 | gitsigns.nvim | P3: review and stage hunks | No hunk staging UI |
 | mason.nvim | P2: tool installation | No server package manager |
 | nvim-treesitter | P3: parser installation | Highlighting yes, installer no |
-| copilot.vim | P3: current inline AI | Replaced by native LSP client |
-| CopilotChat.nvim | Remove: replaced by sidekick | No agent pane in core |
+| nvim-lspconfig | P3: Copilot server config and sign-in | LSP client yes, presets no |
+| sidekick.nvim | P3: next edits and scoped agent pane | Inline yes, NES/agent pane no |
 
 ## 6. Python pairing loop
 
@@ -152,7 +154,30 @@ one server response, so it did not solve cross-server duplication and is removed
 Use Space r r to run the saved file, Space r t for `python -m pytest` on
 that file, and Space r l to repeat the last command. Output stays in
 Toggleterm terminal 1. Unsaved buffers are refused so commands cannot run
-stale text. AI assistance is added in a later PR.
+stale text.
+
+1. Write a Python function. Accept inline ghost text with Ctrl+y while typing.
+2. Pause or leave insert mode; Ctrl+y jumps to or applies a next-edit suggestion.
+3. Select a small block, press Space a c for Claude or Space a o for opencode,
+   then return to the selection and press Space a v to send it. Space a p
+   offers four prompts: explain selection, fix diagnostics, write one test,
+   review the current file's diff. Ask for one small change.
+4. Leave terminal input with Ctrl+q. Review changes as Git hunks; the keyboard
+   PR adds Space g n/p/v/s/r for next/previous/preview/stage/reset.
+5. Run the current test file with Space r t. Select a failure in the terminal's
+   normal mode, then Space a v to send it to the agent.
+
+Ask for changes small enough to review as hunks in under a minute. Sidekick
+uses a right split with disk watching and no mux backend, so tmux is not
+nested. Only Claude and opencode are listed. No CLI permission settings change.
+Native inline completion uses the installed 0.12 `enable` and `get` APIs;
+Ctrl+y prefers inline text, then NES, then its native insert-mode fallback.
+
+nvim-lspconfig contributes server defaults underneath local configs. Its
+current Pyright/Ruff presets have no `root_dir` functions, so the local root
+markers and interpreter hook remain authoritative. It adds Pyright helper
+commands and defaults to disabling tagged hints; local workspace diagnostics
+and basic type checking remain enabled.
 
 ## 7. Keymaps
 
@@ -184,6 +209,11 @@ The VPS can verify settings, but cannot verify Rex's actual appearance.
 
 ## 9. Troubleshooting
 
+- Copilot: run `:VpsInstallTools`, open a Python file, then inspect
+  `:checkhealth vim.lsp`. Expect copilot, pyright and ruff. Sign in with
+  `:LspCopilotSignIn`; account entitlement is required for suggestions.
+  Run `:checkhealth sidekick` to check agent tools and next-edit support.
+
 Check `:messages`, `:PlugStatus`, `:checkhealth vim.lsp` and
 `:checkhealth provider`. Missing optional language providers do not prevent
 Lua LSP clients from running.
@@ -199,14 +229,16 @@ Lua LSP clients from running.
   Autosave on TextChanged/InsertLeave preserves your text without formatting.
   New unnamed files and read-only buffers are not autosaved.
 
-Space+j mappings are fixed in the keyboard PR. If imports fail, check the
+If imports fail, check the
 active virtual environment and the Python client settings in
 `:checkhealth vim.lsp`; run `uv sync` and restart Neovim after creating a venv.
 
 ## 10. Maintenance
 
 Run validation commands from the repository root. The Python integration
-check creates a temporary uv project and installs pytest:
+check creates a temporary uv project and installs pytest. Python and edit
+safety regressions disable Copilot in that test process; AI authentication
+and suggestions are checked separately after sign-in:
 `nvim --headless "+luafile nvim-vps-linux/scripts/python.lua"`.
 
 1. Add plugins only in `lua/plugins/init.lua`; add their reason and priority
