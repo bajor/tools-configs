@@ -1,6 +1,6 @@
 local map = vim.keymap.set
 
--- Priority 4: Space + letters for features, Ctrl only in input modes or AI.
+-- Priority 4: Space + letters for features, Ctrl only in input modes.
 map('n', '<leader>ff', '<Cmd>Telescope find_files<CR>', { desc = 'Find files' })
 map('n', '<leader>fg', function() require('plugins.telescope').multi_grep() end,
   { desc = 'Find files and content' })

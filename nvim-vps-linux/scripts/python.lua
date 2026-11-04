@@ -29,6 +29,7 @@ local function check_python()
   local ruff = assert(vim.lsp.get_clients({ bufnr = 0, name = 'ruff' })[1])
   assert(not ruff.server_capabilities.hoverProvider, 'duplicate Ruff hover')
   assert(pyright.config.settings.python.pythonPath == python.resolve(), 'LSP interpreter drift')
+  assert(pyright.config.settings.pyright.disableTaggedHints, 'Pyright tagged hints duplicate Ruff')
   local response = pyright:request_sync('textDocument/definition', {
     textDocument = { uri = vim.uri_from_fname(file) }, position = { line = 0, character = 9 },
   }, 10000, 0)
