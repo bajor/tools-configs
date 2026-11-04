@@ -14,14 +14,6 @@ Plug('nvim-lualine/lualine.nvim')
 -- File Explorer
 Plug('nvim-tree/nvim-tree.lua')
 
--- LSP & Completion
-Plug('hrsh7th/nvim-cmp')
-Plug('hrsh7th/cmp-nvim-lsp')
-Plug('hrsh7th/cmp-buffer')
-Plug('hrsh7th/cmp-path')
-Plug('L3MON4D3/LuaSnip')
-Plug('saadparwaiz1/cmp_luasnip')
-
 -- Python debugging
 Plug('mfussenegger/nvim-dap')
 Plug('nvim-neotest/nvim-nio')

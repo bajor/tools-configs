@@ -14,7 +14,7 @@
         lsp/
           init.lua     - LSP setup & diagnostics
           servers.lua  - LSP server configs
-        completion.lua - nvim-cmp setup
+        completion.lua - Native LSP menus
         treesitter.lua - Treesitter config
         telescope.lua  - Telescope config
         ui.lua         - Theme, statusline, icons

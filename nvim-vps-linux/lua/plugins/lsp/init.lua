@@ -1,31 +1,7 @@
 -- LSP Configuration
 local M = {}
 
--- Common on_attach for all LSP servers
-local function on_attach(client, bufnr)
-  vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = bufnr })
-
-
-end
-
--- Get LSP capabilities with nvim-cmp support
-function M.get_capabilities()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  local ok, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
-  if ok then
-    capabilities = vim.tbl_deep_extend('force', capabilities, cmp_lsp.default_capabilities())
-  end
-  return capabilities
-end
-
 function M.setup()
-  -- LspAttach autocmd for keymaps
-  vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(args)
-      on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
-    end,
-  })
-
   -- Mason setup
   require('mason').setup()
 
@@ -42,7 +18,10 @@ function M.setup()
   end, { desc = 'Install VPS Python tools with Mason' })
 
   -- Configure LSP servers
-  require('plugins.lsp.servers').setup(M.get_capabilities())
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  -- Snippet selection can consume subsequent keys in the same terminal batch.
+  capabilities.textDocument.completion.completionItem.snippetSupport = false
+  require('plugins.lsp.servers').setup(capabilities)
 
   -- Diagnostic config
   vim.diagnostic.config({
