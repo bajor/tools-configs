@@ -1,6 +1,6 @@
 -- Real config: nvim --headless '+luafile nvim-vps-linux/scripts/keymaps.lua'
 -- Set VPS_KEYMAP_JSON to a file path to also export the global maps and the
--- colorscheme's red, green, yellow and blue ANSI colors.
+-- colorscheme's red, green, yellow, blue, magenta and cyan ANSI colors.
 local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }
 -- Modes where typed text arrives, so a Space prefix would wait for timeoutlen.
 local TYPING_MODES = { i = true, t = true, s = true, c = true, l = true }
@@ -10,7 +10,7 @@ local KEY_SEPARATOR = '\0'
 local BASELINE_ENV = 'VPS_KEYMAP_BASELINE'
 local BASELINE_TIMEOUT_MS = 20000
 local PICKER_TIMEOUT_MS = 5000
-local ANSI_INDEX = { red = 1, green = 2, yellow = 3, blue = 4 }
+local ANSI_INDEX = { red = 1, green = 2, yellow = 3, blue = 4, magenta = 5, cyan = 6 }
 
 local function scope_of(buf)
   local filetype = vim.bo[buf].filetype
