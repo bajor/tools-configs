@@ -13,6 +13,8 @@
   Copilot language server, nvim-lspconfig (used only for it), the native
   inline completion hook, the Ctrl+y accept map, and Sidekick next edits.
   The agent pane and its maps stay.
+- Use native LSP menus instead of cmp and its snippet adapters,
+  avoiding queued-input loss during confirmation and reducing dependencies.
 
 - Add a real-config keymap regression check with optional JSON export.
   Give the insert completion keys descriptions: Tab, Shift+Tab, Enter and

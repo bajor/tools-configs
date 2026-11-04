@@ -83,7 +83,7 @@ vim-plug. There is no lazy-loading framework.
 | --- | --- |
 | `init.lua` | Startup order |
 | `scripts/edit-safety.lua` | Disk conflict and formatting regression |
-| `scripts/completion.lua` | Batched typing and completion fallback regression |
+| `scripts/completion.lua` | Native menu, word completion and batched input regression |
 | `scripts/keymaps.lua` | Validate public maps; export them as JSON on request |
 | `scripts/python.lua` | uv, LSP imports and terminal command integration |
 | `lua/core/options.lua` | Editor options and leader |
@@ -95,12 +95,12 @@ vim-plug. There is no lazy-loading framework.
 | `lua/plugins/formatting.lua` | Explicit-save Conform formatting |
 | `lua/plugins/init.lua` | Authoritative plugin list and config loading |
 | `lua/plugins/ai.lua` | Agent pane and AI maps |
-| `lua/plugins/completion.lua` | Completion menu and snippets |
+| `lua/plugins/completion.lua` | Native LSP completion and insert keys |
 | `lua/plugins/treesitter.lua` | Parser installation and highlighting |
 | `lua/plugins/telescope.lua` | Telescope and custom files+content picker |
 | `lua/plugins/ui.lua` | Theme, tree, window names, indent guides and statusline |
 | `lua/plugins/tools.lua` | Terminal and Git signs |
-| `lua/plugins/lsp/init.lua` | LSP attachment, Mason and diagnostics |
+| `lua/plugins/lsp/init.lua` | Server setup, Mason and diagnostics |
 | `lua/plugins/lsp/servers.lua` | Servers and DAP |
 
 Python is the only project language. Pyright, Ruff and debugpy remain;
@@ -121,12 +121,6 @@ no reason to keep the plugin in the target config.
 | nvim-web-devicons | P5: file icons | No icon registry |
 | lualine.nvim | P5: visible INSERT block | Yes, custom statusline code |
 | nvim-tree.lua | P4: file tree | Netrw, with different behavior |
-| nvim-cmp | P3: completion menu | Yes, fewer menu controls |
-| cmp-nvim-lsp | P3: LSP completion source | Yes, native completion |
-| cmp-buffer | P3: words from buffers | Yes, native Ctrl+n completion (Ctrl+n opens the cmp menu here) |
-| cmp-path | P3: path completion | Yes, Ctrl+x Ctrl+f |
-| LuaSnip | P3: existing snippets | Yes, native snippets |
-| cmp_luasnip | P3: snippets in menu | Not with this menu |
 | nvim-dap | P3: Python debugging | No DAP client |
 | nvim-nio | P3: DAP UI dependency | Not this plugin API |
 | nvim-dap-ui | P3: scopes and breakpoints | No debugger UI |
@@ -139,6 +133,15 @@ no reason to keep the plugin in the target config.
 | mason.nvim | P2: tool installation | No server package manager |
 | nvim-treesitter | P3: parser installation | Highlighting yes, installer no |
 | sidekick.nvim | P3: scoped agent pane for Claude and opencode | Partly: a terminal split lacks the send maps |
+
+Native LSP completion uses core Neovim. The menu opens on server
+trigger characters; Ctrl+n/Ctrl+p request it in Python and navigate it.
+Without an LSP, and during macros, those keys retain native word completion.
+Enter confirms the selected item, or the first item if none is selected.
+Tab navigates the menu. Arrow keys retain core behavior. LSP snippet
+expansion is disabled to keep confirmation synchronous during batched input.
+This replaces cmp and its sources because cmp confirmation can lose trailing
+characters delivered in the same input batch.
 
 ## 6. Python pairing loop
 
