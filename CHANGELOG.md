@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Replace the VPS Neovim scratch README with a current-config guide,
+  plugin reasons, requirements and preserved personal notes.
+
 - Configure VPS tmux RGB, 10 ms Esc handling, focus events, OSC 52 copy,
   and explicit Ctrl+a prefix; preserve live mouse scrolling.
 - Remove mandatory PR visual explanations; generate them only on explicit request.
