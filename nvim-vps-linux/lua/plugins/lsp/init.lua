@@ -66,8 +66,6 @@ function M.setup()
     },
   })
 
-  -- Diagnostic colors
-  require('plugins.lsp.colors').setup()
 end
 
 M.setup()

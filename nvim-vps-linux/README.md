@@ -93,11 +93,10 @@ vim-plug. There is no lazy-loading framework.
 | `lua/plugins/completion.lua` | Completion menu and snippets |
 | `lua/plugins/treesitter.lua` | Parser installation and highlighting |
 | `lua/plugins/telescope.lua` | Telescope and custom files+content picker |
-| `lua/plugins/ui.lua` | Gruvbox, tree, statusline and Copilot Chat |
+| `lua/plugins/ui.lua` | Theme, tree, window names, indent guides and statusline |
 | `lua/plugins/tools.lua` | Terminal and Git signs |
 | `lua/plugins/lsp/init.lua` | LSP attachment, Mason and diagnostics |
 | `lua/plugins/lsp/servers.lua` | Servers and DAP |
-| `lua/plugins/lsp/colors.lua` | Diagnostic highlight overrides |
 
 Python is the only project language. Pyright, Ruff and debugpy remain;
 Scala, C/C++, Go, Haskell, OCaml and Elixir servers and tools are removed.
@@ -110,7 +109,9 @@ no reason to keep the plugin in the target config.
 
 | Plugin | Why | Could core Neovim do this? |
 | --- | --- | --- |
-| morhetz/gruvbox | P5: current palette | Syntax yes, this palette no |
+| solarized-osaka.nvim | P5: palette synced to Rex | This palette no |
+| incline.nvim | P5: file name per window | Yes, custom floating windows |
+| snacks.nvim (indent only) | P3/P5: indentation guides | No persistent guides |
 | nvim-web-devicons | P5: file icons | No icon registry |
 | lualine.nvim | P5: visible INSERT block | Yes, custom statusline code |
 | nvim-tree.lua | P4: file tree | Netrw, with different behavior |
@@ -163,8 +164,23 @@ cheat sheet will replace this placeholder after the keyboard PR.
 
 ## 8. Look
 
-The current theme is Gruvbox. A bright INSERT block supplies a mode indicator
-because cursor shape changes do not survive mosh. Palette sync follows later.
+Solarized Osaka uses `style = "vivid"` and transparent editor, sidebar and
+float backgrounds. Rex supplies the background. On the Mac, import
+craftzdog's [Solarized Dark - Vivid Ghostty theme](https://github.com/craftzdog/dotfiles/blob/master/dot_config/ghostty/themes/Solarized%20Dark%20-%20Vivid).
+Its text colors use the same vivid transform; its surface colors stay dark.
+The source file currently sets the terminal background to `#031219`.
+
+There is one global lualine statusline and an Incline filename per editor
+window. Snacks enables only indent guides with animations disabled. Rounded
+float borders and a bright INSERT block remain visible through mosh.
+Line numbers are absolute; use Flash after the keyboard PR for long jumps.
+`cmdheight=0` uses experimental Neovim 0.12 ui2 under `pcall`.
+
+If colors differ, check Rex's selected theme, `:set termguicolors?`, and
+`tmux info` for client RGB/Tc after reconnecting. Set BlexMono Nerd Font or
+another Nerd Font in Rex if icons appear as boxes. Glyphs render on the Mac.
+A shell truecolor test is `printf '\033[38;2;50;185;170mRGB test\033[0m\n'`.
+The VPS can verify settings, but cannot verify Rex's actual appearance.
 
 ## 9. Troubleshooting
 

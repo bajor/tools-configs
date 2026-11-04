@@ -7,7 +7,13 @@ g.maplocalleader = ' '
 
 -- UI
 opt.termguicolors = true
-opt.cmdheight = 2
+opt.cmdheight = 0
+opt.laststatus = 3
+opt.winborder = 'rounded'
+opt.number = true
+opt.relativenumber = false
+opt.scrolloff = 8
+opt.undofile = true
 opt.display = 'lastline'
 opt.signcolumn = 'yes'
 opt.background = 'dark'

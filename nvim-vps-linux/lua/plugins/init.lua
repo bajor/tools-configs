@@ -4,7 +4,9 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin', vim.fn.stdpath('data') .. '/plugged')
 
 -- UI / Theme
-Plug('morhetz/gruvbox')
+Plug('craftzdog/solarized-osaka.nvim')
+Plug('b0o/incline.nvim')
+Plug('folke/snacks.nvim')
 Plug('nvim-tree/nvim-web-devicons')
 Plug('nvim-lualine/lualine.nvim')
 

@@ -22,6 +22,7 @@ local function setup_dap_ui()
   if not ok_ui then return end
 
   dapui.setup({
+    floating = { border = 'rounded' },
     layouts = {
       {
         -- Algorithm-first layout: variable scopes + breakpoints, no watches/thread-heavy stacks.

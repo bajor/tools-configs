@@ -14,7 +14,6 @@
         lsp/
           init.lua     - LSP setup & diagnostics
           servers.lua  - LSP server configs
-          colors.lua   - Diagnostic colors
         completion.lua - nvim-cmp setup
         treesitter.lua - Treesitter config
         telescope.lua  - Telescope config
