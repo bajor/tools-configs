@@ -6,7 +6,7 @@ telescope.setup({
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
     mappings = {
       i = { ['<M-f>'] = false, ['<M-k>'] = false, ['<M-q>'] = false },
-      n = { ['<M-f>'] = false, ['<M-k>'] = false, ['<M-q>'] = false },
+      n = { ['<M-f>'] = false, ['<M-k>'] = false, ['<M-q>'] = false, ['<Tab>'] = false },
     },
     file_ignore_patterns = {
       "node_modules",

@@ -83,7 +83,7 @@ vim-plug. There is no lazy-loading framework.
 | `init.lua` | Startup order |
 | `scripts/edit-safety.lua` | Disk conflict and formatting regression |
 | `scripts/completion.lua` | Batched typing and completion fallback regression |
-| `scripts/keymaps.lua` | Validate public maps and export their JSON |
+| `scripts/keymaps.lua` | Validate public maps; export them as JSON on request |
 | `scripts/python.lua` | uv, LSP imports and terminal command integration |
 | `lua/core/options.lua` | Editor options and leader |
 | `lua/core/keymaps.lua` | General, search, window and debug maps |
@@ -267,12 +267,17 @@ and suggestions are checked separately after sign-in:
    `nvim --headless "+luafile nvim-vps-linux/scripts/edit-safety.lua"`.
 5. Run the keyboard regression with
    `nvim --headless "+luafile nvim-vps-linux/scripts/keymaps.lua"`.
-   It exports public user mappings as JSON and exits nonzero for input-mode
-   Space prefixes, Cmd/Alt/F-keys, undescribed normal leader maps, or normal
-   Tab/Ctrl+i maps. Native unchanged defaults and internal Plug targets are
-   excluded; core gc/gcc are included. Tree and terminal contexts are checked.
+   It exits nonzero for any of these public maps: a Space prefix in insert,
+   terminal, select or command-line mode; Cmd, Alt or F-keys, alone or with
+   another modifier; a global or leader map without a description; a normal
+   Tab or Ctrl+i map. It opens the file tree, a terminal and a Telescope
+   prompt to check their buffer-local maps. Native unchanged defaults and
+   internal Plug targets are excluded; core gc/gcc are included. Set
+   `VPS_KEYMAP_JSON=/path/keymaps.json` to also write the public maps and the
+   colorscheme's ANSI palette as JSON with sorted keys.
    Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
-   to verify batched Enter/Tab input and ordinary Space+j text are preserved.
+   to verify that batched Enter and Tab input stays in order and that Enter
+   still expands abbreviations.
 6. The printable generator and README key table follow in the final PR.
 
 Acceptance: documented behavior agrees with the config and startup succeeds.
