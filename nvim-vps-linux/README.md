@@ -58,7 +58,7 @@ in an empty buffer and warned about non-Python filetypes.
    `~/.tmux.conf` to `tmux/.tmux.conf`. Preserve unexplained local changes.
 3. Install vim-plug's `plug.vim` in Neovim's `site/autoload` directory.
 4. Run `:PlugInstall`. Mason currently installs configured servers when
-   Neovim starts. Treesitter installs configured parsers on startup.
+   Neovim starts. Run `:VpsInstallParsers` once for the configured parsers.
 5. Run `:Copilot setup` for the current Copilot client. Native LSP Copilot
    and `:LspCopilotSignIn` arrive later in this rebuild.
 6. Use `:PlugUpdate`, restart Neovim, and check `:PlugStatus` and
