@@ -83,7 +83,8 @@ vim-plug. There is no lazy-loading framework.
 | `lua/core/options.lua` | Editor options and leader |
 | `lua/core/keymaps.lua` | General, search, window and debug maps |
 | `lua/core/autocmds.lua` | Yank highlight, autosave, save formatting |
-| `lua/config/python_format.lua` | Current Python formatting helper |
+| `lua/core/clipboard.lua` | OSC 52 copy, unnamed-register paste |
+| `lua/plugins/formatting.lua` | Explicit-save Conform formatting |
 | `lua/plugins/init.lua` | Authoritative plugin list and config loading |
 | `lua/plugins/completion.lua` | Completion menu and snippets |
 | `lua/plugins/treesitter.lua` | Parser installation and highlighting |
@@ -121,6 +122,7 @@ no reason to keep the plugin in the target config.
 | plenary.nvim | P3: Telescope dependency | Not this plugin API |
 | telescope.nvim | P3: files+content picker | No combined picker |
 | telescope-fzf-native.nvim | P3: fast picker sorting | No fuzzy native sorter |
+| conform.nvim | P3: ordered Ruff formatting on explicit save | Yes, custom formatter coordination |
 | toggleterm.nvim | P3: reusable command output | Yes, more terminal glue |
 | gitsigns.nvim | P3: review and stage hunks | No hunk staging UI |
 | mason.nvim | P2: tool installation | No server package manager |
@@ -149,9 +151,20 @@ because cursor shape changes do not survive mosh. Palette sync follows later.
 
 Check `:messages`, `:PlugStatus`, `:checkhealth vim.lsp` and
 `:checkhealth provider`. Missing optional language providers do not prevent
-Lua LSP clients from running. Known problems still present here: autosave
-formats on every change, external edits are not reloaded, Space+j is mapped
-in insert and terminal modes, and Python interpreter selection is DAP-only.
+Lua LSP clients from running.
+
+- Clipboard: copy with `"+yy`, paste on the Mac with Rex's Cmd+V. Within
+  Neovim, `"+p` uses the unnamed register; it never queries the Mac.
+- External edits: BufEnter, CursorHold, CursorHoldI and TermLeave run
+  `checktime`, independent of focus notifications. Unmodified buffers reload.
+- Conflicts: autosave compares the saved disk mtime, size and inode before
+  writing. A mismatch blocks autosave and checks disk changes. Review both
+  versions before choosing `:edit!` (discard local edits) or a manual save.
+- Formatting: explicit `:w` runs Ruff import organization then formatting.
+  Autosave on TextChanged/InsertLeave preserves your text without formatting.
+  New unnamed files and read-only buffers are not autosaved.
+
+Space+j mappings and DAP-only interpreter selection are fixed in later PRs.
 
 ## 10. Maintenance
 
@@ -159,7 +172,8 @@ in insert and terminal modes, and Python interpreter selection is DAP-only.
    to the plugin table here. Prefer core features and existing plugins.
 2. Keep each rule in one Lua file. Update this guide with behavior changes.
 3. Add an entry under `Unreleased` in the repository's `CHANGELOG.md`.
-4. Run `git diff --check` and headless startup before submitting a PR.
+4. Run `git diff --check`, headless startup and the edit safety regression:
+   `nvim --headless "+luafile nvim-vps-linux/scripts/edit-safety.lua"`.
 5. The keymap regression check and cheat-sheet generator arrive later in
    this series; until then inspect mappings with `:verbose map`.
 

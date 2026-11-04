@@ -30,6 +30,7 @@ Plug('nvim-telescope/telescope.nvim')
 Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 
 -- Terminal and Git
+Plug('stevearc/conform.nvim')
 Plug('akinsho/toggleterm.nvim')
 Plug('lewis6991/gitsigns.nvim')
 
@@ -56,3 +57,4 @@ require('plugins.treesitter')
 require('plugins.telescope')
 require('plugins.ui')
 require('plugins.tools')
+require('plugins.formatting')
