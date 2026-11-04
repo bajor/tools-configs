@@ -57,8 +57,8 @@ in an empty buffer and warned about non-Python filetypes.
 2. Link `~/.config/nvim` to this repository's `nvim-vps-linux` folder and
    `~/.tmux.conf` to `tmux/.tmux.conf`. Preserve unexplained local changes.
 3. Install vim-plug's `plug.vim` in Neovim's `site/autoload` directory.
-4. Run `:PlugInstall`. Mason currently installs configured servers when
-   Neovim starts. Run `:VpsInstallParsers` once for the configured parsers.
+4. Run `:PlugInstall`, then `:VpsInstallTools` and `:VpsInstallParsers`.
+   Mason and Treesitter install only when requested; restart after installation.
 5. Run `:Copilot setup` for the current Copilot client. Native LSP Copilot
    and `:LspCopilotSignIn` arrive later in this rebuild.
 6. Use `:PlugUpdate`, restart Neovim, and check `:PlugStatus` and
@@ -80,9 +80,13 @@ vim-plug. There is no lazy-loading framework.
 | File | Owns |
 | --- | --- |
 | `init.lua` | Startup order |
+| `scripts/edit-safety.lua` | Disk conflict and formatting regression |
+| `scripts/python.lua` | uv, LSP imports and terminal command integration |
 | `lua/core/options.lua` | Editor options and leader |
 | `lua/core/keymaps.lua` | General, search, window and debug maps |
 | `lua/core/autocmds.lua` | Yank highlight, autosave, save formatting |
+| `lua/config/python.lua` | Project root and shared interpreter resolver |
+| `lua/config/python_run.lua` | Run, pytest and rerun in Toggleterm |
 | `lua/core/clipboard.lua` | OSC 52 copy, unnamed-register paste |
 | `lua/plugins/formatting.lua` | Explicit-save Conform formatting |
 | `lua/plugins/init.lua` | Authoritative plugin list and config loading |
@@ -132,7 +136,22 @@ no reason to keep the plugin in the target config.
 
 ## 6. Python pairing loop
 
-The pairing workflow is implemented in later PRs in this series.
+Create a project with `uv init`, add pytest with `uv add --dev pytest`,
+and use `uv sync` after cloning an existing project. Open Neovim inside the
+project. Pyright, DAP and run/test commands select the same interpreter:
+`$VIRTUAL_ENV/bin/python`, project `.venv`, `venv`, `env`, then `python3`.
+Roots are found from the current file, so launching Neovim above a project
+also works. Run `:VpsInstallTools` after adding or updating tool requirements.
+
+Pyright owns types, definitions, references and hover. Ruff owns lint,
+import organization and formatting; Ruff hover and Pyright organize-imports
+are disabled. The old diagnostic handler only filtered duplicates within
+one server response, so it did not solve cross-server duplication and is removed.
+
+Use Space r r to run the saved file, Space r t for `python -m pytest` on
+that file, and Space r l to repeat the last command. Output stays in
+Toggleterm terminal 1. Unsaved buffers are refused so commands cannot run
+stale text. AI assistance is added in a later PR.
 
 ## 7. Keymaps
 
@@ -164,9 +183,15 @@ Lua LSP clients from running.
   Autosave on TextChanged/InsertLeave preserves your text without formatting.
   New unnamed files and read-only buffers are not autosaved.
 
-Space+j mappings and DAP-only interpreter selection are fixed in later PRs.
+Space+j mappings are fixed in the keyboard PR. If imports fail, check the
+active virtual environment and the Python client settings in
+`:checkhealth vim.lsp`; run `uv sync` and restart Neovim after creating a venv.
 
 ## 10. Maintenance
+
+Run validation commands from the repository root. The Python integration
+check creates a temporary uv project and installs pytest:
+`nvim --headless "+luafile nvim-vps-linux/scripts/python.lua"`.
 
 1. Add plugins only in `lua/plugins/init.lua`; add their reason and priority
    to the plugin table here. Prefer core features and existing plugins.

@@ -1,7 +1,7 @@
 -- LSP Server configurations
 local M = {}
 
-local PROJECT_VENV_DIRS = { '.venv', 'venv', 'env', '.env' }
+local python = require('config.python')
 local DEFAULT_PYTHON = 'python3'
 local DAP_UI_SIDEBAR_WIDTH = 26
 local DAP_UI_BOTTOM_HEIGHT = 12
@@ -11,26 +11,6 @@ local function get_debugpy_adapter_command()
   if vim.fn.executable(mason_debugpy_python) == 1 then
     return mason_debugpy_python
   end
-  return DEFAULT_PYTHON
-end
-
-local function resolve_python_path()
-  local active_venv = vim.env.VIRTUAL_ENV
-  if active_venv then
-    local venv_python = active_venv .. '/bin/python'
-    if vim.fn.executable(venv_python) == 1 then
-      return venv_python
-    end
-  end
-
-  local cwd = vim.fn.getcwd()
-  for _, venv_dir in ipairs(PROJECT_VENV_DIRS) do
-    local candidate = cwd .. '/' .. venv_dir .. '/bin/python'
-    if vim.fn.executable(candidate) == 1 then
-      return candidate
-    end
-  end
-
   return DEFAULT_PYTHON
 end
 
@@ -72,9 +52,13 @@ function M.setup(capabilities)
   vim.lsp.config.pyright = {
     cmd = { 'pyright-langserver', '--stdio' },
     filetypes = { 'python' },
-    root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', '.git' },
+    root_markers = python.root_markers,
+    before_init = function(_, config)
+      config.settings.python.pythonPath = python.resolve(config.root_dir)
+    end,
     capabilities = capabilities,
     settings = {
+      pyright = { disableOrganizeImports = true },
       python = {
         analysis = {
           autoSearchPaths = true,
@@ -91,12 +75,10 @@ function M.setup(capabilities)
   vim.lsp.config.ruff = {
     cmd = { 'ruff', 'server' },
     filetypes = { 'python' },
-    root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml', 'setup.py', '.git' },
+    root_markers = python.root_markers,
+    on_attach = function(client) client.server_capabilities.hoverProvider = false end,
     capabilities = capabilities,
-    settings = {
-      organizeImports = true,
-      fixAll = true,
-    },
+    init_options = { settings = { organizeImports = true, fixAll = true } },
   }
   vim.lsp.enable('ruff')
 
@@ -125,7 +107,7 @@ function M.setup_python_dap()
       cwd = '${workspaceFolder}',
       console = 'integratedTerminal',
       justMyCode = false,
-      pythonPath = resolve_python_path,
+      pythonPath = function() return python.resolve() end,
     },
     {
       type = 'python',
@@ -139,7 +121,7 @@ function M.setup_python_dap()
         local raw_args = vim.fn.input('Program args: ')
         return vim.split(raw_args, '%s+', { trimempty = true })
       end,
-      pythonPath = resolve_python_path,
+      pythonPath = function() return python.resolve() end,
     },
     {
       type = 'python',
@@ -148,7 +130,7 @@ function M.setup_python_dap()
       connect = { host = '127.0.0.1', port = 5678 },
       cwd = '${workspaceFolder}',
       justMyCode = false,
-      pythonPath = resolve_python_path,
+      pythonPath = function() return python.resolve() end,
     },
   }
 end

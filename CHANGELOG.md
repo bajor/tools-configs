@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Share Python interpreter selection across Pyright, DAP and run/pytest
+  commands; split Ruff/Pyright roles and install Mason tools explicitly.
+
 - Reload external edits without focus events, block autosave on disk drift,
   format explicit writes with Conform/Ruff, and use OSC 52 copy/local paste.
 
