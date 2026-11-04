@@ -14,23 +14,6 @@ autocmd('TextYankPost', {
 -- Format on save
 local format_group = augroup('FormatOnSave', { clear = true })
 
-local format_patterns = {
-  { pattern = { '*.c', '*.h' } },
-  { pattern = { '*.go' } },
-  { pattern = { '*.ex', '*.exs' } },
-  { pattern = { '*.ml', '*.mli' } },
-}
-
-for _, cfg in ipairs(format_patterns) do
-  autocmd('BufWritePre', {
-    group = format_group,
-    pattern = cfg.pattern,
-    callback = function()
-      vim.lsp.buf.format({ async = false })
-    end,
-  })
-end
-
 -- Python format with import sorting
 autocmd('BufWritePre', {
   group = format_group,

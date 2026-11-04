@@ -83,7 +83,7 @@ if ok_lualine then
       },
       lualine_b = { 'branch', 'diff', 'diagnostics', raccoon_status },
       lualine_c = { 'filename' },
-      lualine_x = { 'g:metals_status', 'encoding', 'fileformat', 'filetype' },
+      lualine_x = { 'encoding', 'fileformat', 'filetype' },
       lualine_y = { 'progress' },
       lualine_z = { 'location' },
     },
@@ -93,15 +93,7 @@ end
 -- Devicons
 local ok_icons, devicons = pcall(require, 'nvim-web-devicons')
 if ok_icons then
-  devicons.setup({
-    override = {
-      scala = { icon = "", color = "#cc3e44", cterm_color = "167", name = "Scala" },
-      go = { icon = "", color = "#00ADD8", cterm_color = "74", name = "Go" },
-      ex = { icon = "", color = "#a074c4", cterm_color = "140", name = "Elixir" },
-      exs = { icon = "", color = "#a074c4", cterm_color = "140", name = "ElixirScript" },
-      heex = { icon = "", color = "#a074c4", cterm_color = "140", name = "HEEx" },
-    },
-  })
+  devicons.setup({})
 end
 
 -- Copilot Chat
