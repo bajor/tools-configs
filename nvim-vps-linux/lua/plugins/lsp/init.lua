@@ -1,38 +1,6 @@
 -- LSP Configuration
 local M = {}
 
--- Diagnostic deduplication (prevents duplicate messages)
-local function setup_diagnostic_dedup()
-  local original_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
-
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-    if not result or not result.diagnostics then
-      return original_handler(err, result, ctx, config)
-    end
-
-    local seen = {}
-    local filtered = {}
-
-    for _, diag in ipairs(result.diagnostics) do
-      local range = diag.range
-      local key = string.format("%s|%d|%d:%d-%d:%d",
-        diag.message or "",
-        diag.severity or vim.diagnostic.severity.ERROR,
-        range.start.line, range.start.character,
-        range["end"].line, range["end"].character
-      )
-
-      if not seen[key] then
-        seen[key] = true
-        table.insert(filtered, diag)
-      end
-    end
-
-    result.diagnostics = filtered
-    return original_handler(err, result, ctx, config)
-  end
-end
-
 -- Common on_attach for all LSP servers
 local function on_attach(client, bufnr)
   local o = { buffer = bufnr, silent = true }
@@ -57,8 +25,6 @@ function M.get_capabilities()
 end
 
 function M.setup()
-  setup_diagnostic_dedup()
-
   -- LspAttach autocmd for keymaps
   vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
@@ -69,17 +35,17 @@ function M.setup()
   -- Mason setup
   require('mason').setup()
 
-  -- Ensure tools are installed
-  local ok, registry = pcall(require, 'mason-registry')
-  if ok then
-    local tools = { 'pyright', 'ruff', 'debugpy' }
-    for _, tool in ipairs(tools) do
-      local pkg = registry.get_package(tool)
-      if not pkg:is_installed() then
-        pkg:install()
+  vim.api.nvim_create_user_command('VpsInstallTools', function()
+    local registry = require('mason-registry')
+    registry.refresh(function()
+      for _, name in ipairs({ 'pyright', 'ruff', 'debugpy' }) do
+        local package = registry.get_package(name)
+        if not package:is_installed() and not package:is_installing() then
+          package:install()
+        end
       end
-    end
-  end
+    end)
+  end, { desc = 'Install VPS Python tools with Mason' })
 
   -- Configure LSP servers
   require('plugins.lsp.servers').setup(M.get_capabilities())

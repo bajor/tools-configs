@@ -96,3 +96,11 @@ map('n', '<Leader>dt', function()
   local dap = safe_require('dap')
   if dap then dap.terminate() end
 end, opts)
+
+-- Python commands use the same interpreter as LSP and DAP.
+map('n', '<leader>rr', function() require('config.python_run').run_file() end,
+  { desc = 'Run Python file' })
+map('n', '<leader>rt', function() require('config.python_run').test_file() end,
+  { desc = 'Test Python file with pytest' })
+map('n', '<leader>rl', function() require('config.python_run').rerun() end,
+  { desc = 'Rerun last Python command' })
