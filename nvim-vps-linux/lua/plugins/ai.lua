@@ -1,19 +1,7 @@
--- Priority 3: one Copilot client for native inline completion and NES.
-vim.lsp.config('copilot', {
-  filetypes = { 'python' },
-  root_markers = require('config.python').root_markers,
-})
-vim.lsp.enable('copilot')
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('VpsCopilot', { clear = true }),
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client and client.name == 'copilot' then
-      vim.lsp.inline_completion.enable(true, { bufnr = ev.buf })
-    end
-  end,
-})
+-- Priority 3: scoped agent pane for Claude and opencode. Next edit suggestions
+-- need a Copilot subscription, so they stay off.
 require('sidekick').setup({
+  nes = { enabled = false },
   cli = {
     win = { layout = 'right' }, watch = true,
     mux = { enabled = false }, picker = 'telescope',
@@ -48,10 +36,3 @@ map({ 'n', 'x' }, '<leader>av', function() cli.send({ msg = '{selection}' }) end
   { desc = 'Send selection' })
 map({ 'n', 'x' }, '<leader>ap', function() cli.prompt() end, { desc = 'Select scoped prompt' })
 map({ 'n', 'x' }, '<leader>ad', function() cli.close() end, { desc = 'Detach agent' })
-map('i', '<C-y>', function()
-  if vim.lsp.inline_completion.get() then return '' end
-  if require('sidekick').nes_jump_or_apply() then return '' end
-  return '<C-y>'
-end, { expr = true, desc = 'Accept AI suggestion' })
-map('n', '<C-y>', function() require('sidekick').nes_jump_or_apply() end,
-  { desc = 'Accept next edit' })

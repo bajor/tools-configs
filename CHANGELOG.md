@@ -4,6 +4,11 @@
 
 ### Changed
 
+- Remove Copilot, which needs a subscription this setup does not have: the
+  Copilot language server, nvim-lspconfig (used only for it), the native
+  inline completion hook, the Ctrl+y accept map, and Sidekick next edits.
+  The agent pane and its maps stay.
+
 - Add a real-config keymap regression check with optional JSON export.
   Give the insert completion keys descriptions: Tab, Shift+Tab, Enter and
   the arrow keys behave as before, and Ctrl+n and Ctrl+p now open the cmp

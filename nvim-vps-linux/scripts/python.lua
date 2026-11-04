@@ -1,6 +1,4 @@
 -- Integration check: requires uv and the tools installed by VpsInstallTools.
--- These regressions do not require an authenticated external AI service.
-vim.lsp.enable('copilot', false)
 local project = vim.fn.tempname()
 local file = project .. '/test_pair.py'
 local function command(argv)
