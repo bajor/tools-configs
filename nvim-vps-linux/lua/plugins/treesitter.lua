@@ -2,7 +2,9 @@
 
 -- Install parsers
 -- Python is the only project language; the rest support config/help files.
-require('nvim-treesitter').install({ 'python', 'lua', 'vim', 'vimdoc', 'bash' })
+vim.api.nvim_create_user_command('VpsInstallParsers', function()
+  require('nvim-treesitter').install({ 'python', 'lua', 'vim', 'vimdoc', 'bash' })
+end, { desc = 'Install VPS Python and config parsers' })
 
 -- Enable treesitter highlighting for all supported filetypes
 vim.api.nvim_create_autocmd('FileType', {
