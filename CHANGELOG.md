@@ -4,9 +4,11 @@
 
 ### Changed
 
-- Add a real-config keymap regression check with optional JSON export, and
-  give the insert completion keys descriptions without changing their
-  behavior. Disable Telescope's normal-mode Tab so the check passes.
+- Add a real-config keymap regression check with optional JSON export.
+  Give the insert completion keys descriptions: Tab, Shift+Tab, Enter and
+  the arrow keys behave as before, and Ctrl+n and Ctrl+p now open the cmp
+  menu. Disable Telescope's normal-mode Tab, which over mosh is the same
+  byte as Ctrl+i.
 
 - Use Sweep letter groups, native comment keys, Flash jumps, described
   Git/code/window/debug maps and no insert/terminal Space prefix mappings.
