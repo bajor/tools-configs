@@ -6,7 +6,6 @@
 
 - Configure VPS tmux RGB, 10 ms Esc handling, focus events, OSC 52 copy,
   and explicit Ctrl+a prefix; preserve live mouse scrolling.
-
 - Remove mandatory PR visual explanations; generate them only on explicit request.
 - Require frequent, descriptive logical commits and preservation of explanatory history.
 - Document artifact-only Raccoon publication on PR branches and opt-in merge cleanup.
