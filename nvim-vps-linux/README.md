@@ -93,6 +93,11 @@ vim-plug. There is no lazy-loading framework.
 | `lua/plugins/lsp/servers.lua` | Servers and DAP |
 | `lua/plugins/lsp/colors.lua` | Diagnostic highlight overrides |
 
+Python is the only project language. Pyright, Ruff and debugpy remain;
+Scala, C/C++, Go, Haskell, OCaml and Elixir servers and tools are removed.
+Python parsers remain alongside Lua, Vim, help and Bash for maintaining this
+config and using its terminal. These auxiliary filetypes have no LSP server.
+
 The table describes the current config, including plugins scheduled for
 removal. P1 to P5 refer to the priorities above; "remove" means there is
 no reason to keep the plugin in the target config.
@@ -111,11 +116,9 @@ no reason to keep the plugin in the target config.
 | vim-vsnip | Remove: duplicates LuaSnip | Native snippets also exist |
 | LuaSnip | P3: existing snippets | Yes, native snippets |
 | cmp_luasnip | P3: snippets in menu | Not with this menu |
-| nvim-metals | Remove: Scala unused | No Scala integration needed |
 | nvim-dap | P3: Python debugging | No DAP client |
 | nvim-nio | P3: DAP UI dependency | Not this plugin API |
 | nvim-dap-ui | P3: scopes and breakpoints | No debugger UI |
-| vim-elixir | Remove: Elixir unused | No Elixir support needed |
 | plenary.nvim | P3: Telescope dependency | Not this plugin API |
 | telescope.nvim | P3: files+content picker | No combined picker |
 | telescope-fzf-native.nvim | P3: fast picker sorting | No fuzzy native sorter |
@@ -125,7 +128,6 @@ no reason to keep the plugin in the target config.
 | mason.nvim | P2: tool installation | No server package manager |
 | lsp_lines.nvim | Remove: unused virtual lines | Yes, since 0.11 |
 | nvim-treesitter | P3: parser installation | Highlighting yes, installer no |
-| nvim-jvmopts | Remove: Scala unused | No JVM support needed |
 | lsp_signature.nvim | Remove: core signature help | Yes |
 | copilot.vim | P3: current inline AI | Replaced by native LSP client |
 | CopilotChat.nvim | Remove: replaced by sidekick | No agent pane in core |

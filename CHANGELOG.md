@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Keep Python as the only VPS project language; remove other servers,
+  language plugins, parsers, debug targets and formatting rules.
+
 - Replace the VPS Neovim scratch README with a current-config guide,
   plugin reasons, requirements and preserved personal notes.
 

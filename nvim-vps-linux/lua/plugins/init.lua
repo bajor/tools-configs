@@ -21,14 +21,10 @@ Plug('hrsh7th/vim-vsnip')
 Plug('L3MON4D3/LuaSnip')
 Plug('saadparwaiz1/cmp_luasnip')
 
--- Scala
-Plug('scalameta/nvim-metals')
+-- Python debugging
 Plug('mfussenegger/nvim-dap')
 Plug('nvim-neotest/nvim-nio')
 Plug('rcarriga/nvim-dap-ui')
-
--- Elixir
-Plug('elixir-editors/vim-elixir')
 
 -- Telescope
 Plug('nvim-lua/plenary.nvim')
@@ -49,8 +45,7 @@ Plug('Maan2003/lsp_lines.nvim')
 -- Treesitter
 Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
 
--- Scala tools
-Plug('ckipp01/nvim-jvmopts')
+-- Signature help
 Plug('ray-x/lsp_signature.nvim')
 
 -- Copilot

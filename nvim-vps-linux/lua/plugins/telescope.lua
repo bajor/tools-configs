@@ -5,10 +5,9 @@ telescope.setup({
   defaults = {
     file_ignore_patterns = {
       "node_modules",
+      "%.venv/",
+      "venv/",
       ".git",
-      "target",
-      ".bloop",
-      ".metals",
     },
   },
   extensions = {
