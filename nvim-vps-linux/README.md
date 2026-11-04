@@ -1,72 +1,181 @@
-Close quick list fix `<Leader>q`
+# Neovim on the VPS
 
-## Statusline mode visibility
-INSERT mode uses a bright white lualine mode block so it is obvious over mosh.
-Cursor pipe/block shape changes are not reliable through mosh, and mosh is still preferred for stable VPS editing sessions.
+## 1. Purpose
 
----
+This config runs on Ubuntu through mosh and tmux from Rex on the Mac.
+It supports Python editing with an AI assisting small changes that you review.
+The key layout is being adapted for a 34-key Ferris Sweep.
 
-## Debugging (DAP)
-`<Leader>dc`: Continue or start the debug session.
-<br>
-`<Leader>db`: Toggle breakpoint on the current line.
-<br>
-`<Leader>dB`: Set a conditional breakpoint.
-<br>
-`<Leader>di`: Step into the current function.
-<br>
-`<Leader>do`: Step over the current line.
-<br>
-`<Leader>dO`: Step out of the current function.
-<br>
-`<Leader>dr`: Toggle the DAP REPL.
-<br>
-`<Leader>du`: Toggle the DAP UI.
-<br>
-`<Leader>dt`: Terminate the debug session.
+Priorities: (1) mosh stability, (2) simplicity, (3) Python pairing,
+(4) Sweep comfort, (5) a Rex-matched appearance.
 
----
+## 2. Connection chain
 
-## Telescpe
-`<Leader>ff`: Search for files in your current working directory.
-<br>
-`<C-p>`: Perform a live grep search across your project.
-<br>
-`<Leader>fb`: Show a list of open buffers.
-<br>
-`<Leader>fh`: Search through Neovim help tags.
-<br>
-`:Telescope git_files`: Search files in a Git repository (requires Git).
-<br>
-`Ctrl - V` - open in split tab
+```text
+MacBook: Rex (terminal and multiplexer, built on libghostty)
+   |
+   | mosh 1.4+ on both ends
+   v
+Ubuntu VPS: tmux new-session -A -s main --> nvim
+```
 
----
+| Feature | Through mosh | Reason or alternative |
+| --- | --- | --- |
+| 24-bit color | Yes, 1.4+ | Both client and server must support RGB |
+| OSC 52 copy | Yes, 1.4+ | tmux must allow clipboard writes |
+| Mac paste | Yes | Rex sends Cmd+V as terminal input |
+| OSC 52 read | No | No clipboard-query response; avoid timeout |
+| Cmd mappings | No | Mac handles these before terminal input |
+| Extended keys | No | Tab and Ctrl+i have the same encoding |
+| Cursor shapes, undercurl | No | Screen re-rendering loses these details |
+| Kitty graphics | No | Graphics escape sequences are not forwarded |
+| Background queries | No | Cannot infer Rex's background reliably |
+| FocusGained | Unreliable | Use activity-triggered disk checks instead |
+| Rex OSC 7501 status | No | Agent status sequences are not forwarded |
 
-`gr` - go to refferences
+Rex now documents a Linux server in testing, gated by Discord login:
+<https://www.superlogical.com/rex/docs/linux/installation>.
+This config keeps the mosh connection and does not require that server.
+
+## 3. Requirements
+
+Minimum supported versions for this rebuild: Neovim 0.12.0, mosh 1.4.0
+on both ends, tmux 3.5a, ripgrep 14.1, fd 10.2, Node.js 22,
+uv 0.8, tree-sitter CLI 0.26.1, and GCC 12 or Clang 14 with `make`.
+Git and curl are needed to install plugins. Set a Nerd Font in Rex for icons.
+
+The baseline on 2026-11-04 UTC was Neovim 0.11.6, tmux 3.5a, mosh
+1.4.0 and Python 3.13.3, with no uv. Headless startup passed. The live
+config was a copy with drift, including forced autosave via `write!`.
+Provider health reported missing optional language hosts and clipboard.
+All 33 live plugins reported installed. LSP health had no active clients
+in an empty buffer and warned about non-Python filetypes.
+
+## 4. Install and update
+
+1. Back up `~/.config/nvim` and `~/.tmux.conf` before replacing them.
+2. Link `~/.config/nvim` to this repository's `nvim-vps-linux` folder and
+   `~/.tmux.conf` to `tmux/.tmux.conf`. Preserve unexplained local changes.
+3. Install vim-plug's `plug.vim` in Neovim's `site/autoload` directory.
+4. Run `:PlugInstall`. Mason currently installs configured servers when
+   Neovim starts. Treesitter installs configured parsers on startup.
+5. Run `:Copilot setup` for the current Copilot client. Native LSP Copilot
+   and `:LspCopilotSignIn` arrive later in this rebuild.
+6. Use `:PlugUpdate`, restart Neovim, and check `:PlugStatus` and
+   `:checkhealth vim.lsp`. Run `:TSUpdate` when parser updates are needed.
+7. Roll back a repository change with `git revert <commit>` on a branch,
+   review it, and merge the PR. `:PlugSnapshot` can save plugin revisions
+   before updates; use `:source <snapshot.vim>` to restore that snapshot.
+
+Acceptance: `nvim --headless '+qa'` exits 0 with empty stderr.
+
+## 5. How the pieces fit
+
+Paths below are relative to this folder. All plugins load at startup through
+vim-plug. There is no lazy-loading framework.
+
+| File | Owns |
+| --- | --- |
+| `init.lua` | Startup order |
+| `lua/core/options.lua` | Editor options and leader |
+| `lua/core/keymaps.lua` | General, search, window and debug maps |
+| `lua/core/autocmds.lua` | Yank highlight, autosave, save formatting |
+| `lua/config/python_format.lua` | Current Python formatting helper |
+| `lua/plugins/init.lua` | Authoritative plugin list and config loading |
+| `lua/plugins/completion.lua` | Completion menu and snippets |
+| `lua/plugins/treesitter.lua` | Parser installation and highlighting |
+| `lua/plugins/telescope.lua` | Telescope and custom files+content picker |
+| `lua/plugins/ui.lua` | Gruvbox, tree, statusline and Copilot Chat |
+| `lua/plugins/tools.lua` | Terminal, Git signs and comments |
+| `lua/plugins/diagram.lua` | Current inline diagrams |
+| `lua/plugins/raccoon.lua` | Current optional PR review integration |
+| `lua/plugins/lsp/init.lua` | LSP attachment, Mason and diagnostics |
+| `lua/plugins/lsp/servers.lua` | Servers and DAP |
+| `lua/plugins/lsp/colors.lua` | Diagnostic highlight overrides |
+
+The table describes the current config, including plugins scheduled for
+removal. P1 to P5 refer to the priorities above; "remove" means there is
+no reason to keep the plugin in the target config.
+
+| Plugin | Why | Could core Neovim do this? |
+| --- | --- | --- |
+| morhetz/gruvbox | P5: current palette | Syntax yes, this palette no |
+| nvim-web-devicons | P5: file icons | No icon registry |
+| lualine.nvim | P5: visible INSERT block | Yes, custom statusline code |
+| nvim-tree.lua | P4: file tree | Netrw, with different behavior |
+| nvim-cmp | P3: completion menu | Yes, fewer menu controls |
+| cmp-nvim-lsp | P3: LSP completion source | Yes, native completion |
+| cmp-buffer | P3: words from buffers | Yes, Ctrl+n completion |
+| cmp-path | P3: path completion | Yes, Ctrl+x Ctrl+f |
+| cmp-vsnip | Remove: unused source | Not needed |
+| vim-vsnip | Remove: duplicates LuaSnip | Native snippets also exist |
+| LuaSnip | P3: existing snippets | Yes, native snippets |
+| cmp_luasnip | P3: snippets in menu | Not with this menu |
+| nvim-metals | Remove: Scala unused | No Scala integration needed |
+| nvim-dap | P3: Python debugging | No DAP client |
+| nvim-nio | P3: DAP UI dependency | Not this plugin API |
+| nvim-dap-ui | P3: scopes and breakpoints | No debugger UI |
+| vim-elixir | Remove: Elixir unused | No Elixir support needed |
+| plenary.nvim | P3: Telescope dependency | Not this plugin API |
+| telescope.nvim | P3: files+content picker | No combined picker |
+| telescope-fzf-native.nvim | P3: fast picker sorting | No fuzzy native sorter |
+| toggleterm.nvim | P3: reusable command output | Yes, more terminal glue |
+| Comment.nvim | Remove: core gc/gcc | Yes |
+| gitsigns.nvim | P3: review and stage hunks | No hunk staging UI |
+| mason.nvim | P2: tool installation | No server package manager |
+| lsp_lines.nvim | Remove: unused virtual lines | Yes, since 0.11 |
+| nvim-treesitter | P3: parser installation | Highlighting yes, installer no |
+| nvim-jvmopts | Remove: Scala unused | No JVM support needed |
+| lsp_signature.nvim | Remove: core signature help | Yes |
+| copilot.vim | P3: current inline AI | Replaced by native LSP client |
+| CopilotChat.nvim | Remove: replaced by sidekick | No agent pane in core |
+| image.nvim | Remove: mosh drops graphics | Graphics cannot cross mosh |
+| diagram.nvim | Remove: depends on graphics | Same transport limit |
+| local nvim-raccoon | Remove: separate review workflow | Use Git hunks here |
+
+## 6. Python pairing loop
+
+The pairing workflow is implemented in later PRs in this series.
+
+## 7. Keymaps
+
+The authoritative mappings are in Lua. A generated table and printable Sweep
+cheat sheet will replace this placeholder after the keyboard PR.
+
+<!-- keymaps:start -->
+<!-- keymaps:end -->
+
+## 8. Look
+
+The current theme is Gruvbox. A bright INSERT block supplies a mode indicator
+because cursor shape changes do not survive mosh. Palette sync follows later.
+
+## 9. Troubleshooting
+
+Check `:messages`, `:PlugStatus`, `:checkhealth vim.lsp` and
+`:checkhealth provider`. Missing optional language providers do not prevent
+Lua LSP clients from running. Known problems still present here: autosave
+formats on every change, external edits are not reloaded, Space+j is mapped
+in insert and terminal modes, and Python interpreter selection is DAP-only.
+
+## 10. Maintenance
+
+1. Add plugins only in `lua/plugins/init.lua`; add their reason and priority
+   to the plugin table here. Prefer core features and existing plugins.
+2. Keep each rule in one Lua file. Update this guide with behavior changes.
+3. Add an entry under `Unreleased` in the repository's `CHANGELOG.md`.
+4. Run `git diff --check` and headless startup before submitting a PR.
+5. The keymap regression check and cheat-sheet generator arrive later in
+   this series; until then inspect mappings with `:verbose map`.
+
+Acceptance: documented behavior agrees with the config and startup succeeds.
+
+## Personal notes
+
+These historical notes are unrelated to the VPS editor configuration.
 
 - setup local git in the directory where init.vim is so I can easily revert if I mess config
 - copy to wsl :set ff=unix
-
-- `:PlugInstall`
-- LSPs autocomplete - ctrl-p/n, enter - select previous/next suggestion, accept
-- install newest neovim, not default
-
-## go to defitiion (f.e. SparkSession):
-`:lua vim.lsp.buf.definition()` TODO - make a shortcut alt l maybe
-
-## Go to previosly visited locations
-<C-o> (Ctrl + o) → Jump back to the previous location.
-<C-i> (Ctrl + i) → Jump forward to the next location.
-
-## isort python
-MAKE SURE YOU HAVE `pip isort insall` ed
-
-
-## In quickterminal
-`alt + j/k` - go down/up through past commands
-
-
-
 
 ## Gruvbox color scheme for Windows Terminal
 ```
@@ -97,10 +206,6 @@ Bright colors
 "brightCyan": "#8ec07c",     " Bright Cyan
 "brightWhite": "#ebdbb2",    " Bright White
 ```
-
-
-## Exploring files
-`:ex`
 
 
 ## Git - show staged changes
