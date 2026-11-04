@@ -1,63 +1,32 @@
--- Completion setup with nvim-cmp
 local cmp = require('cmp')
-local has_luasnip, luasnip = pcall(require, 'luasnip')
-
+local luasnip = require('luasnip')
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      if has_luasnip then
-        luasnip.lsp_expand(args.body)
-      else
-        vim.snippet.expand(args.body)
-      end
-    end,
-  },
-
-  mapping = {
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif has_luasnip and luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if has_luasnip and luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<Up>'] = cmp.mapping.select_prev_item(),
-    ['<Down>'] = cmp.mapping.select_next_item(),
-  },
-
+  snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+  mapping = {},
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip', max_item_count = 5 },
-    { name = 'path' },
-  }, {
-    { name = 'buffer' },
-  }),
-
-  formatting = {
-    format = function(entry, vim_item)
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snippet]",
-        buffer = "[Buffer]",
-        path = "[Path]",
-      })[entry.source.name]
-      return vim_item
-    end
-  },
-
-  experimental = {
-    ghost_text = false,
-  },
+    { name = 'nvim_lsp' }, { name = 'luasnip', max_item_count = 5 }, { name = 'path' },
+  }, { { name = 'buffer' } }),
+  experimental = { ghost_text = false },
 })
+
+-- Own these maps so their descriptions are useful in generated documentation.
+local function fallback(keys)
+  vim.api.nvim_feedkeys(vim.keycode(keys), 'in', false)
+end
+vim.keymap.set('i', '<C-n>', function()
+  if cmp.visible() then cmp.select_next_item() else cmp.complete() end
+end, { desc = 'Completion next' })
+vim.keymap.set('i', '<C-p>', function()
+  if cmp.visible() then cmp.select_prev_item() else cmp.complete() end
+end, { desc = 'Completion previous' })
+vim.keymap.set('i', '<CR>', function()
+  if not cmp.confirm({ select = true }) then fallback('<CR>') end
+end, { desc = 'Confirm completion or newline' })
+vim.keymap.set({ 'i', 's' }, '<Tab>', function()
+  if cmp.visible() then cmp.select_next_item()
+  elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+  else fallback('<Tab>') end
+end, { desc = 'Completion or snippet next' })
+vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
+  if luasnip.jumpable(-1) then luasnip.jump(-1) else fallback('<S-Tab>') end
+end, { desc = 'Snippet previous' })

@@ -82,6 +82,8 @@ vim-plug. There is no lazy-loading framework.
 | --- | --- |
 | `init.lua` | Startup order |
 | `scripts/edit-safety.lua` | Disk conflict and formatting regression |
+| `scripts/completion.lua` | Batched typing and completion fallback regression |
+| `scripts/keymaps.lua` | Validate public maps and export their JSON |
 | `scripts/python.lua` | uv, LSP imports and terminal command integration |
 | `lua/core/options.lua` | Editor options and leader |
 | `lua/core/keymaps.lua` | General, search, window and debug maps |
@@ -263,8 +265,15 @@ and suggestions are checked separately after sign-in:
 3. Add an entry under `Unreleased` in the repository's `CHANGELOG.md`.
 4. Run `git diff --check`, headless startup and the edit safety regression:
    `nvim --headless "+luafile nvim-vps-linux/scripts/edit-safety.lua"`.
-5. The keymap regression check and cheat-sheet generator arrive later in
-   this series; until then inspect mappings with `:verbose map`.
+5. Run the keyboard regression with
+   `nvim --headless "+luafile nvim-vps-linux/scripts/keymaps.lua"`.
+   It exports public user mappings as JSON and exits nonzero for input-mode
+   Space prefixes, Cmd/Alt/F-keys, undescribed normal leader maps, or normal
+   Tab/Ctrl+i maps. Native unchanged defaults and internal Plug targets are
+   excluded; core gc/gcc are included. Tree and terminal contexts are checked.
+   Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
+   to verify batched Enter/Tab input and ordinary Space+j text are preserved.
+6. The printable generator and README key table follow in the final PR.
 
 Acceptance: documented behavior agrees with the config and startup succeeds.
 
