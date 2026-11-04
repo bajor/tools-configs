@@ -195,9 +195,91 @@ Letters stay in their proposed groups because they are all on the base
 layer. Flash s/S replaces long counted jumps. Redo stays on r by choice.
 Nvim-tree uses o to open and q to close; Tab remains jump-forward in editors.
 
-The generated table and printable Sweep diagrams follow in the final PR.
+Printable cheat sheet, A4 landscape, drawn on the real Sweep layout:
+[SVG](docs/ferris-sweep-nvim.svg) and [PDF](docs/ferris-sweep-nvim.pdf).
+The sheet and the table below are generated from the live Neovim maps, so
+they cannot drift from the config. Change a key or its `desc` in Lua, then
+run step 6 of the maintenance list.
 
 <!-- keymaps:start -->
+| Mode | Keys | Action |
+| --- | --- | --- |
+| t | `<C-H>` | Terminal window h |
+| t | `<C-J>` | Terminal window j |
+| t | `<C-K>` | Terminal window k |
+| t | `<C-L>` | Terminal window l |
+| i | `<C-N>` | Completion next |
+| i | `<C-P>` | Completion previous |
+| t | `<C-Q>` | Terminal normal mode |
+| i | `<CR>` | Confirm completion or newline |
+| i | `<Down>` | Completion next or cursor down |
+| i,s | `<S-Tab>` | Snippet previous |
+| n,x | `<Space>aa` | Toggle agent pane |
+| n,x | `<Space>ac` | Open Claude |
+| n,x | `<Space>ad` | Detach agent |
+| n,x | `<Space>af` | Send file |
+| n,x | `<Space>ao` | Open opencode |
+| n,x | `<Space>ap` | Select scoped prompt |
+| n,x | `<Space>as` | Select agent CLI |
+| n,x | `<Space>at` | Send position |
+| n,x | `<Space>av` | Send selection |
+| n | `<Space>ca` | Code action |
+| n | `<Space>cd` | Line diagnostics |
+| n | `<Space>cf` | Format buffer |
+| n | `<Space>cn` | Next diagnostic |
+| n | `<Space>cp` | Previous diagnostic |
+| n | `<Space>cr` | Rename symbol |
+| n | `<Space>dB` | Debug cond. breakpoint |
+| n | `<Space>dO` | Debug step out |
+| n | `<Space>db` | Debug breakpoint |
+| n | `<Space>dc` | Debug continue |
+| n | `<Space>di` | Debug step into |
+| n | `<Space>do` | Debug step over |
+| n | `<Space>dr` | Debug REPL |
+| n | `<Space>dt` | Debug terminate |
+| n | `<Space>du` | Debug UI |
+| n | `<Space>e` | File tree |
+| n | `<Space>fb` | Find buffers |
+| n | `<Space>fd` | Find diagnostics |
+| n | `<Space>ff` | Find files |
+| n | `<Space>fg` | Find files and content |
+| n | `<Space>fh` | Find help |
+| n | `<Space>fr` | Resume picker |
+| n | `<Space>fs` | Find symbols |
+| n | `<Space>gB` | Blame buffer |
+| n | `<Space>gb` | Blame line |
+| n | `<Space>gd` | Diff file |
+| n | `<Space>gn` | Next hunk |
+| n | `<Space>gp` | Previous hunk |
+| n | `<Space>gr` | Reset hunk |
+| n | `<Space>gs` | Stage hunk |
+| n | `<Space>gv` | Preview hunk |
+| n | `<Space>h` | Window left |
+| n | `<Space>j` | Window down |
+| n | `<Space>k` | Window up |
+| n | `<Space>l` | Window right |
+| n | `<Space>n` | Clear search highlight |
+| n | `<Space>o` | Only window |
+| n | `<Space>q` | Close quickfix |
+| n | `<Space>rl` | Rerun last Python command |
+| n | `<Space>rr` | Run Python file |
+| n | `<Space>rt` | Test Python file with pytest |
+| n | `<Space>s` | Horizontal split |
+| n | `<Space>t` | Toggle terminal |
+| n | `<Space>v` | Vertical split |
+| n | `<Space>x` | Close window |
+| i,s | `<Tab>` | Completion or snippet next |
+| i | `<Up>` | Completion previous or cursor up |
+| n | `K` | Hover |
+| n,o,x | `S` | Flash treesitter select |
+| n,x | `gc` | Toggle comment |
+| n | `gcc` | Toggle comment line |
+| n | `gd` | Definition |
+| n | `gi` | Implementation |
+| n | `gr` | References |
+| i | `jk` | Normal mode |
+| n | `r` | Redo |
+| n,o,x | `s` | Flash jump |
 <!-- keymaps:end -->
 
 ## 8. Look
@@ -272,12 +354,21 @@ check creates a temporary uv project and installs pytest:
    opened, so their maps are not checked. Native unchanged defaults and
    internal Plug targets are excluded; core gc/gcc are included. Set
    `VPS_KEYMAP_JSON=/path/keymaps.json` to also write the global maps and the
-   colorscheme's red, green, yellow and blue ANSI colors as JSON with sorted
-   keys. Nothing is written when a check fails.
+   colorscheme's six ANSI accent colors as JSON with sorted keys. Nothing is
+   written when a check fails.
    Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
    to verify that batched Enter and Tab input stays in order when the menu is
    closed and that Enter still expands abbreviations.
-6. The printable generator and README key table follow in the final PR.
+6. Regenerate the cheat sheet and the key table above:
+   `python3 nvim-vps-linux/docs/keymap_sheet.py`. It starts Neovim headless
+   (set `NVIM` to choose the binary), lays the exported maps out on the
+   Sweep and writes the SVG, the PDF and the table between the markers. It
+   exits nonzero when a label does not fit its key (shorten the `desc`), when
+   a leader letter is both an action and a group prefix, or when a map could
+   not be placed. The PDF needs `cairosvg` (`pip install cairosvg`) or
+   `rsvg-convert` (`sudo apt install librsvg2-bin`). Run it with `--check` to
+   fail when the SVG, the table or the PDF is stale. The PDF holds a
+   creation date, so `--check` tests only that it exists.
 
 Acceptance: documented behavior agrees with the config and startup succeeds.
 
