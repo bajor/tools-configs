@@ -4,6 +4,11 @@
 
 ### Changed
 
+- Generate the Ferris Sweep cheat sheet (SVG and A4 PDF) and the README key
+  table from the live Neovim maps with one script, `docs/keymap_sheet.py`,
+  so shortcuts are not listed by hand anywhere. Shorten the conditional
+  breakpoint description so it fits its key.
+
 - Remove Copilot, which needs a subscription this setup does not have: the
   Copilot language server, nvim-lspconfig (used only for it), the native
   inline completion hook, the Ctrl+y accept map, and Sidekick next edits.
