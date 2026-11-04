@@ -1,6 +1,6 @@
 local M = {}
 local python = require('config.python')
-local last_command
+local last_run
 
 local function execute(command)
   -- Toggleterm has a positional exec API; use terminal 1 for reusable output.
@@ -17,16 +17,25 @@ local function run(arguments)
   local argv = { python.resolve(root) }
   vim.list_extend(argv, arguments)
   argv[#argv + 1] = file
-  last_command = 'cd -- ' .. vim.fn.shellescape(root) .. ' && '
+  local command = 'cd -- ' .. vim.fn.shellescape(root) .. ' && '
     .. table.concat(vim.tbl_map(vim.fn.shellescape, argv), ' ')
-  execute(last_command)
+  last_run = { file = file, command = command }
+  execute(command)
 end
 
 function M.run_file() run({}) end
 function M.test_file() run({ '-m', 'pytest' }) end
 function M.rerun()
-  if last_command then execute(last_command)
-  else vim.notify('No previous Python command.', vim.log.levels.INFO) end
+  if not last_run then
+    vim.notify('No previous Python command.', vim.log.levels.INFO)
+    return
+  end
+  local buf = vim.fn.bufnr(last_run.file)
+  if buf ~= -1 and vim.bo[buf].modified then
+    vim.notify('Save the last-run Python file before rerunning.', vim.log.levels.WARN)
+    return
+  end
+  execute(last_run.command)
 end
 
 return M

@@ -48,12 +48,25 @@ local function check_commands()
   end), 'last command did not rerun')
 end
 
+local function check_unsaved_rerun()
+  vim.cmd.edit(file)
+  vim.api.nvim_buf_set_lines(0, 0, 1, false, { '# unsaved change' })
+  vim.cmd('enew')
+  local toggleterm = require('toggleterm')
+  local execute, calls = toggleterm.exec, 0
+  toggleterm.exec = function() calls = calls + 1 end
+  require('config.python_run').rerun()
+  toggleterm.exec = execute
+  assert(calls == 0, 'rerun executed stale contents of a modified buffer')
+end
+
 vim.schedule(function()
   local active = vim.env.VIRTUAL_ENV
   vim.env.VIRTUAL_ENV = nil
   local ok, err = xpcall(function()
     check_python()
     check_commands()
+    check_unsaved_rerun()
   end, debug.traceback)
   vim.env.VIRTUAL_ENV = active
   for _, client in ipairs(vim.lsp.get_clients()) do client:stop() end
