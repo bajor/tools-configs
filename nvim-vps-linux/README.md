@@ -4,7 +4,7 @@
 
 This config runs on Ubuntu through mosh and tmux from Rex on the Mac.
 It supports Python editing with an AI assisting small changes that you review.
-The keys suit a 34-key Ferris Sweep.
+The key layout is being adapted for a 34-key Ferris Sweep.
 
 Priorities: (1) mosh stability, (2) simplicity, (3) Python pairing,
 (4) Sweep comfort, (5) a Rex-matched appearance.
@@ -73,8 +73,7 @@ Acceptance: `nvim --headless '+qa'` exits 0 with empty stderr.
 
 ## 5. How the pieces fit
 
-Paths below are relative to this folder. Plugins install in
-`stdpath("data")/plugged`, separate from the old shared
+Paths below are relative to this folder. Plugins install in `stdpath("data")/plugged`, separate from the old shared
 `~/.vim/plugged` directory. Core `gc` and `gcc` handle comments; signature
 help uses core LSP. Graphics and Raccoon review integrations are removed.
 All plugins load at startup through
@@ -135,13 +134,16 @@ the priorities above.
 | sidekick.nvim | P3: scoped agent pane for Claude and opencode | Partly: a terminal split lacks the send maps |
 
 Native LSP completion uses core Neovim. The menu opens on server
-trigger characters; Ctrl+n/Ctrl+p request it in Python and navigate it.
+trigger characters; Ctrl+n/Ctrl+p request an unselected menu in Python,
+then navigate it. Ctrl+e dismisses the menu.
 Without an LSP, and during macros, those keys retain native word completion.
 Enter confirms the selected item, or the first item if none is selected.
 Tab navigates the menu. Arrow keys retain core behavior. LSP snippet
 expansion is disabled to keep confirmation synchronous during batched input.
 This replaces cmp and its sources because cmp confirmation can lose trailing
-characters delivered in the same input batch.
+characters delivered in the same input batch. The old buffer-word and path
+sources are removed; use core Ctrl+x Ctrl+n for buffer words and
+Ctrl+x Ctrl+f for file paths, including inside Python buffers.
 
 ## 6. Python pairing loop
 
@@ -293,7 +295,7 @@ The source file currently sets the terminal background to `#031219`.
 There is one global lualine statusline and an Incline filename per editor
 window. Snacks enables only indent guides with animations disabled. Rounded
 float borders and a bright INSERT block remain visible through mosh.
-Line numbers are absolute; use Flash for long jumps.
+Line numbers are absolute; use Flash after the keyboard PR for long jumps.
 `cmdheight=0` uses experimental Neovim 0.12 ui2 under `pcall`.
 
 If colors differ, check Rex's selected theme, `:set termguicolors?`, and
