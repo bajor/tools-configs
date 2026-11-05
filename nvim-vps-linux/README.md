@@ -357,8 +357,8 @@ check creates a temporary uv project and installs pytest:
    colorscheme's six ANSI accent colors as JSON with sorted keys. Nothing is
    written when a check fails.
    Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
-   to verify visible-menu confirmation with batched input, native word
-   completion, macro recording/replay and abbreviation expansion.
+   to verify native and Pyright menu confirmation with batched input, word
+   completion, macros and abbreviations. This also needs Mason's Pyright.
 6. Regenerate the cheat sheet and the key table above:
    `python3 nvim-vps-linux/docs/keymap_sheet.py`. It starts Neovim headless
    with this repository's config (set `VPS_NVIM` to choose the binary), lays the

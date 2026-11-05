@@ -12,7 +12,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 local function menu_or_words(key)
-  if vim.fn.pumvisible() == 1 or vim.bo.omnifunc == ''
+  if vim.fn.pumvisible() == 1
+    or #vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/completion' }) == 0
     or vim.fn.reg_recording() ~= '' or vim.fn.reg_executing() ~= '' then return key end
   return '<C-x><C-o>'
 end

@@ -17,10 +17,9 @@
   avoiding queued-input loss during confirmation and reducing dependencies.
 
 - Add a real-config keymap regression check with optional JSON export.
-  Give the insert completion keys descriptions: Tab, Shift+Tab, Enter and
-  the arrow keys behave as before, and Ctrl+n and Ctrl+p now open the cmp
-  menu. Disable Telescope's normal-mode Tab, which over mosh is the same
-  byte as Ctrl+i.
+  Give the insert completion keys descriptions. Ctrl+n/p request native
+  completion, Enter confirms and Tab moves forward in its menu. Disable
+  Telescope's normal-mode Tab, which over mosh is the same byte as Ctrl+i.
 
 - Use Sweep letter groups, native comment keys, Flash jumps, described
   Git/code/window/debug maps and no insert/terminal Space prefix mappings.
