@@ -1,11 +1,14 @@
 -- Real config: nvim --headless '+luafile nvim-vps-linux/scripts/keymaps.lua'
--- Set VPS_KEYMAP_JSON to a file path to also export the global maps and the
+-- Set VPS_KEYMAP_JSON to export global and config-owned file-tree maps and the
 -- colorscheme's red, green, yellow, blue, magenta and cyan ANSI colors.
 local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }
 -- Modes where typed text arrives, so a Space prefix would wait for timeoutlen.
 local TYPING_MODES = { i = true, t = true, s = true, c = true, l = true }
--- Modifiers that do not reach the VPS through mosh: Cmd (D), Meta (M), Alt (A).
+-- Cmd is unavailable over mosh; Alt/Meta chords are expensive on the Sweep.
 local UNSUPPORTED_MODIFIERS = { D = true, M = true, A = true }
+-- ui.lua supplies the tree's complete on_attach map set. Other buffer maps
+-- belong to plugin defaults, so validate them without documenting them here.
+local OWNED_BUFFER_SCOPES = { NvimTree = true }
 local KEY_SEPARATOR = '\0'
 local BASELINE_ENV = 'VPS_KEYMAP_BASELINE'
 local BASELINE_TIMEOUT_MS = 20000
@@ -172,15 +175,15 @@ local function check()
   end
   vim.fn.jobstop(terminal)
   if #violations > 0 then fail(table.concat(violations, '\n')) end
-  -- Plugin-internal buffer maps are validated above but not exported: their
-  -- descriptions and set change with the plugin version.
-  local global = vim.tbl_filter(function(entry) return entry.scope == 'global' end, public)
-  local rows = to_rows(global)
+  local documented = vim.tbl_filter(function(entry)
+    return entry.scope == 'global' or OWNED_BUFFER_SCOPES[entry.scope]
+  end, public)
+  local rows = to_rows(documented)
   local path = vim.env.VPS_KEYMAP_JSON
   if path and path ~= '' then
     vim.fn.writefile({ vim.json.encode({ keymaps = rows, palette = palette }, { sort_keys = true }) }, path)
   end
-  io.stdout:write(('Keymaps: %d public maps checked, %d global rows, no violations\n')
+  io.stdout:write(('Keymaps: %d public maps checked, %d config rows, no violations\n')
     :format(#public, #rows))
 end
 
