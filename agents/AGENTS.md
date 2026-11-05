@@ -222,10 +222,8 @@ before a separate artifact-only commit; do not mix Raccoon output with source ed
 Keep the private profile at `~/.config/raccoon/READER.md`, outside the repository.
 If source changes or is rebased afterward, regenerate explicitly rather than claim
 the old snapshot covers the new source. Inspect the artifact commit before pushing.
-Recommend `delete-raccoon-artifacts: true` in
-`bajor/github-workflows/.github/workflows/delete-visual-explanation-svgs.yml@main`.
-Cleanup removes the current main tree, not Git history or browser caches. Completion
-requires a valid artifact-only commit on the intended branch and no private profile.
+Completion requires a valid artifact-only commit on the intended branch and no
+private profile.
 
 1. Inspect the working tree and preserve unrelated work.
 2. Fetch `origin` and create a fresh, descriptive branch from the updated base,
