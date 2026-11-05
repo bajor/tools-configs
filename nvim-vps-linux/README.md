@@ -4,7 +4,7 @@
 
 This config runs on Ubuntu through mosh and tmux from Rex on the Mac.
 It supports Python editing with an AI assisting small changes that you review.
-The key layout is being adapted for a 34-key Ferris Sweep.
+The keys suit a 34-key Ferris Sweep.
 
 Priorities: (1) mosh stability, (2) simplicity, (3) Python pairing,
 (4) Sweep comfort, (5) a Rex-matched appearance.
@@ -73,7 +73,8 @@ Acceptance: `nvim --headless '+qa'` exits 0 with empty stderr.
 
 ## 5. How the pieces fit
 
-Paths below are relative to this folder. Plugins install in `stdpath("data")/plugged`, separate from the old shared
+Paths below are relative to this folder. Plugins install in
+`stdpath("data")/plugged`, separate from the old shared
 `~/.vim/plugged` directory. Core `gc` and `gcc` handle comments; signature
 help uses core LSP. Graphics and Raccoon review integrations are removed.
 All plugins load at startup through
@@ -108,9 +109,8 @@ Scala, C/C++, Go, Haskell, OCaml and Elixir servers and tools are removed.
 Python parsers remain alongside Lua, Vim, help and Bash for maintaining this
 config and using its terminal. These auxiliary filetypes have no LSP server.
 
-The table describes the current config, including plugins scheduled for
-removal. P1 to P5 refer to the priorities above; "remove" means there is
-no reason to keep the plugin in the target config.
+The table lists all 19 plugins in the current config. P1 to P5 refer to
+the priorities above.
 
 | Plugin | Why | Could core Neovim do this? |
 | --- | --- | --- |
@@ -178,7 +178,7 @@ uses a right split with disk watching and no mux backend, so tmux is not
 nested. Only Claude and opencode are listed. No CLI permission settings change.
 There is no inline completion or next-edit suggestion here: both need a
 Copilot plan, which this setup does not use. Completion comes from Pyright
-through nvim-cmp.
+through native Neovim menus.
 
 ## 7. Keymaps
 
@@ -215,8 +215,6 @@ Change a key or its `desc` in Lua, then run step 6 of the maintenance list;
 | i | `<C-P>` | Completion previous |
 | t | `<C-Q>` | Terminal normal mode |
 | i | `<CR>` | Confirm completion or newline |
-| i | `<Down>` | Completion next or cursor down |
-| i,s | `<S-Tab>` | Snippet previous |
 | n,x | `<Space>aa` | Toggle agent pane |
 | n,x | `<Space>ac` | Open Claude |
 | n,x | `<Space>ad` | Detach agent |
@@ -271,8 +269,7 @@ Change a key or its `desc` in Lua, then run step 6 of the maintenance list;
 | n | `<Space>t` | Toggle terminal |
 | n | `<Space>v` | Vertical split |
 | n | `<Space>x` | Close window |
-| i,s | `<Tab>` | Completion or snippet next |
-| i | `<Up>` | Completion previous or cursor up |
+| i | `<Tab>` | Completion next or Tab |
 | n | `K` | Hover |
 | n,o,x | `S` | Flash treesitter select |
 | n,x | `gc` | Toggle comment |
@@ -296,7 +293,7 @@ The source file currently sets the terminal background to `#031219`.
 There is one global lualine statusline and an Incline filename per editor
 window. Snacks enables only indent guides with animations disabled. Rounded
 float borders and a bright INSERT block remain visible through mosh.
-Line numbers are absolute; use Flash after the keyboard PR for long jumps.
+Line numbers are absolute; use Flash for long jumps.
 `cmdheight=0` uses experimental Neovim 0.12 ui2 under `pcall`.
 
 If colors differ, check Rex's selected theme, `:set termguicolors?`, and
@@ -360,8 +357,8 @@ check creates a temporary uv project and installs pytest:
    colorscheme's six ANSI accent colors as JSON with sorted keys. Nothing is
    written when a check fails.
    Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
-   to verify that batched Enter and Tab input stays in order when the menu is
-   closed and that Enter still expands abbreviations.
+   to verify visible-menu confirmation with batched input, native word
+   completion, macro recording/replay and abbreviation expansion.
 6. Regenerate the cheat sheet and the key table above:
    `python3 nvim-vps-linux/docs/keymap_sheet.py`. It starts Neovim headless
    with this repository's config (set `VPS_NVIM` to choose the binary), lays the
