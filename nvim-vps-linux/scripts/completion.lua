@@ -1,7 +1,15 @@
 -- Exercise native completion with real queued input and a visible menu.
 local TIMEOUT_MS = 20000
 local INPUT_SETTLE_MS = 100
-local RESPONSE_SETTLE_MS = 500
+local completed_requests = 0
+vim.api.nvim_create_autocmd('LspRequest', {
+  callback = function(ev)
+    if ev.data.request.method == 'textDocument/completion'
+      and ev.data.request.type == 'complete' then
+      completed_requests = completed_requests + 1
+    end
+  end,
+})
 local project = vim.fn.tempname()
 local function cleanup()
   for _, client in ipairs(vim.lsp.get_clients()) do client:stop() end
@@ -25,8 +33,11 @@ local function finish_lsp_check()
     assert(vim.deep_equal(lines(), { 'value = "x"', 'value.lowerxyz' }),
       'Pyright menu confirmation lost trailing input: ' .. vim.inspect(lines()))
     -- Request completion and continue typing without waiting for its response.
+    local before = completed_requests
     vim.api.nvim_feedkeys(vim.keycode('ccvalue.low<C-n>xyz<CR>tail<Esc>'), 'xt', false)
-    vim.defer_fn(function()
+    assert(vim.wait(TIMEOUT_MS, function() return completed_requests > before end),
+      'Batched input did not receive a completion response')
+    vim.schedule(function()
       local passed, failure = xpcall(function()
         assert(vim.deep_equal(lines(), { 'value = "x"', 'value.lowxyz', 'tail' }),
           'Late LSP response changed batched input: ' .. vim.inspect(lines()))
@@ -35,7 +46,7 @@ local function finish_lsp_check()
       cleanup()
       print('Completion: native/Pyright menus, batched input, words, macros and abbreviations passed')
       vim.cmd('qa!')
-    end, RESPONSE_SETTLE_MS)
+    end)
   end, debug.traceback)
   if not ok then fail(err) end
 end
