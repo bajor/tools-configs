@@ -3,7 +3,8 @@
 This config keeps Neovim sessions stable through mosh 1.4+, the first
 priority of the VPS editor rebuild. Rex is the terminal and multiplexer
 on the Mac. RGB means 24-bit color. OSC 52 is a terminal clipboard protocol.
-The supported baseline is tmux 3.5a+ and the `tmux-256color` terminfo entry on the VPS.
+The supported baseline is tmux 3.5a+ and the `tmux-256color` terminfo entry
+on the VPS.
 Rex on the Mac must use a prefix other than Ctrl+a.
 
 ## Install and reconnect
@@ -16,14 +17,15 @@ Rex on the Mac must use a prefix other than Ctrl+a.
 
 The verified outer mosh terminal is `xterm-256color`; its RGB capability
 is declared explicitly at array index 100, so reloads do not append duplicates.
-For a different outer TERM, add its verified RGB capability explicitly. Inside tmux, applications see `tmux-256color`. Escape time is
+For a different outer TERM, add its verified RGB capability explicitly.
+Inside tmux, applications see `tmux-256color`. Escape time is
 10 ms. Focus events are enabled, but Neovim must check disk changes on editor
 activity because mosh does not reliably carry focus notifications.
 `set-clipboard on` forwards OSC 52 copy from Neovim. Paste from the Mac uses
 Rex's Cmd+V; OSC 52 clipboard read does not work through mosh.
 `on` permits applications in tmux panes to write the client clipboard. The
 Neovim rebuild explicitly uses an OSC 52 write provider and local-register
-paste; until that PR lands, the existing provider may use tmux buffers.
+paste.
 Avoid relying on `"+p` to read the Mac clipboard.
 
 Graphics passthrough and extended keyboard settings are removed together

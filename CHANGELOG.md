@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Include config-owned file-tree maps in the generated shortcut guide and
+  remove stale deployment wording.
+
 - Generate the Ferris Sweep cheat sheet (SVG and A4 PDF) and the README key
   table from the live Neovim maps with one script, `docs/keymap_sheet.py`,
   so shortcuts are not listed by hand anywhere. Shorten the conditional

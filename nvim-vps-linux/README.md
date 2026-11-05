@@ -4,7 +4,7 @@
 
 This config runs on Ubuntu through mosh and tmux from Rex on the Mac.
 It supports Python editing with an AI assisting small changes that you review.
-The key layout is being adapted for a 34-key Ferris Sweep.
+The keys suit a 34-key Ferris Sweep.
 
 Priorities: (1) mosh stability, (2) simplicity, (3) Python pairing,
 (4) Sweep comfort, (5) a Rex-matched appearance.
@@ -73,7 +73,8 @@ Acceptance: `nvim --headless '+qa'` exits 0 with empty stderr.
 
 ## 5. How the pieces fit
 
-Paths below are relative to this folder. Plugins install in `stdpath("data")/plugged`, separate from the old shared
+Paths below are relative to this folder. Plugins install in
+`stdpath("data")/plugged`, separate from the old shared
 `~/.vim/plugged` directory. Core `gc` and `gcc` handle comments; signature
 help uses core LSP. Graphics and Raccoon review integrations are removed.
 All plugins load at startup through
@@ -83,9 +84,10 @@ vim-plug. There is no lazy-loading framework.
 | --- | --- |
 | `init.lua` | Startup order |
 | `scripts/edit-safety.lua` | Disk conflict and formatting regression |
-| `scripts/completion.lua` | Native menu, word completion and batched input regression |
+| `scripts/completion.lua` | Native/Pyright menu and input regressions |
 | `scripts/keymaps.lua` | Validate public maps; export them as JSON on request |
 | `scripts/python.lua` | uv, LSP imports and terminal command integration |
+| `docs/keymap_sheet.py` | Generate SVG, PDF and the README key table |
 | `lua/core/options.lua` | Editor options and leader |
 | `lua/core/keymaps.lua` | General, search, window and debug maps |
 | `lua/core/autocmds.lua` | Yank highlight, autosave, save formatting |
@@ -98,7 +100,7 @@ vim-plug. There is no lazy-loading framework.
 | `lua/plugins/completion.lua` | Native LSP completion and insert keys |
 | `lua/plugins/treesitter.lua` | Parser installation and highlighting |
 | `lua/plugins/telescope.lua` | Telescope and custom files+content picker |
-| `lua/plugins/ui.lua` | Theme, tree, window names, indent guides and statusline |
+| `lua/plugins/ui.lua` | Theme, tree, window names, guides, statusline |
 | `lua/plugins/tools.lua` | Terminal and Git signs |
 | `lua/plugins/lsp/init.lua` | Server setup, Mason and diagnostics |
 | `lua/plugins/lsp/servers.lua` | Servers and DAP |
@@ -126,12 +128,12 @@ the priorities above.
 | plenary.nvim | P3: Telescope dependency | Not this plugin API |
 | telescope.nvim | P3: files+content picker | No combined picker |
 | telescope-fzf-native.nvim | P3: fast picker sorting | No fuzzy native sorter |
-| conform.nvim | P3: ordered Ruff formatting on explicit save | Yes, custom formatter coordination |
+| conform.nvim | P3: ordered Ruff formatting | Yes, custom coordination |
 | toggleterm.nvim | P3: reusable command output | Yes, more terminal glue |
 | gitsigns.nvim | P3: review and stage hunks | No hunk staging UI |
 | mason.nvim | P2: tool installation | No server package manager |
 | nvim-treesitter | P3: parser installation | Highlighting yes, installer no |
-| sidekick.nvim | P3: scoped agent pane for Claude and opencode | Partly: a terminal split lacks the send maps |
+| sidekick.nvim | P3: scoped agent pane | Terminal yes, send maps no |
 
 Native LSP completion uses core Neovim. The menu opens on server
 trigger characters; Ctrl+n/Ctrl+p request an unselected menu in Python,
@@ -157,7 +159,7 @@ also works. Run `:VpsInstallTools` after adding or updating tool requirements.
 Pyright owns types, definitions, references and hover. Ruff owns lint,
 import organization and formatting; Ruff hover and Pyright organize-imports
 are disabled. The old diagnostic handler only filtered duplicates within
-one server response, so it did not solve cross-server duplication and is removed.
+one server response. It did not solve cross-server duplication and is removed.
 
 Use Space r r to run the saved file, Space r t for `python -m pytest` on
 that file, and Space r l to repeat the last command. Output stays in
@@ -195,7 +197,7 @@ The Sweep base is QWERTY with home-row Shift/Alt/Ctrl/GUI on
 pinky/ring/middle/index fingers. Space is right inner thumb, Enter left
 inner thumb; left outer thumb is Tab/symbol layer, right outer thumb is
 Backspace/number-navigation layer. Esc is the Enter thumb on that layer.
-The layout source is [bajor/zmk-config-ferris](https://github.com/bajor/zmk-config-ferris/blob/main/config/cradio.keymap).
+The layout source is [bajor/zmk-config-ferris][sweep-keymap].
 Letters stay in their proposed groups because they are all on the base
 layer. Flash s/S replaces long counted jumps. Redo stays on r by choice.
 Nvim-tree uses o to open and q to close; Tab remains jump-forward in editors.
@@ -280,6 +282,8 @@ Change a key or its `desc` in Lua, then run step 6 of the maintenance list;
 | n | `gi` | Implementation |
 | n | `gr` | References |
 | i | `jk` | Normal mode |
+| n | `o` | Tree open |
+| n | `q` | Tree close |
 | n | `r` | Redo |
 | n,o,x | `s` | Flash jump |
 <!-- keymaps:end -->
@@ -288,14 +292,14 @@ Change a key or its `desc` in Lua, then run step 6 of the maintenance list;
 
 Solarized Osaka uses `style = "vivid"` and transparent editor, sidebar and
 float backgrounds. Rex supplies the background. On the Mac, import
-craftzdog's [Solarized Dark - Vivid Ghostty theme](https://github.com/craftzdog/dotfiles/blob/master/dot_config/ghostty/themes/Solarized%20Dark%20-%20Vivid).
+`Solarized Dark - Vivid` from [craftzdog's Ghostty themes][rex-themes].
 Its text colors use the same vivid transform; its surface colors stay dark.
 The source file currently sets the terminal background to `#031219`.
 
 There is one global lualine statusline and an Incline filename per editor
 window. Snacks enables only indent guides with animations disabled. Rounded
 float borders and a bright INSERT block remain visible through mosh.
-Line numbers are absolute; use Flash after the keyboard PR for long jumps.
+Line numbers are absolute; use Flash for long jumps.
 `cmdheight=0` uses experimental Neovim 0.12 ui2 under `pcall`.
 
 If colors differ, check Rex's selected theme, `:set termguicolors?`, and
@@ -305,6 +309,11 @@ A shell truecolor test is `printf '\033[38;2;50;185;170mRGB test\033[0m\n'`.
 The VPS can verify settings, but cannot verify Rex's actual appearance.
 
 ## 9. Troubleshooting
+
+- Esc delay: run `tmux show -sv escape-time`; expect `10`. Reload with
+  `tmux source-file ~/.tmux.conf` if it differs.
+- Wrong colors: confirm the Rex theme and `:set termguicolors?`, then
+  reconnect mosh so tmux can apply its RGB declaration to the new client.
 
 - Agent pane: run `:checkhealth sidekick` to check that `claude` and
   `opencode` are installed. Ignore its "Copilot LSP" error: Copilot is not
@@ -355,9 +364,11 @@ check creates a temporary uv project and installs pytest:
    Buffers of other plugins (the Sidekick pane, DAP UI, Git previews) are not
    opened, so their maps are not checked. Native unchanged defaults and
    internal Plug targets are excluded; core gc/gcc are included. Set
-   `VPS_KEYMAP_JSON=/path/keymaps.json` to also write the global maps and the
+   `VPS_KEYMAP_JSON=/path/keymaps.json` to also write global and config-owned
+   file-tree maps, plus the
    colorscheme's six ANSI accent colors as JSON with sorted keys. Nothing is
-   written when a check fails.
+   written when a check fails. Plugin-default buffer maps are validated but
+   excluded from the generated guide; the tree's o/q maps are included.
    Also run `nvim --headless "+luafile nvim-vps-linux/scripts/completion.lua"`
    to verify native and Pyright menu confirmation with batched input, word
    completion, macros and abbreviations. This also needs Mason's Pyright.
@@ -375,6 +386,11 @@ check creates a temporary uv project and installs pytest:
    date, so `--check` cannot compare its content: regenerate after a change.
 
 Acceptance: documented behavior agrees with the config and startup succeeds.
+
+[sweep-keymap]:
+  https://github.com/bajor/zmk-config-ferris/blob/main/config/cradio.keymap
+[rex-themes]:
+  https://github.com/craftzdog/dotfiles/tree/master/dot_config/ghostty/themes
 
 ## Personal notes
 
