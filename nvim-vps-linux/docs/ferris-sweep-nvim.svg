@@ -144,47 +144,38 @@
 <text x="159.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Enter</text>
 <text x="169.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Confirm completion or newline</text>
 <text x="151.50" y="54.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
-<text x="159.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Down</text>
-<text x="169.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion next or cursor down</text>
-<text x="151.50" y="57.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i,s</text>
-<text x="159.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">S-Tab</text>
-<text x="169.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Snippet previous</text>
-<text x="151.50" y="61.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i,s</text>
-<text x="159.50" y="61.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Tab</text>
-<text x="169.50" y="61.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion or snippet next</text>
-<text x="151.50" y="64.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
-<text x="159.50" y="64.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Up</text>
-<text x="169.50" y="64.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion previous or cursor up</text>
+<text x="159.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Tab</text>
+<text x="169.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion next or Tab</text>
+<text x="151.50" y="57.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
+<text x="159.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">K</text>
+<text x="169.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Hover</text>
+<text x="151.50" y="61.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,o,x</text>
+<text x="159.50" y="61.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">S</text>
+<text x="169.50" y="61.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Flash treesitter select</text>
+<text x="151.50" y="64.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,x</text>
+<text x="159.50" y="64.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gc</text>
+<text x="169.50" y="64.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Toggle comment</text>
 <text x="221.50" y="28.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
-<text x="229.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">K</text>
-<text x="239.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Hover</text>
-<text x="221.50" y="31.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,o,x</text>
-<text x="229.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">S</text>
-<text x="239.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Flash treesitter select</text>
-<text x="221.50" y="35.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,x</text>
-<text x="229.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gc</text>
-<text x="239.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Toggle comment</text>
+<text x="229.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gcc</text>
+<text x="239.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Toggle comment line</text>
+<text x="221.50" y="31.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
+<text x="229.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gd</text>
+<text x="239.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Definition</text>
+<text x="221.50" y="35.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
+<text x="229.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gi</text>
+<text x="239.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Implementation</text>
 <text x="221.50" y="38.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
-<text x="229.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gcc</text>
-<text x="239.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Toggle comment line</text>
-<text x="221.50" y="41.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
-<text x="229.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gd</text>
-<text x="239.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Definition</text>
+<text x="229.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gr</text>
+<text x="239.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">References</text>
+<text x="221.50" y="41.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
+<text x="229.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">jk</text>
+<text x="239.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Normal mode</text>
 <text x="221.50" y="44.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
-<text x="229.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gi</text>
-<text x="239.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Implementation</text>
-<text x="221.50" y="48.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
-<text x="229.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">gr</text>
-<text x="239.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">References</text>
-<text x="221.50" y="51.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
-<text x="229.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">jk</text>
-<text x="239.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Normal mode</text>
-<text x="221.50" y="54.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n</text>
-<text x="229.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">r</text>
-<text x="239.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Redo</text>
-<text x="221.50" y="57.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,o,x</text>
-<text x="229.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">s</text>
-<text x="239.50" y="57.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Flash jump</text>
+<text x="229.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">r</text>
+<text x="239.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Redo</text>
+<text x="221.50" y="48.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">n,o,x</text>
+<text x="229.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">s</text>
+<text x="239.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Flash jump</text>
 <text x="151.50" y="70.80" font-size="1.7" fill="#66767c" font-weight="normal" text-anchor="start">n normal, i insert, x visual, s select, o operator, t terminal, c command line, l language</text>
 <text x="7.50" y="79.50" font-size="3.6" fill="#1b2b30" font-weight="bold" text-anchor="start">Space a: AI</text>
 <rect x="7.50" y="81.80" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
