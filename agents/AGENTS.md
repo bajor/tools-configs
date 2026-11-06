@@ -65,7 +65,8 @@ already solve it.
 * Prefer deletion and reuse. Never sacrifice correctness or readability to reduce
   line count or diff size.
 * Suggest a simpler approach when it meets the same requirements. Make routine
-  implementation decisions without stopping for approval.
+  implementation decisions within an approved plan without further approval;
+  follow the planning and confirmation rules in section 4.
 * Comment only on non-obvious intent or constraints. Mark deliberate shortcuts with
   a `ponytail` comment naming the limit and upgrade path. For example:
   `// ponytail: Loads the bounded export in memory; stream it if exports become unbounded.`
@@ -130,14 +131,28 @@ or flourish. Write "a parameter worth varying," not "a dial worth turning," and
   Example: a `text` block with labeled boxes and `-->` arrows displays on Entire as
   monospace text with its spacing kept.
 
-## 4. Planning
+## 4. Planning and Working Agreement: Comprehension Over Speed
 
 Use Plan mode for medium or larger tasks: multi-file refactors, bug investigations,
-multi-component changes, or work expected to exceed 30 minutes. Proceed directly
-for trivial fixes or explicit, unambiguous instructions.
+multi-component changes, or work expected to exceed 30 minutes.
+
+1. For any change touching more than one file, propose a plan and wait for the
+   user's approval before editing, even when the instructions are unambiguous.
+   Trivial single-file changes do not need a plan.
+2. Before writing code, state the approach and trade-offs in 2-3 sentences.
+3. When debugging, explain the root cause before applying a fix. Use evidence to
+   test the diagnosis instead of applying speculative fixes in a loop.
+4. After implementing, walk the user through the diff: what changed, why it
+   changed, and what could break.
+5. Wait for the user's confirmation before committing.
+
+For work consisting only of boilerplate, throwaway scripts, or test fixtures,
+skip these explanation and approval steps and implement directly. Verification,
+scope, and safety rules still apply.
 
 State consequential assumptions. Ask for clarification when competing interpretations
-would materially change the result; decide routine implementation details yourself.
+would materially change the result; decide routine implementation details within
+the approved scope yourself.
 
 ## 5. Type-Level Design
 
@@ -202,8 +217,9 @@ than 300 hand-written changed lines as a sizing signal, not proof of readability
 even a smaller diff must be split if it requires too much context. Do not compress
 code, omit tests, or introduce throwaway abstractions to meet the budget.
 
-Commit after completing and verifying each logical change, not only at the end of
-the task, with one purpose per commit.
+Commit each logical change after completing it, verifying it, and obtaining the
+user's confirmation as required by section 4, not only at the end of the task.
+Keep one purpose per commit.
 Use a descriptive subject naming the behavior or mechanism changed.
 Explain the reason and non-obvious trade-offs in the body. When reversing an
 earlier approach, record what was rejected and why; do not make readers infer intent.
@@ -228,7 +244,8 @@ private profile.
 1. Inspect the working tree and preserve unrelated work.
 2. Fetch `origin` and create a fresh, descriptive branch from the updated base,
    normally `origin/main`. Use a separate worktree if the checkout has other work.
-3. Implement the focused change, verify it, and commit it.
+3. Implement the focused change, verify it, and explain the diff. Obtain the
+   user's confirmation as required by section 4 before committing it.
 4. Before pushing, fetch `origin` and rebase onto `origin/main`. Resolve conflicts
    and rerun affected checks if the code changed.
 5. Push the branch and create a PR immediately with a clear title, description,
