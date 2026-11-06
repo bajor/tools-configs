@@ -65,7 +65,7 @@ already solve it.
 * Prefer deletion and reuse. Never sacrifice correctness or readability to reduce
   line count or diff size.
 * Suggest a simpler approach when it meets the same requirements. Make routine
-  implementation decisions within an approved plan without further approval;
+  implementation decisions within the user's request and any approved plan;
   follow the planning and confirmation rules in section 4.
 * Comment only on non-obvious intent or constraints. Mark deliberate shortcuts with
   a `ponytail` comment naming the limit and upgrade path. For example:
@@ -133,6 +133,8 @@ or flourish. Write "a parameter worth varying," not "a dial worth turning," and
 
 ## 4. Planning and Working Agreement: Comprehension Over Speed
 
+Apply this agreement to initial implementation and review fixes.
+
 Use Plan mode for medium or larger tasks: multi-file refactors, bug investigations,
 multi-component changes, or work expected to exceed 30 minutes.
 
@@ -147,12 +149,12 @@ multi-component changes, or work expected to exceed 30 minutes.
 5. Wait for the user's confirmation before committing.
 
 For work consisting only of boilerplate, throwaway scripts, or test fixtures,
-skip these explanation and approval steps and implement directly. Verification,
-scope, and safety rules still apply.
+skip Plan mode and these explanation and approval steps and implement directly.
+Verification, scope, and safety rules still apply.
 
 State consequential assumptions. Ask for clarification when competing interpretations
 would materially change the result; decide routine implementation details within
-the approved scope yourself.
+the user's requested scope yourself.
 
 ## 5. Type-Level Design
 
@@ -244,8 +246,8 @@ private profile.
 1. Inspect the working tree and preserve unrelated work.
 2. Fetch `origin` and create a fresh, descriptive branch from the updated base,
    normally `origin/main`. Use a separate worktree if the checkout has other work.
-3. Implement the focused change, verify it, and explain the diff. Obtain the
-   user's confirmation as required by section 4 before committing it.
+3. Implement the focused change and verify it. Follow section 4 for the diff
+   walkthrough and user confirmation before committing it.
 4. Before pushing, fetch `origin` and rebase onto `origin/main`. Resolve conflicts
    and rerun affected checks if the code changed.
 5. Push the branch and create a PR immediately with a clear title, description,
@@ -310,6 +312,8 @@ remain useful when automatic uploads are disabled.
 ## Completion Checklist
 
 * [ ] The requested behavior is complete, clear, and correct.
+* [ ] Section 4's planning, explanation, and commit-confirmation requirements are
+  satisfied, including any applicable exception.
 * [ ] Existing code was checked for reuse; scope and dependencies are justified.
 * [ ] Types enforce relevant invariants; source files respect the size limit.
 * [ ] Added tests detect real failures; applicable checks pass or blockers are reported.
