@@ -1,3 +1,42 @@
+## Automatic usage-limit recovery (OpenCode v2)
+
+This setup reuses [azumag's MIT-licensed rate-limit plugin](https://github.com/azumag/opencode-rate-limit-fallback)
+at version `2.1.1`, rather than maintaining a second implementation.
+[`opencode.jsonc`](opencode.jsonc) loads it; [`rate-limit-fallback.json`](rate-limit-fallback.json)
+selects same-model `wait` mode. Consecutive failures wait 1, 2, 4, 8, 16, 32,
+then 60 minutes, without an attempt cutoff. Real user prompts reset the sequence.
+
+1. Install Python 3 and OpenCode v2. Run from the repository root:
+   ```sh
+   python3 setup-auto-resume.py --target opencode
+   ```
+   The installer merges the plugin into `~/.config/opencode/opencode.json(c)` and
+   its policy into `rate-limit-fallback.json`, respecting `XDG_CONFIG_HOME`.
+   Existing changed files get timestamped backups; models, credentials, permissions,
+   and unrelated settings are preserved. Comments/trailing commas or plugin objects
+   require a manual merge instead, and the installer stops without modifying them.
+2. For a manual merge, add `"@azumag/opencode-rate-limit-fallback@2.1.1"` to the
+   global config's `plugins` array and merge these policy fields into the global
+   `rate-limit-fallback.json`:
+   ```json
+   { "enabled": true, "fallbackMode": "wait", "cooldownMs": 60000 }
+   ```
+3. OpenCode loads config changes automatically; `/reload` forces a reload.
+   Keep its service and session running. The plugin retries rate/usage limits
+   on the same model, including after OpenCode exhausts its native retry budget.
+   Interrupted turns are not automatically resumed. No paid overflow is enabled.
+4. To uninstall, remove the plugin entry from your global config and run `/reload`.
+
+Project/worktree policy files and `~/.opencode/rate-limit-fallback.json` take
+precedence over `~/.config/opencode/rate-limit-fallback.json`. Check those locations
+if behavior differs. Timers are not durable across plugin/service restarts. The
+upstream matcher is broad: unlike the Pi extension, it also retries generic quota
+messages, so permanent quota exhaustion requires manually interrupting the turn.
+Automatic recovery can resume tool use under the session's existing permissions.
+
+Acceptance: repeated temporary limits wait with increasing delays and resume the
+same model without manual `continue` prompts; an interrupted turn stays stopped.
+
 ## CLI keybindings
 
 [`cli.json`](cli.json) is a template for the global OpenCode CLI settings file. Merge its `keybinds` object into `~/.config/opencode/cli.json`, or `$XDG_CONFIG_HOME/opencode/cli.json` when `XDG_CONFIG_HOME` is set. It binds `Tab` to cycle to the next agent.

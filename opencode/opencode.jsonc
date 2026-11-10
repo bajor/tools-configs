@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
-    "@azumag/opencode-rate-limit-fallback@opencode-v2"
+    "@azumag/opencode-rate-limit-fallback@2.1.1"
   ]
 }
