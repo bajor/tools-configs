@@ -32,8 +32,21 @@ test("only temporary usage limits qualify for automatic retry", () => {
   for (const error of ["429 rate_limit_error", "usage_limit_reached", "You've hit your limit", "GoUsageLimitError", "Daily quota exceeded"]) {
     assert.equal(isTemporaryLimit(error), true, error);
   }
-  for (const error of ["429 insufficient_quota", "429 out of credits", "401 invalid API key", "402 payment required", "429 account suspended", "subscription_sharing_workplace_individual_usage_limit_exceeded", "unknown failure", "You've hit your context window limit", "429 model_not_found"]) {
+  for (const error of ["429 insufficient_quota", "429 out of credits", "401 invalid API key", "402 payment required", "HTTP 403 rate limit", "status code: 401 usage limit", "429 account suspended", "subscription_sharing_workplace_individual_usage_limit_exceeded", "unknown failure", "You've hit your context window limit", "429 model_not_found"]) {
     assert.equal(isTemporaryLimit(error), false, error);
+  }
+});
+
+test("Codex reset durations are not mistaken for HTTP error statuses", () => {
+  for (const minutes of [400, 401, 402, 403, 404]) {
+    assert.equal(isTemporaryLimit(`You have hit your ChatGPT usage limit. Try again in ~${minutes} min.`), true);
+  }
+});
+
+test("ambiguous provider-normalized Codex quota errors stop", () => {
+  // Pi 1.5.0 emits these same messages for insufficient_quota and workspace limits.
+  for (const error of ["You have hit your ChatGPT usage limit.", "You have hit your ChatGPT usage limit (plus plan)."]) {
+    assert.equal(isTemporaryLimit(error), false);
   }
 });
 
