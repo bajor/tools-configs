@@ -1,3 +1,16 @@
+---
+feature_id: note-search
+owner: features/note-search
+requirements: [REQ-NOTE-SEARCH-EXAMPLE]
+contracts: [notes-v1-example]
+devices: [desktop-browser, cli]
+shared_skills: []
+tests: [example-only-not-installed]
+debug_scenarios: [failed-command-and-persistence]
+performance_scenarios: []
+evidence: [command-output, observable-state]
+status: illustrative-unexecuted
+---
 # Search notes
 
 Search lets a user find notes by title or body text, inspect a matching note, and distinguish no matches from an unavailable search.

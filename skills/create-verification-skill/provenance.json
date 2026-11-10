@@ -18,12 +18,8 @@
     "Label upstream Notes reference commands as illustrative and add ownership/requirement metadata without hiding implementation drift.",
     "Reconcile the complete registered/required feature inventory; initial-journey execution cannot mark unexecuted mandatory scenarios verified.",
     "Keep authoritative application scenarios in their single owning feature directory; skill feature maps are generated projections and maintenance reconciles the complete registry.",
-    "Align illustrative map README with generated projections and feature-owned scenario authority."
-  ],
-  "supported_platforms": [
-    "Linux",
-    "macOS",
-    "Windows when target verification tools support it"
+    "Align illustrative map README with generated projections and feature-owned scenario authority.",
+    "Independent review: keep generic consumer policy/discovery separate; preserve legal and semantic directives; stop before unsupported comment deletion; inventory metadata examples and evidence limitations clarified."
   ],
   "required_tools": [
     "Agent harness with explicit skill invocation or approved loading",
@@ -32,12 +28,21 @@
   "optional_dependencies": [],
   "verification": {
     "date": "2026-11-10 UTC",
-    "metadata": "Passed temporary projection validation, explicit invocation flag, local references, license identity, provenance digests and deliberate tamper rejection.",
+    "metadata": "Linux artifact audit only; field presence is not demonstrated invocation control. Raw quick_validate incompatibility retained; temporary metadata projection excludes only disable-model-invocation.",
     "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
     "harness_discovery": "Not demonstrated by this source adoption.",
     "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
     "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate.",
-    "review_correction": "Independent review identified partial top-feature seeding; corrected complete inventory and blocked unexecuted journeys."
+    "review_correction": "Independent review identified partial top-feature seeding; corrected complete inventory and blocked unexecuted journeys.",
+    "evidence": "Architecture reference docs/evidence/pstack-local-validation.txt; rerun command: python3 /tmp/unpolar-verification-research/validate_pstack.py in this recorded workspace. Audit script is a temporary harness, not a distributed CI gate.",
+    "review": "Fresh Claude source review obtained; corrections require repeat review. No application execution or multi-harness discovery established.",
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "command": "python3 scripts/verify_skill_package.py --package skills/create-verification-skill",
+      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
+    }
   },
   "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
   "files": {
@@ -47,27 +52,33 @@
       "modified": false
     },
     "SKILL.md": {
-      "sha256": "9613d22208439c6273a9b9f2ba635dc0b048181e654bd0f93df9334f29d16784",
+      "sha256": "45a6f2ea82997a74afc284fd2c670e24b9f08001c1474af66fcdaa8e5c3a3f52",
       "upstream_sha256": "bba612e8b81a02df0f49e6f6911f3b543c8c7d9f1f3c13ae6c0e2d58cc8c3ad3",
       "modified": true
     },
     "references/feature-map-example/README.md": {
-      "sha256": "d0633599ff54ce3c4fd167fdad2346c7cb2bea98eb2a3eb872495b933672f522",
+      "sha256": "ab92b377f3d18e4bb8b6b47b896798e95f35bda65ec8b682d06268cd5a31eabc",
       "upstream_sha256": "cb7bd782cf89968a4ba3d58a5151db837430db92d19a6f52a906973b77b516ba",
       "modified": true
     },
     "references/feature-map-example/create-note.md": {
-      "sha256": "644a44c74f35d38c2feb7cd05a0121fdebbb623e8dc376c185b565a581d1ccf7",
+      "sha256": "bc1807746e3ab17c1d0aa8f85bc3cb8c37c9bd296f66eec56fc6e8559ad001aa",
       "upstream_sha256": "644a44c74f35d38c2feb7cd05a0121fdebbb623e8dc376c185b565a581d1ccf7",
-      "modified": false
+      "modified": true
     },
     "references/feature-map-example/search.md": {
-      "sha256": "6e87b9e7f2791a7776ba1bb83f371cd285c306c67f19d245cc4dd6ca3015c823",
+      "sha256": "4006b2efc81047ddab67a2c154d9f416b879af59ab3094d71a8d207efd412a5e",
       "upstream_sha256": "6e87b9e7f2791a7776ba1bb83f371cd285c306c67f19d245cc4dd6ca3015c823",
-      "modified": false
+      "modified": true
     }
   },
   "required_skills": [
     "maintain-verification-skill"
-  ]
+  ],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
 }

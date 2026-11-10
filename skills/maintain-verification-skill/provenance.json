@@ -15,12 +15,8 @@
     "Audit pure/immutable boundaries, property/mutation tests and CI without weakening checks or changing product expectations.",
     "Report unreachable mandatory journeys as blocked-unreachable instead of verified-unreachable.",
     "Replace em-dash punctuation to follow repository writing rules.",
-    "Keep authoritative application scenarios in their single owning feature directory; skill feature maps are generated projections and maintenance reconciles the complete registry."
-  ],
-  "supported_platforms": [
-    "Linux",
-    "macOS",
-    "Windows when target verification tools support it"
+    "Keep authoritative application scenarios in their single owning feature directory; skill feature maps are generated projections and maintenance reconciles the complete registry.",
+    "Independent review: keep generic consumer policy/discovery separate; preserve legal and semantic directives; stop before unsupported comment deletion; inventory metadata examples and evidence limitations clarified."
   ],
   "required_tools": [
     "Agent harness with explicit skill invocation or approved loading",
@@ -29,11 +25,20 @@
   "optional_dependencies": [],
   "verification": {
     "date": "2026-11-10 UTC",
-    "metadata": "Passed temporary projection validation, explicit invocation flag, local references, license identity, provenance digests and deliberate tamper rejection.",
+    "metadata": "Linux artifact audit only; field presence is not demonstrated invocation control. Raw quick_validate incompatibility retained; temporary metadata projection excludes only disable-model-invocation.",
     "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
     "harness_discovery": "Not demonstrated by this source adoption.",
     "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
-    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate."
+    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate.",
+    "evidence": "Architecture reference docs/evidence/pstack-local-validation.txt; rerun command: python3 /tmp/unpolar-verification-research/validate_pstack.py in this recorded workspace. Audit script is a temporary harness, not a distributed CI gate.",
+    "review": "Fresh Claude source review obtained; corrections require repeat review. No application execution or multi-harness discovery established.",
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "command": "python3 scripts/verify_skill_package.py --package skills/maintain-verification-skill",
+      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
+    }
   },
   "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
   "files": {
@@ -43,10 +48,16 @@
       "modified": false
     },
     "SKILL.md": {
-      "sha256": "ef0e60a4fdb2abb64b72f0407c6b00bcd1df6e30f7fd3a831ef266060ef84e22",
+      "sha256": "1bf6701cda68b3a3cdfa1998843522b82b6a2a5af0498e2d683c95722e60185c",
       "upstream_sha256": "5943f7747da6aafcf5c1063c988e725c97e415866f5c7746279012f35cb49815",
       "modified": true
     }
   },
-  "required_skills": []
+  "required_skills": [],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
 }

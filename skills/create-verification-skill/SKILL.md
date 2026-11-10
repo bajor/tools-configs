@@ -9,14 +9,14 @@ disable-model-invocation: true
 ## Adoption and authority
 
 Source, changes and verification limits are in [provenance.json](provenance.json);
-retain the upstream [LICENSE](LICENSE). Invocation remains explicit. Scheduled or
-PR-triggered invocation needs separately authorized automation. Follow the
-repository's planning and confirmation rules. This skill does not authorize
-commits, publication, merges, tool installation, or changes to remote, account,
-agent, or protected CI configuration. Report unavailable prerequisites as
-`blocked`; do not claim unexecuted verification passed.
+retain the upstream [LICENSE](LICENSE). Invoke for an authorized request or
+approved automation. The retained upstream `disable-model-invocation` field is
+not a demonstrated cross-harness control. Follow repository authorization and
+policy; this skill grants no commit, publication, installation or settings access.
+Report missing prerequisites as `blocked`; never claim unexecuted checks passed.
+Consumer rules determine colocation, functional purity and comment policy.
 
-Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`<skills>/verify-<app>/`) tailored to the repo. `<skills>` is the canonical repository-local `.agents/skills/` directory. Use the repository's approved harness discovery configuration to expose that directory to Claude Code, Codex, Pi and OpenCode; never create independently maintained copies or assume every harness scans it. If discovery has not been configured and demonstrated, report it blocked rather than change global settings. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
+Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`<skills>/verify-<app>/`) tailored to the repo. `<skills>` is the repository's approved local skill directory. Resolve existing harness configuration and skills before choosing a path; `.agents/skills/` is the Unpolar convention, not a universal requirement. Expose one canonical copy through supported discovery; never assume every harness scans the same path. If discovery has not been configured and demonstrated, report it blocked rather than change global settings. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
 
 ## 1. Interview the repo, not the user
 
@@ -43,22 +43,20 @@ Write `<skills>/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app
 
 ## 3. Seed the feature map
 
-Keep the authoritative feature verification descriptor under its unique owning feature directory, using the repository's established descriptor format. Generate `<skills>/verify-<app>/features/README.md` and any per-feature skill projections from those descriptors, with one entry per registered or independently required user-facing feature, reconciled against the complete feature registry and current routes, commands, menus and requirements. Do not stop at a top-feature sample. Unknown or omitted features make the map incomplete and blocked. Follow the shape in [`references/feature-map-example/`](references/feature-map-example/), with a README index and one file per feature. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. Record the unique owning feature directory, independent requirement IDs, contract versions, supported device/configuration matrix, relevant shared skills, debugging and performance scenarios, test commands and required evidence. Keep feature-owned tests and fixtures in that feature directory; the skill map references them or contains generated projections, without moving implementation into the skill. If the seed data lacks a precondition that a journey needs, the journey reports a failure and the reason goes in that feature's `Gotchas`. Never weaken the journey to make it pass. The feature-owned descriptors are the maintained scenario source; the skill map is a generated index/projection, not an independently edited duplicate; a proof that drives one convenient entry point is incomplete when the map lists others.
+Inventory every user-facing feature against independent requirements and current routes, commands and menus. Generate `<skills>/verify-<app>/features/README.md` and one entry per feature; omitted or unknown required features block completeness. Follow the illustrative [map format](references/feature-map-example/). Record owner, expected behavior, access paths, contracts/requirements, commands, device needs, shared skills, debugging/performance scenarios and required evidence. Identify missing requirement IDs honestly; do not invent approvals.
+
+Use the consumer's established descriptor/registry/generator when present. If its policy requires feature-owned descriptors and generated projections, absence blocks generation until that infrastructure is approved. Otherwise the local map may be the initial authoritative inventory: label inferred behavior for confirmation and keep tests/fixtures in their existing owners. Do not impose a new feature layout on an unrelated consumer. Never duplicate existing scenario sources or silently redefine expected behavior to match the implementation.
 
 ## Contract and test sensitivity
 
-For domain logic, require pure deterministic functions that take all inputs
-explicitly, return new values, and have no hidden mutable state, clock, random
-generator, storage or network dependency.
-Keep effects in explicit adapters. Name the compiler, AST/dependency check and
-runtime tests that enforce those boundaries; prose alone is not enforcement.
-Use property-based tests for invariants and state transitions, record seeds and
-shrunk counterexamples, and demonstrate a targeted behavior mutation is caught.
-Identify the actual CI commands and evidence for these checks. A missing gate or
-an unexecuted command is blocked, not a completed safeguard. Changes to independent
-requirements or protected checks need their own approval.
-For Apple targets, use the repository's approved Apple skills and official
-MCP/CLI policy; do not assume another MCP exposes equivalent capabilities.
+Discover the consumer's required contract, compiler, architecture, comment,
+property and mutation checks. Run applicable existing commands and record seeds,
+counterexamples and detecting assertions. Where the consumer requires a pure
+immutable core, identify its real compiler/AST restrictions and effect owners;
+a missing mandatory gate blocks readiness. Do not create new policy by assumption.
+For native Apple targets, follow the approved official MCP/CLI policy and available
+shared Apple skills. If required skills are absent, report the missing dependency.
+Changes to independent requirements or protected gates require their own approval.
 
 ## 4. Prove the generated skill before handing it over
 

@@ -1,3 +1,16 @@
+---
+feature_id: note-creation
+owner: features/note-creation
+requirements: [REQ-NOTE-CREATE-EXAMPLE]
+contracts: [notes-v1-example]
+devices: [desktop-browser, cli]
+shared_skills: []
+tests: [example-only-not-installed]
+debug_scenarios: [failed-command-and-persistence]
+performance_scenarios: []
+evidence: [command-output, observable-state]
+status: illustrative-unexecuted
+---
 # Create a note
 
 Create note lets a user save a titled note from the browser or CLI, cancel an unfinished draft, and confirm the saved note from a second user-facing view.
