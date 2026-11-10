@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "skill": "apple-build-verify",
+  "version": "0.1.0",
+  "status": "infrastructure_draft",
+  "canonical_repository": "https://github.com/bajor/tools-configs",
+  "upstream": {
+    "repository": "https://github.com/Dimillian/Skills",
+    "commit": "05ba982bfeb0d77d3c97d4542b0ee15034d05f84",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Thomas Ricouard",
+    "license_path": "LICENSE",
+    "license_sha256": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+    "files": [
+      {
+        "path": "ios-debugger-agent/SKILL.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/ios-debugger-agent/SKILL.md",
+        "sha256": "07000b6744b8cf21bfa76db3bf76c6d158f9ef16a4a33eee9ce15508a7aa8b2e"
+      }
+    ]
+  },
+  "modifications": [
+    "Extract official MCP capability discovery and unattended xcodebuild test/result inspection from upstream.",
+    "Bind source/build-input/dependency/toolchain identity, preserve consumer expectations, and rerun after repairs.",
+    "Report unavailable interactive setup, raw Codex metadata-validator incompatibility and unexecuted native workflows explicitly.",
+    "Preserve upstream MIT attribution and per-file original/adapted byte digests."
+  ],
+  "host_platforms": [
+    "macOS"
+  ],
+  "target_platforms": [
+    "iOS",
+    "iPadOS",
+    "macOS",
+    "Safari native extensions"
+  ],
+  "required_tools": [
+    "xcodebuild",
+    "xcrun xcresulttool",
+    "xcrun simctl",
+    "Apple Xcode MCP via xcrun mcpbridge for supported interactive work"
+  ],
+  "verification": {
+    "audit_date": "2026-11-10 UTC",
+    "audit_host": "Linux",
+    "scope": "Local payload bytes, licenses, references, shell parsing and metadata projection only; not native/application/formal execution, discovery or protected CI.",
+    "metadata_validator": {
+      "implementation": "Codex bundled skill-creator/scripts/quick_validate.py",
+      "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c"
+    },
+    "raw_quick_validate": "Rejected standard top-level compatibility; temporary projection omits only that field. Distributed field and validator remain unchanged.",
+    "runtime_and_discovery": "not_executed",
+    "evidence": {
+      "repository": "https://entire.com/et/unpolar/-/trails/1/changes/unpolar-architecture/1",
+      "path": "docs/evidence/skill-packages-validation.json",
+      "kind": "unsigned_local_payload_audit_not_runtime_attestation"
+    },
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "858d2dbe5894d0e21946696783fa427a99fbca48",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "setup": "Use separate clean checkouts: the exact tool commit and this package source commit. These independent draft branches are not merged.",
+      "command": "python3 <tool-checkout>/scripts/verify_skill_package.py --package <package-checkout>/skills/apple-build-verify",
+      "scope": "Worktree inventory/hash/license consistency only; not Git tracking or source authentication."
+    },
+    "shared_ci_dependency": "https://github.com/bajor/github-workflows/pull/9 must be approved/deployed separately and current skill heads rerun; present phone-scanner failure is not waived."
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "scope": "All payload files except provenance.json. Self-hashes detect accidental drift only; trusted complete-tree pin and consumer lock are future infrastructure, not demonstrated here.",
+    "files": {
+      "LICENSE": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+      "SKILL.md": "497570cc0afdae4ba0209a6169c3b4e211032dabd1907aabe3e337d239b590cf"
+    }
+  }
+}
