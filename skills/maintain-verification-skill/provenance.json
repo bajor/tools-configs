@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/maintain-verification-skill",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/maintain-verification-skill",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Inspect complete source and live feature coverage, with authorized parallel readers or disclosed serial inspection.",
+    "Preserve independent behavioral authority while allowing ordinary source-supported path/selector map corrections.",
+    "Prepare proven corrections even when other required journeys leave overall verification blocked; do not report incomplete coverage passed.",
+    "Preserve upstream MIT attribution and per-file original/adapted byte digests."
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill"
+  ],
+  "optional_dependencies": [],
+  "verification": {
+    "audit_date": "2026-11-10 UTC",
+    "audit_host": "Linux",
+    "scope": "Local payload bytes, licenses, references, shell parsing and metadata projection only; not native/application/formal execution, discovery or protected CI.",
+    "metadata_validator": {
+      "implementation": "Codex bundled skill-creator/scripts/quick_validate.py",
+      "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c"
+    },
+    "raw_quick_validate": "Rejected retained upstream disable-model-invocation; temporary projection omits only that field. Distributed field and validator remain unchanged.",
+    "runtime_and_discovery": "not_executed",
+    "evidence": {
+      "repository": "https://entire.com/et/unpolar/-/trails/1/changes/unpolar-architecture/1",
+      "path": "docs/evidence/skill-packages-validation.json",
+      "kind": "unsigned_local_payload_audit_not_runtime_attestation"
+    },
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "858d2dbe5894d0e21946696783fa427a99fbca48",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "setup": "Use separate clean checkouts: the exact tool commit and this package source commit. These independent draft branches are not merged.",
+      "command": "python3 <tool-checkout>/scripts/verify_skill_package.py --package <package-checkout>/skills/maintain-verification-skill",
+      "scope": "Worktree inventory/hash/license consistency only; not Git tracking or source authentication."
+    },
+    "shared_ci_dependency": "https://github.com/bajor/github-workflows/pull/9 must be approved/deployed separately and current skill heads rerun; present phone-scanner failure is not waived."
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "094f73445c1d43234e2c11a8d14af8c39d148ca2b624702726a4ed2537a5162f",
+      "upstream_sha256": "5943f7747da6aafcf5c1063c988e725c97e415866f5c7746279012f35cb49815",
+      "modified": true
+    }
+  },
+  "required_skills": [],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
+}

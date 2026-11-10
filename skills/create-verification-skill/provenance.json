@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/create-verification-skill",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/create-verification-skill",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Preserve the real launch/doctor/drive/evidence/cleanup workflow and complete feature inventory; retain missing-precondition and all-entry-point safeguards.",
+    "Resolve consumer-owned discovery, policy, map authority and profile/journey metadata instead of imposing one application layout.",
+    "Keep authorization, incomplete execution and raw Codex metadata-validator incompatibility explicit.",
+    "Preserve upstream MIT attribution and per-file original/adapted byte digests."
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill"
+  ],
+  "optional_dependencies": [],
+  "verification": {
+    "audit_date": "2026-11-10 UTC",
+    "audit_host": "Linux",
+    "scope": "Local payload bytes, licenses, references, shell parsing and metadata projection only; not native/application/formal execution, discovery or protected CI.",
+    "metadata_validator": {
+      "implementation": "Codex bundled skill-creator/scripts/quick_validate.py",
+      "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c"
+    },
+    "raw_quick_validate": "Rejected retained upstream disable-model-invocation; temporary projection omits only that field. Distributed field and validator remain unchanged.",
+    "runtime_and_discovery": "not_executed",
+    "evidence": {
+      "repository": "https://entire.com/et/unpolar/-/trails/1/changes/unpolar-architecture/1",
+      "path": "docs/evidence/skill-packages-validation.json",
+      "kind": "unsigned_local_payload_audit_not_runtime_attestation"
+    },
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "858d2dbe5894d0e21946696783fa427a99fbca48",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "setup": "Use separate clean checkouts: the exact tool commit and this package source commit. These independent draft branches are not merged.",
+      "command": "python3 <tool-checkout>/scripts/verify_skill_package.py --package <package-checkout>/skills/create-verification-skill",
+      "scope": "Worktree inventory/hash/license consistency only; not Git tracking or source authentication."
+    },
+    "shared_ci_dependency": "https://github.com/bajor/github-workflows/pull/9 must be approved/deployed separately and current skill heads rerun; present phone-scanner failure is not waived."
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "ea2101bc445cd77f20e07ff3a0525739b51c5047d38ac1757437ac8701256766",
+      "upstream_sha256": "bba612e8b81a02df0f49e6f6911f3b543c8c7d9f1f3c13ae6c0e2d58cc8c3ad3",
+      "modified": true
+    },
+    "references/feature-map-example/README.md": {
+      "sha256": "08a71a2d9c77b5129b966022824fab72eed30bd41fdb914647ccc7edc2286678",
+      "upstream_sha256": "cb7bd782cf89968a4ba3d58a5151db837430db92d19a6f52a906973b77b516ba",
+      "modified": true
+    },
+    "references/feature-map-example/create-note.md": {
+      "sha256": "0826bbb83c88af8c7525b082711d0785616a533aeb57a386002ac30cb17cd0f3",
+      "upstream_sha256": "644a44c74f35d38c2feb7cd05a0121fdebbb623e8dc376c185b565a581d1ccf7",
+      "modified": true
+    },
+    "references/feature-map-example/search.md": {
+      "sha256": "ce89080abd2aa1abb515450fb161fd29c2081add538c09d4d1ee4453b40808f3",
+      "upstream_sha256": "6e87b9e7f2791a7776ba1bb83f371cd285c306c67f19d245cc4dd6ca3015c823",
+      "modified": true
+    }
+  },
+  "required_skills": [
+    "maintain-verification-skill"
+  ],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
+}
