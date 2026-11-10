@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/maintain-formal-verification-skill",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/maintain-formal-verification-skill",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Preserve explicit invocation; restrict writes and publication to existing authorization.",
+    "Use canonical local skill discovery and record optional uninstalled statechart reporting as blocked when required.",
+    "Require independent requirement approval for changed promises and reduced bounds; unrecorded sync commits are review starting points, not execution claims.",
+    "Audit pure immutable transition boundaries, moved state writers, property/mutation tests and actual CI; prohibit new comments/suppressions.",
+    "Replace em-dash punctuation to follow repository writing rules.",
+    "Keep feature-specific formal models/properties/fixtures under their unique owner and local skill projections generated; cross-feature models need an explicit shared owner.",
+    "Independent review: keep generic consumer policy/discovery separate; preserve legal and semantic directives; stop before unsupported comment deletion; inventory metadata examples and evidence limitations clarified."
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill",
+    "Pinned model checker, proof assistant or code verifier chosen for the property"
+  ],
+  "optional_dependencies": [
+    {
+      "name": "statechart",
+      "source": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/statechart",
+      "installed": false,
+      "failure_behavior": "Blocked when the chosen workflow requires statechart until complete pinned skill/runtime are approved and demonstrated."
+    }
+  ],
+  "verification": {
+    "date": "2026-11-10 UTC",
+    "metadata": "Linux artifact audit only; field presence is not demonstrated invocation control. Raw quick_validate incompatibility retained; temporary metadata projection excludes only disable-model-invocation.",
+    "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
+    "harness_discovery": "Not demonstrated by this source adoption.",
+    "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
+    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate.",
+    "evidence": "Architecture reference docs/evidence/pstack-local-validation.txt; rerun command: python3 /tmp/unpolar-verification-research/validate_pstack.py in this recorded workspace. Audit script is a temporary harness, not a distributed CI gate.",
+    "review": "Fresh Claude source review obtained; corrections require repeat review. No application execution or multi-harness discovery established.",
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "command": "python3 scripts/verify_skill_package.py --package skills/maintain-formal-verification-skill",
+      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
+    }
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "4e415db3cc87f0e8eeb7269754c89c5150f07b52129510f786236cd2ec21a355",
+      "upstream_sha256": "0c96f54293542d3818b68754562b338073958781a9684454611dca37592e2d2c",
+      "modified": true
+    }
+  },
+  "required_skills": [],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
+}
