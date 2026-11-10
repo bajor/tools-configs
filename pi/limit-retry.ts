@@ -4,8 +4,8 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 const BASE_DELAY_MS = 60_000;
 const MAX_DELAY_MS = 3_600_000;
 const STATUS_KEY = "limit-retry";
+const PERMANENT_HTTP_ERROR = /\b(?:HTTP(?:\/[\d.]+)?\s+|status(?:[_\s-]*code)?["']?\s*[:=]?\s*)(?:401|402|403)\b/i;
 const PERMANENT_ERROR = new RegExp([
-  "\\b(?:401|402|403)\\b",
   "invalid.{0,20}(?:key|auth)|authentication_error|permission_denied",
   "insufficient_quota|out of (?:budget|credits)|insufficient (?:balance|credits)",
   "payment required|billing.{0,20}(?:error|limit)|account.{0,20}(?:suspended|disabled)",
@@ -14,14 +14,18 @@ const PERMANENT_ERROR = new RegExp([
   "subscription_sharing_workplace_individual_usage_limit_exceeded",
 ].join("|"), "i");
 const TEMPORARY_LIMIT = /\b429\b|rate[\s_-]*limit|too many requests|usage[\s_-]*limit|(?:free|go)usagelimiterror|(?:you've|you’ve|you have).{0,20}(?:hit|reached).{0,20}limit|(?:hour|day|daily|week|month).{0,30}quota/i;
+const RETRY_AFTER = /(?:retry after|try again in)\s*:?\s*~?(\d+(?:\.\d+)?)\s*(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h)\b/i;
 
 export function isTemporaryLimit(error: string): boolean {
-  return !PERMANENT_ERROR.test(error) && TEMPORARY_LIMIT.test(error);
+  if (PERMANENT_HTTP_ERROR.test(error) || PERMANENT_ERROR.test(error) || !TEMPORARY_LIMIT.test(error)) return false;
+  // Pi's Codex adapter replaces some permanent 429 codes with this same text.
+  // Without reset guidance, the normalized message cannot establish a temporary limit.
+  return !/You have hit your ChatGPT usage limit/i.test(error) || RETRY_AFTER.test(error);
 }
 
 export function retryDelay({ attempt, error }: { attempt: number; error: string }): number {
   const backoff = Math.min(MAX_DELAY_MS, BASE_DELAY_MS * 2 ** Math.min(attempt - 1, 6));
-  const hint = /(?:retry after|try again in)\s*:?\s*~?(\d+(?:\.\d+)?)\s*(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h)\b/i.exec(error);
+  const hint = RETRY_AFTER.exec(error);
   if (!hint) return backoff;
   const unitMs = /^h/i.test(hint[2]) ? 3_600_000 : /^m/i.test(hint[2]) ? 60_000 : 1_000;
   return Math.max(backoff, Number(hint[1]) * unitMs);

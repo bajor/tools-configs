@@ -24,18 +24,21 @@ then 60 minutes, without an attempt cutoff. Real user prompts reset the sequence
 3. OpenCode loads config changes automatically; `/reload` forces a reload.
    Keep its service and session running. The plugin retries rate/usage limits
    on the same model, including after OpenCode exhausts its native retry budget.
-   Interrupted turns are not automatically resumed. No paid overflow is enabled.
-4. To uninstall, remove the plugin entry from your global config and run `/reload`.
+   No paid overflow is enabled.
+4. To cancel pending recovery reliably, remove the plugin entry from every config
+   that loads it and run `/reload`. This also uninstalls the setup. In upstream
+   version `2.1.1`, interrupting a turn does not cancel a recovery timer that was
+   already scheduled after a failed turn. Do not rely on interruption alone.
 
 Project/worktree policy files and `~/.opencode/rate-limit-fallback.json` take
 precedence over `~/.config/opencode/rate-limit-fallback.json`. Check those locations
 if behavior differs. Timers are not durable across plugin/service restarts. The
 upstream matcher is broad: unlike the Pi extension, it also retries generic quota
-messages, so permanent quota exhaustion requires manually interrupting the turn.
+messages, so permanent quota exhaustion requires unloading the plugin as above.
 Automatic recovery can resume tool use under the session's existing permissions.
 
 Acceptance: repeated temporary limits wait with increasing delays and resume the
-same model without manual `continue` prompts; an interrupted turn stays stopped.
+same model without manual `continue` prompts; unloading cancels pending recovery.
 
 ## CLI keybindings
 

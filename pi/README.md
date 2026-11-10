@@ -32,8 +32,13 @@ handler until its timer expires; prompt cancellation is verified for the termina
 Recognized errors include HTTP 429, rate limits, usage limits, and daily/window
 quotas. Invalid credentials, insufficient API quota/credits, payment failures,
 suspended accounts, administrator-imposed ChatGPT workspace limits, context
-overflow, and unrecognized errors stop normally. This is opt-in unattended
-execution: once quota returns, Pi can resume tool use under its existing permissions.
+overflow, and unrecognized errors stop when their identifying text survives
+provider normalization. Pi 1.5.0's Codex adapter can replace permanent HTTP 429
+codes with the generic message `You have hit your ChatGPT usage limit.`.
+The extension conservatively stops those generic ChatGPT messages unless they
+include a retry/reset duration. A real temporary Codex limit without that guidance
+also needs manual resumption. This is opt-in unattended execution: once quota
+returns, Pi can resume tool use under its existing permissions.
 
 Research: Pi's [native retry settings](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/settings.md)
 default to three retries and exclude some subscription limits.
