@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/create-verification-skill",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/create-verification-skill",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Preserve explicit invocation; restrict writes and publication to existing authorization.",
+    "Generate under .agents/skills and require approved, demonstrated harness discovery without global configuration changes.",
+    "Keep feature-owned implementation/tests/fixtures colocated and record independent requirements, contracts, devices, debug/performance scenarios and evidence.",
+    "Require enforced pure domain functions, immutable explicit state, property/mutation sensitivity, CI evidence and approved Apple tooling for native targets.",
+    "Do not repair product startup outside authorized scope; link the adopted maintenance skill.",
+    "Replace em-dash punctuation to follow repository writing rules.",
+    "Label upstream Notes reference commands as illustrative and add ownership/requirement metadata without hiding implementation drift.",
+    "Reconcile the complete registered/required feature inventory; initial-journey execution cannot mark unexecuted mandatory scenarios verified.",
+    "Keep authoritative application scenarios in their single owning feature directory; skill feature maps are generated projections and maintenance reconciles the complete registry.",
+    "Align illustrative map README with generated projections and feature-owned scenario authority."
+  ],
+  "supported_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill"
+  ],
+  "optional_dependencies": [],
+  "verification": {
+    "date": "2026-11-10 UTC",
+    "metadata": "Passed temporary projection validation, explicit invocation flag, local references, license identity, provenance digests and deliberate tamper rejection.",
+    "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
+    "harness_discovery": "Not demonstrated by this source adoption.",
+    "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
+    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate.",
+    "review_correction": "Independent review identified partial top-feature seeding; corrected complete inventory and blocked unexecuted journeys."
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "9613d22208439c6273a9b9f2ba635dc0b048181e654bd0f93df9334f29d16784",
+      "upstream_sha256": "bba612e8b81a02df0f49e6f6911f3b543c8c7d9f1f3c13ae6c0e2d58cc8c3ad3",
+      "modified": true
+    },
+    "references/feature-map-example/README.md": {
+      "sha256": "d0633599ff54ce3c4fd167fdad2346c7cb2bea98eb2a3eb872495b933672f522",
+      "upstream_sha256": "cb7bd782cf89968a4ba3d58a5151db837430db92d19a6f52a906973b77b516ba",
+      "modified": true
+    },
+    "references/feature-map-example/create-note.md": {
+      "sha256": "644a44c74f35d38c2feb7cd05a0121fdebbb623e8dc376c185b565a581d1ccf7",
+      "upstream_sha256": "644a44c74f35d38c2feb7cd05a0121fdebbb623e8dc376c185b565a581d1ccf7",
+      "modified": false
+    },
+    "references/feature-map-example/search.md": {
+      "sha256": "6e87b9e7f2791a7776ba1bb83f371cd285c306c67f19d245cc4dd6ca3015c823",
+      "upstream_sha256": "6e87b9e7f2791a7776ba1bb83f371cd285c306c67f19d245cc4dd6ca3015c823",
+      "modified": false
+    }
+  },
+  "required_skills": [
+    "maintain-verification-skill"
+  ]
+}

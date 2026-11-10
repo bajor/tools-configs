@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/maintain-verification-skill",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/maintain-verification-skill",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Preserve explicit invocation; restrict writes and publication to existing authorization.",
+    "Use canonical .agents/skills discovery, authorized delegation or a disclosed serial fallback, and prepare changes without automatic publication.",
+    "Compare maps with independent requirements, account for shared/deleted/renamed inputs, and require fresh revision-bound evidence.",
+    "Audit pure/immutable boundaries, property/mutation tests and CI without weakening checks or changing product expectations.",
+    "Report unreachable mandatory journeys as blocked-unreachable instead of verified-unreachable.",
+    "Replace em-dash punctuation to follow repository writing rules.",
+    "Keep authoritative application scenarios in their single owning feature directory; skill feature maps are generated projections and maintenance reconciles the complete registry."
+  ],
+  "supported_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill"
+  ],
+  "optional_dependencies": [],
+  "verification": {
+    "date": "2026-11-10 UTC",
+    "metadata": "Passed temporary projection validation, explicit invocation flag, local references, license identity, provenance digests and deliberate tamper rejection.",
+    "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
+    "harness_discovery": "Not demonstrated by this source adoption.",
+    "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
+    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate."
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "ef0e60a4fdb2abb64b72f0407c6b00bcd1df6e30f7fd3a831ef266060ef84e22",
+      "upstream_sha256": "5943f7747da6aafcf5c1063c988e725c97e415866f5c7746279012f35cb49815",
+      "modified": true
+    }
+  },
+  "required_skills": []
+}
