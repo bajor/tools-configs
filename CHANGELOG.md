@@ -4,6 +4,10 @@
 
 ### Changed
 
+- Move shared agent instructions out of this repository to
+  [`bajor/skills/agents`](https://github.com/bajor/skills/tree/main/agents).
+  Repoint any checkout-based links to a standalone `~/AGENTS.md` before updating.
+
 - Include config-owned file-tree maps in the generated shortcut guide and
   remove stale deployment wording.
 
