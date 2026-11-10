@@ -9,6 +9,8 @@ tests: [example-only-not-installed]
 debug_scenarios: [failed-command-and-persistence]
 performance_scenarios: []
 evidence: [command-output, observable-state]
+profiles: [default-example]
+journey_status: {browser: not-executed, cli: not-executed}
 status: illustrative-unexecuted
 ---
 # Create a note

@@ -16,7 +16,7 @@ policy; this skill grants no commit, publication, installation or settings acces
 Report missing prerequisites as `blocked`; never claim unexecuted checks passed.
 Consumer rules determine colocation, functional purity and comment policy.
 
-Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`<skills>/verify-<app>/`) tailored to the repo. `<skills>` is the repository's approved local skill directory. Resolve existing harness configuration and skills before choosing a path; `.agents/skills/` is the Unpolar convention, not a universal requirement. Expose one canonical copy through supported discovery; never assume every harness scans the same path. If discovery has not been configured and demonstrated, report it blocked rather than change global settings. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
+Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`<skills>/verify-<app>/`) tailored to the repo. `<skills>` is the repository's approved local skill directory. Resolve existing harness configuration and skills before choosing a path; `.agents/skills/` is the Unpolar convention, not a universal requirement. Expose one canonical copy through supported discovery; never assume every harness scans the same path. If no canonical path exists, select the active harness's documented repository-local path and demonstrate discovery. Otherwise report discovery blocked without changing global settings; generated but unexecuted output remains a draft. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
 
 ## 1. Interview the repo, not the user
 
@@ -45,7 +45,7 @@ Write `<skills>/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app
 
 Inventory every user-facing feature against independent requirements and current routes, commands and menus. Generate `<skills>/verify-<app>/features/README.md` and one entry per feature; omitted or unknown required features block completeness. Follow the illustrative [map format](references/feature-map-example/). Record owner, expected behavior, access paths, contracts/requirements, commands, device needs, shared skills, debugging/performance scenarios and required evidence. Identify missing requirement IDs honestly; do not invent approvals.
 
-Use the consumer's established descriptor/registry/generator when present. If its policy requires feature-owned descriptors and generated projections, absence blocks generation until that infrastructure is approved. Otherwise the local map may be the initial authoritative inventory: label inferred behavior for confirmation and keep tests/fixtures in their existing owners. Do not impose a new feature layout on an unrelated consumer. Never duplicate existing scenario sources or silently redefine expected behavior to match the implementation.
+Use the consumer's established descriptor/registry/generator when present. If its policy requires feature-owned descriptors and generated projections, absence blocks generation until that infrastructure is approved. Otherwise the local map may be the initial authoritative inventory: label inferred behavior for confirmation and keep tests/fixtures in their existing owners. Do not impose a new feature layout on an unrelated consumer. Never duplicate existing scenario sources or silently redefine expected behavior to match the implementation. Missing fixture preconditions fail the journey; never weaken it to pass. Every listed entry point needs its own evidence or an explicit unexecuted status, not proof through one convenient path. A profile is the consumer-approved selection of destinations and scenarios; mandatory means required by that selection. Record profile and per-journey status (passed, failed, blocked or not-executed) in the existing map format.
 
 ## Contract and test sensitivity
 
@@ -54,7 +54,7 @@ property and mutation checks. Run applicable existing commands and record seeds,
 counterexamples and detecting assertions. Where the consumer requires a pure
 immutable core, identify its real compiler/AST restrictions and effect owners;
 a missing mandatory gate blocks readiness. Do not create new policy by assumption.
-For native Apple targets, follow the approved official MCP/CLI policy and available
+For native Apple targets, follow the consumer's approved tooling policy and available
 shared Apple skills. If required skills are absent, report the missing dependency.
 Changes to independent requirements or protected gates require their own approval.
 

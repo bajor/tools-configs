@@ -2,7 +2,9 @@
 
 This is an upstream format example. The Notes commands are illustrative, not
 installed tools. Generated maps must use observed application commands and record
-the owning feature directory, approved requirement/contract IDs and evidence.
+the existing owner(s), available approved requirement/contract references and evidence.
+A unique feature directory applies only when consumer policy requires colocation;
+missing approvals are explicit, never fabricated.
 
 When consumer policy requires generated maps, this directory illustrates a projection of authoritative feature-owned descriptors. Otherwise it illustrates a canonical local map. The illustrative Notes map is not evidence that every registered feature or journey is verified.
 
@@ -36,7 +38,7 @@ When consumer policy requires generated maps, this directory illustrates a proje
 
 ## Feature entry contract
 
-Each feature file starts with YAML metadata matching the examples (all IDs and paths are illustrative, not approvals), then an H1 title and one paragraph describing the user-visible behavior. It then uses exactly four H2 sections in this order.
+Each feature file starts with YAML metadata adapted to the consumer (including profile and journey status) (all IDs and paths are illustrative, not approvals), then an H1 title and one paragraph describing the user-visible behavior. It then uses exactly four H2 sections in this order.
 
 1. `Sub-features` lists short IDs with one line for each behavior.
 2. `How to get to it (user POV)` lists every user entry point.
