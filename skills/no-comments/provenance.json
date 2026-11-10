@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/no-comments",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/no-comments",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Use an adopted absolute comment policy and approved syntax-aware checker; stop before deletion if either is missing.",
+    "Preserve legally required notices and behavior-bearing directives; unresolved protected exception records block affected files.",
+    "Retain adapted read-only review/triage/fix/report workflow without invented helper dependencies or automatic publication.",
+    "Preserve upstream MIT attribution and per-file original/adapted byte digests."
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill",
+    "Approved syntax-aware comment checker covering selected source languages"
+  ],
+  "optional_dependencies": [],
+  "verification": {
+    "audit_date": "2026-11-10 UTC",
+    "audit_host": "Linux",
+    "scope": "Local payload bytes, licenses, references, shell parsing and metadata projection only; not native/application/formal execution, discovery or protected CI.",
+    "metadata_validator": {
+      "implementation": "Codex bundled skill-creator/scripts/quick_validate.py",
+      "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c"
+    },
+    "raw_quick_validate": "Rejected retained upstream disable-model-invocation; temporary projection omits only that field. Distributed field and validator remain unchanged.",
+    "runtime_and_discovery": "not_executed",
+    "evidence": {
+      "repository": "https://entire.com/et/unpolar/-/trails/1/changes/unpolar-architecture/1",
+      "path": "docs/evidence/skill-packages-validation.json",
+      "kind": "unsigned_local_payload_audit_not_runtime_attestation"
+    },
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "858d2dbe5894d0e21946696783fa427a99fbca48",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "setup": "Use separate clean checkouts: the exact tool commit and this package source commit. These independent draft branches are not merged.",
+      "command": "python3 <tool-checkout>/scripts/verify_skill_package.py --package <package-checkout>/skills/no-comments",
+      "scope": "Worktree inventory/hash/license consistency only; not Git tracking or source authentication."
+    },
+    "shared_ci_dependency": "https://github.com/bajor/github-workflows/pull/9 must be approved/deployed separately and current skill heads rerun; present phone-scanner failure is not waived."
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "48e458702015333445a495d31883c8ba5d1ac9edd0721a7e201eb730f81d7ed7",
+      "upstream_sha256": "a725059771d1577fc59fbd266e2f75fe7f547a23a3dcc1052459db54ae10c0c2",
+      "modified": true
+    },
+    "references/comment-sicko.md": {
+      "sha256": "a9e992545893c561e622a06abf4fb0492c6efca9f03f3b9aa23229c9aaab80fa",
+      "upstream_sha256": "73c0bcb8c258981131c00f09c2c56e300c7225803bd4e1093ef41362e0073d98",
+      "modified": true
+    }
+  },
+  "required_skills": [],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
+}
