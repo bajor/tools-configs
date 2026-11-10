@@ -22,7 +22,8 @@
   "modifications": [
     "Copied and adapted only signing, entitlement, packaging and notarization verification steps.",
     "Excluded upstream application scaffolds, custom launch/package wrappers, Sparkle release automation and credential setup.",
-    "Added distribution-specific acceptance, nested extension checks and evidence; publication is outside this skill."
+    "Added distribution-specific acceptance, nested extension checks and evidence; publication is outside this skill.",
+    "Fresh independent review corrections: consumer-owned policy/inputs, source identity, missing native prerequisites, and complete official build/debug/release/profiling procedures without claiming runtime validation."
   ],
   "host_platforms": [
     "macOS"
@@ -40,18 +41,28 @@
     "xcrun stapler for applicable notarized artifacts"
   ],
   "verification": {
-    "reviewed_on": "2026-11-09 UTC",
-    "review_host": "Linux",
-    "frontmatter_and_local_integrity": "passed_static_checks_2026-11-09_UTC",
+    "audited_on": "2026-11-10 UTC",
+    "audit_host": "Linux",
+    "frontmatter_and_local_integrity": "Inventory/hash/license/link/shell checks passed on Linux. Remaining metadata checked on a temporary projection only; raw validator incompatibility is not a pass.",
+    "independent_review": "Fresh Claude review obtained; corrections pending repeat review.",
+    "evidence": "Architecture reference docs/evidence/apple-skill-validation.json. Temporary local audit is not distributed as an operational CI gate.",
     "apple_runtime": "not_run_requires_approved_macos_worker",
-    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries"
+    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries",
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "command": "python3 scripts/verify_skill_package.py --package skills/apple-release-verify",
+      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
+    },
+    "raw_quick_validate": "Incompatible: installed skill-creator validator rejects standard top-level compatibility. Keep the field; metadata projection omits only compatibility for remaining checks. Validator unchanged."
   },
   "integrity": {
     "algorithm": "sha256",
-    "scope": "all payload files except provenance.json; consumer lock must separately authenticate the complete tree including this file",
+    "scope": "All payload files except provenance.json. Self-hashes detect accidental drift only; trusted complete-tree pin and consumer lock are future infrastructure, not demonstrated here.",
     "files": {
       "LICENSE": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
-      "SKILL.md": "3de4d570ec9b5136eb5354952693d61a94801ae55df885938ed666f57301b02b"
+      "SKILL.md": "2a2e562d9a31f8a962b3a3932cb3ab9cb669c7e80ed0d3904f03f05103b5a079"
     }
   }
 }

@@ -2,21 +2,31 @@
 name: apple-build-verify
 description: Build and test approved iOS, macOS, and Safari native targets, inspect native failures and result bundles, and collect reproducible verification evidence.
 license: MIT; see LICENSE
-metadata:
-  compatibility: macOS with the repository-approved Xcode and SDKs; interactive MCP requires approved Xcode access.
+compatibility: macOS with the repository-approved Xcode and SDKs; interactive MCP requires approved Xcode access.
 ---
 
 # Apple build verification
 
 Inputs: approved source revision, target manifest, local verification skill,
 scenario/test plan, configuration, destination, and unique evidence directory.
-Recipes require validation against the installed tools; none ran on this Linux host.
+Resolve these inputs from the consumer's AGENTS.md, project configuration and
+local verification skill; a target manifest means that existing target/scheme/
+configuration/destination inventory, not a required new file format. Missing
+required inputs block the run. Do not fabricate expected tests or scenarios.
+Recipes require installed-tool validation; none ran on this Linux host.
 
 1. Record `git rev-parse HEAD`, dirty status, `xcodebuild -version`, SDKs,
    developer directory and destination inventory. Confirm every pin matches.
+   Release/CI evidence requires a clean independently materialized source tree.
+   For local dirty-tree diagnosis, retain a private binary diff against HEAD and
+   an untracked-file path/digest inventory; identify results by HEAD plus those
+   digests, never by HEAD alone. Exclude sensitive artifacts from public uploads.
    Inspect `man xcodebuild`, `xcrun simctl help` and `man xcresulttool` before
    using version-dependent options. Missing required SDK/tool/device blocks the run.
 2. For supported interactive work, use Apple's `xcrun mcpbridge` connection.
+   Use an already approved connection; this workflow does not authorize MCP,
+   IDE permission or account configuration changes. If unavailable, use official
+   CLI for supported actions and report blocked interactive-only capabilities.
    Inspect its actual tools/schema and target identity before invoking capabilities.
    Do not infer tools from third-party names or introduce another Xcode server.
    Unattended CI uses native CLI tools without an MCP/IDE session dependency.
@@ -35,14 +45,16 @@ xcodebuild -workspace "$APPLE_WORKSPACE" -scheme "$APPLE_SCHEME" \
    with installed `xcresulttool` help-confirmed commands: record test identities,
    counts, failures, attachments and diagnostics. A saved bundle or zero tests
    does not prove a passing test run. Run the local verification skill's required
-   compiler, architecture, zero-comment, property and mutation checks unchanged.
-5. Diagnose exact failures before repairs. Preserve immutable domain inputs and
-   explicit effect/state owners; do not silence concurrency failures or weaken gates.
+   consumer-declared compiler, architecture, property and other checks unchanged.
+5. Diagnose exact failures before authorized repairs. Preserve the consumer's
+   state/effect boundaries; do not silence concurrency failures or weaken gates.
 6. Retain revision, command arguments, toolchain, destination, test results and
    artifact hashes. Clean only run-owned temporary resources after collection.
 
 Acceptance: every required command and expected test passes for the recorded
-revision, with inspectable artifacts; failed, skipped or missing evidence blocks.
+source identity, with inspectable artifacts. Required failed/skipped/missing tests
+block. Policy-declared optional or platform-inapplicable tests are reported with
+their reasons; they cannot satisfy a mandatory scenario.
 Upstream sources and integrity inventory: [provenance.json](provenance.json).
 Official references: [Apple CLI](https://developer.apple.com/documentation/xcode/xcode-command-line-tool-reference),
 [external-agent access](https://developer.apple.com/documentation/xcode/giving-external-agents-access-to-xcode).
