@@ -30,11 +30,9 @@
     ]
   },
   "modifications": [
-    "Replaced all third-party MCP execution dependencies with actual official MCP capability discovery and native CLI/XCUITest fallbacks.",
-    "Copied and adapted the complete relevant simulator, target selection, build/launch, UI inspection, logging and troubleshooting workflow into references/debugging-workflow.md.",
-    "Copied and adapted selected concurrency triage and project-mode guidance into references/concurrency-triage.md; removed blanket isolation/global-state recommendations and source-comment examples.",
-    "Added immutable domain/state ownership, reproducible failure-before/repair-after evidence, crash/hang diagnostics and scoped cleanup.",
-    "Fresh independent review corrections: consumer-owned policy/inputs, source identity, missing native prerequisites, and complete official build/debug/release/profiling procedures without claiming runtime validation."
+    "Adapt iOS debugging and concurrency triage to official negotiated MCP/native CLI/XCUITest without XcodeBuildMCP.",
+    "Require source-identified reproduction, simulator boot/readiness, scoped logs/stacks and run-owned cleanup.",
+    "Preserve upstream MIT attribution and per-file original/adapted byte digests."
   ],
   "host_platforms": [
     "macOS"
@@ -54,21 +52,29 @@
     "Apple Xcode MCP via xcrun mcpbridge for supported interactive work"
   ],
   "verification": {
-    "audited_on": "2026-11-10 UTC",
+    "audit_date": "2026-11-10 UTC",
     "audit_host": "Linux",
-    "frontmatter_and_local_integrity": "Inventory/hash/license/link/shell checks passed on Linux. Remaining metadata checked on a temporary projection only; raw validator incompatibility is not a pass.",
-    "independent_review": "Fresh Claude review obtained; corrections pending repeat review.",
-    "evidence": "Architecture reference docs/evidence/apple-skill-validation.json. Temporary local audit is not distributed as an operational CI gate.",
-    "apple_runtime": "not_run_requires_approved_macos_worker",
-    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries",
+    "scope": "Local payload bytes, licenses, references, shell parsing and metadata projection only; not native/application/formal execution, discovery or protected CI.",
+    "metadata_validator": {
+      "implementation": "Codex bundled skill-creator/scripts/quick_validate.py",
+      "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c"
+    },
+    "raw_quick_validate": "Rejected standard top-level compatibility; temporary projection omits only that field. Distributed field and validator remain unchanged.",
+    "runtime_and_discovery": "not_executed",
+    "evidence": {
+      "repository": "https://entire.com/et/unpolar/-/trails/1/changes/unpolar-architecture/1",
+      "path": "docs/evidence/skill-packages-validation.json",
+      "kind": "unsigned_local_payload_audit_not_runtime_attestation"
+    },
     "reproducible_payload_audit": {
       "tool_repository": "https://github.com/bajor/tools-configs",
-      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_commit": "858d2dbe5894d0e21946696783fa427a99fbca48",
       "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
-      "command": "python3 scripts/verify_skill_package.py --package skills/apple-debug",
-      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
+      "setup": "Use separate clean checkouts: the exact tool commit and this package source commit. These independent draft branches are not merged.",
+      "command": "python3 <tool-checkout>/scripts/verify_skill_package.py --package <package-checkout>/skills/apple-debug",
+      "scope": "Worktree inventory/hash/license consistency only; not Git tracking or source authentication."
     },
-    "raw_quick_validate": "Incompatible: installed skill-creator validator rejects standard top-level compatibility. Keep the field; metadata projection omits only compatibility for remaining checks. Validator unchanged."
+    "shared_ci_dependency": "https://github.com/bajor/github-workflows/pull/9 must be approved/deployed separately and current skill heads rerun; present phone-scanner failure is not waived."
   },
   "integrity": {
     "algorithm": "sha256",
