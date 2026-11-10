@@ -9,13 +9,10 @@
     "copyright": "Copyright (c) 2026 Lauren Tan"
   },
   "modifications": [
-    "Preserve explicit invocation; restrict writes and publication to existing authorization.",
-    "Prefer pure deterministic domain functions, explicit immutable state and isolated effects before types and checks.",
-    "Require property/mutation sensitivity and revision-bound CI evidence; do not grandfather mandatory-rule violations.",
-    "Replace inline exceptions with existing human-approved external legal/tool records and forbid source comments or suppressions.",
-    "Prepare scoped logical changes without automatic commits; preserve the enforcement table while its requirements apply.",
-    "Replace em-dash punctuation to follow repository writing rules.",
-    "Independent review: keep generic consumer policy/discovery separate; preserve legal and semantic directives; stop before unsupported comment deletion; inventory metadata examples and evidence limitations clarified."
+    "Prioritize architectural/type prevention, deterministic gates, behavioral properties and semantic mutations before prose.",
+    "Follow consumer policy and approved migration ratchets; preserve legal/semantic directives and publish only within authorization.",
+    "Create or update one canonical Markdown enforcement table with defect/prevention/check/evidence links.",
+    "Preserve upstream MIT attribution and per-file original/adapted byte digests."
   ],
   "required_tools": [
     "Agent harness with explicit skill invocation or approved loading",
@@ -23,21 +20,29 @@
   ],
   "optional_dependencies": [],
   "verification": {
-    "date": "2026-11-10 UTC",
-    "metadata": "Linux artifact audit only; field presence is not demonstrated invocation control. Raw quick_validate incompatibility retained; temporary metadata projection excludes only disable-model-invocation.",
-    "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
-    "harness_discovery": "Not demonstrated by this source adoption.",
-    "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
-    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate.",
-    "evidence": "Architecture reference docs/evidence/pstack-local-validation.txt; rerun command: python3 /tmp/unpolar-verification-research/validate_pstack.py in this recorded workspace. Audit script is a temporary harness, not a distributed CI gate.",
-    "review": "Fresh Claude source review obtained; corrections require repeat review. No application execution or multi-harness discovery established.",
+    "audit_date": "2026-11-10 UTC",
+    "audit_host": "Linux",
+    "scope": "Local payload bytes, licenses, references, shell parsing and metadata projection only; not native/application/formal execution, discovery or protected CI.",
+    "metadata_validator": {
+      "implementation": "Codex bundled skill-creator/scripts/quick_validate.py",
+      "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c"
+    },
+    "raw_quick_validate": "Rejected retained upstream disable-model-invocation; temporary projection omits only that field. Distributed field and validator remain unchanged.",
+    "runtime_and_discovery": "not_executed",
+    "evidence": {
+      "repository": "https://entire.com/et/unpolar/-/trails/1/changes/unpolar-architecture/1",
+      "path": "docs/evidence/skill-packages-validation.json",
+      "kind": "unsigned_local_payload_audit_not_runtime_attestation"
+    },
     "reproducible_payload_audit": {
       "tool_repository": "https://github.com/bajor/tools-configs",
-      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_commit": "858d2dbe5894d0e21946696783fa427a99fbca48",
       "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
-      "command": "python3 scripts/verify_skill_package.py --package skills/correct",
-      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
-    }
+      "setup": "Use separate clean checkouts: the exact tool commit and this package source commit. These independent draft branches are not merged.",
+      "command": "python3 <tool-checkout>/scripts/verify_skill_package.py --package <package-checkout>/skills/correct",
+      "scope": "Worktree inventory/hash/license consistency only; not Git tracking or source authentication."
+    },
+    "shared_ci_dependency": "https://github.com/bajor/github-workflows/pull/9 must be approved/deployed separately and current skill heads rerun; present phone-scanner failure is not waived."
   },
   "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
   "files": {
