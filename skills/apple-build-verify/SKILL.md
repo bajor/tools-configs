@@ -20,9 +20,15 @@ Recipes require installed-tool validation; none ran on this Linux host.
    Release/CI evidence requires a clean independently materialized source tree.
    For local dirty-tree diagnosis, retain a private binary diff against HEAD and
    an untracked-file path/digest inventory; identify results by HEAD plus those
-   digests, never by HEAD alone. Exclude sensitive artifacts from public uploads.
+   digests, never by HEAD alone. Include the actual build-input closure, including
+   relevant ignored/generated inputs and configuration. If it cannot be
+   identified, evidence is diagnostic only and cannot authorize release or CI.
+   Exclude sensitive artifacts from public uploads.
    Inspect `man xcodebuild`, `xcrun simctl help` and `man xcresulttool` before
    using version-dependent options. Missing required SDK/tool/device blocks the run.
+   Require recorded dependency locks/resolved versions and help-qualified locked
+   resolution flags. A tool that re-resolves dependencies without review blocks
+   reproducibility; never update locks or fetch new versions implicitly.
 2. For supported interactive work, use Apple's `xcrun mcpbridge` connection.
    Use an already approved connection; this workflow does not authorize MCP,
    IDE permission or account configuration changes. If unavailable, use official
@@ -48,6 +54,8 @@ xcodebuild -workspace "$APPLE_WORKSPACE" -scheme "$APPLE_SCHEME" \
    consumer-declared compiler, architecture, property and other checks unchanged.
 5. Diagnose exact failures before authorized repairs. Preserve the consumer's
    state/effect boundaries; do not silence concurrency failures or weaken gates.
+   After any repair, refresh source/input identity and rerun affected commands
+   before attributing acceptance to the repaired bytes.
 6. Retain revision, command arguments, toolchain, destination, test results and
    artifact hashes. Clean only run-owned temporary resources after collection.
 

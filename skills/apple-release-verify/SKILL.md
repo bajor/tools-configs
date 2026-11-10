@@ -7,28 +7,40 @@ compatibility: Approved macOS release worker, Xcode, distribution profile and se
 
 # Apple release verification
 
-Inputs: approved source revision, distribution route, archive/bundle, expected
-bundle IDs/entitlements, release tests/matrix and run-owned evidence directory.
-Native release execution remains unverified on Linux.
+Inputs: approved distribution route, exact candidate artifact plus trusted
+source/build/input identity, expected bundle inventory/entitlements, required
+release scenarios and a run-owned evidence directory. Read these from consumer
+policy/local verification; missing inputs block the applicable stage.
+Native execution remains unverified on Linux. No upload/publication is authorized.
 
-1. Require a clean source snapshot and run the consumer's Release test plan via
-   `apple-build-verify`. Read installed `xcodebuild` help and the approved export
-   options before archiving. Use new run-owned paths and existing authorized
-   signing access; do not change signing configuration, credentials or publish.
+1. Default to verifying the supplied candidate without rebuilding or modifying it.
+   Check its authenticated release manifest and source/toolchain/dependency locks.
+   Hash file containers with the approved algorithm. An app directory requires
+   the consumer's canonical tree manifest (paths, bytes, modes and symlink targets),
+   not a hash of an arbitrary zip. Never silently substitute a rebuilt app.
+2. Only when preparing a new candidate is in scope, run `apple-build-verify` with
+   the approved archive/test configuration, locked dependencies and isolated
+   DerivedData. This creates a distinct candidate ID. Read installed xcodebuild
+   help and export options. Require the plist's destination to be explicitly
+   `export`, rejecting `upload`, missing or unknown values before -exportArchive.
+   Do not change signing settings, create credentials or enable automatic upload.
 
 ```sh
 xcodebuild -workspace "$APPLE_WORKSPACE" -scheme "$APPLE_SCHEME" \
-  -configuration Release -destination "$APPLE_ARCHIVE_DESTINATION" \
-  -archivePath "$APPLE_ARCHIVE_PATH" archive
+  -configuration "$APPLE_ARCHIVE_CONFIGURATION" \
+  -destination "$APPLE_ARCHIVE_DESTINATION" \
+  -derivedDataPath "$APPLE_DERIVED_DATA" -archivePath "$APPLE_ARCHIVE_PATH" archive
 xcodebuild -exportArchive -archivePath "$APPLE_ARCHIVE_PATH" \
   -exportOptionsPlist "$APPLE_EXPORT_OPTIONS" -exportPath "$APPLE_EXPORT_DIRECTORY"
 ```
 
-2. Hash and inspect the actual exported package, not a DerivedData test product.
-   For iOS, unpack the exported IPA into a run-owned directory using installed
-   official archive tools. Enumerate every contained app/appex/framework and
-   compare expected identities. Inspect installed `codesign`/`spctl` help:
-
+3. Inspect the actual final exported container. Unpack IPA/PKG/DMG only into
+   run-owned locations using an approved installed-tool procedure; never run an
+   installer to inspect it. Verify the complete expected code inventory, including
+   app/appex/framework/XPC/login/helper/system-extension/dylib payloads. Missing
+   package-specific extraction or inspection procedures block that route.
+   Read installed codesign/spctl help; repeat identity/entitlement inspection for
+   every relevant nested signed component, not only the top-level app:
 
 ```sh
 codesign --verify --deep --strict --verbose=2 "$APPLE_APP_BUNDLE"
@@ -36,26 +48,28 @@ codesign --display --entitlements - "$APPLE_APP_BUNDLE"
 codesign --display --verbose=4 "$APPLE_APP_BUNDLE"
 ```
 
-3. Repeat signature, identity and entitlement inspection for each nested app and
-   extension, including provisioning, App Groups, sandbox and Safari permissions.
-   Verify every expected bundle is present. A top-level signature or entitlement
-   display cannot establish nested capabilities. Retain each bundle's output.
-4. Apply distribution-specific checks to the exported container. Developer ID
-   requires the declared notarization/stapling and Gatekeeper evidence. Inspect
-   installed help: app assessment uses `spctl --assess --type execute`; a PKG
-   needs `pkgutil --check-signature` and install assessment; a DMG needs its
-   declared open assessment and staple validation. Record the assessed source
-   and reject an unexpected signing/notarization route. Missing package-specific
-   procedures block release. App Store/iOS use approved provisioning/export checks.
-5. Run release-specific user journeys and required physical compatibility rows
-   through available `apple-smoke-test` and `apple-device-matrix` workflows.
-   Require final exported-artifact smoke evidence. Where distribution signing
-   prevents attach/profiling, identify the source/toolchain-matched profile build,
-   its signing/entitlement differences and approved representativeness limits.
-   Never attribute that trace to the final artifact or change release signing.
-6. Retain artifact digest, source/toolchain identity, signature/entitlement output,
-   export diagnostics and test results with private signing data redacted.
-   Remove only run-owned temporary material; never export private keys as evidence.
+4. Compare actual provisioning, App Groups, sandbox and Safari permissions with
+   independent expectations. Developer ID verification requires an already
+   notarized/stapled candidate and its authorized release-owner evidence.
+   Missing notarization blocks; never improvise notarytool submission or upload.
+   Apply the declared app/install/open Gatekeeper assessment and staple checks.
+   Hash the final bytes after any separately authorized stapling/transformation;
+   bind those hashes to the exact candidate and invalidate earlier artifact results.
+5. Follow the approved installation/distribution route for final-artifact smoke
+   and device checks. `xcodebuild test` normally builds a separate test product:
+   that is source-built evidence, not proof of the exported candidate. App Store
+   iOS artifacts need a supported distribution-stage installation. Report that
+   stage blocked until separately authorized delivery and observation exist;
+   never upload to TestFlight/App Store implicitly. Missing required sibling
+   workflows (`apple-smoke-test`, `apple-device-matrix`) block those checks.
+6. Where signing prevents attach/performance measurement, use an approved
+   source/toolchain-matched profile build only for explicitly approved surrogate
+   metrics. Record signing/entitlement/input differences and representation limits.
+   Never label surrogate measurements as final-artifact evidence or relax signing.
+7. Retain final artifact/tree digest, source/input identity, per-component signing
+   output, export diagnostics, installation route and scenario results. Distinguish
+   completed offline preflight from blocked distribution-stage checks. Redact
+   private data and remove only run-owned scratch material, retaining evidence.
 
 Acceptance: the exact candidate passes its approved distribution and release
 checks, with no missing required evidence; no publication is performed.
