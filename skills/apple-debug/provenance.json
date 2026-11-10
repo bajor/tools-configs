@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "skill": "apple-debug",
+  "version": "0.1.0",
+  "status": "infrastructure_draft",
+  "canonical_repository": "https://github.com/bajor/tools-configs",
+  "upstream": {
+    "repository": "https://github.com/Dimillian/Skills",
+    "commit": "05ba982bfeb0d77d3c97d4542b0ee15034d05f84",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Thomas Ricouard",
+    "license_path": "LICENSE",
+    "license_sha256": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+    "files": [
+      {
+        "path": "ios-debugger-agent/SKILL.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/ios-debugger-agent/SKILL.md",
+        "sha256": "07000b6744b8cf21bfa76db3bf76c6d158f9ef16a4a33eee9ce15508a7aa8b2e"
+      },
+      {
+        "path": "swift-concurrency-expert/SKILL.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/swift-concurrency-expert/SKILL.md",
+        "sha256": "6444fa364371e70cc52d9810457e132bba8d258c54b2a6464751e294433171bd"
+      },
+      {
+        "path": "swift-concurrency-expert/references/approachable-concurrency.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/swift-concurrency-expert/references/approachable-concurrency.md",
+        "sha256": "1df28b4b69481281adcbb40729939433a222d741de2c51c55156277e8d3c8737"
+      }
+    ]
+  },
+  "modifications": [
+    "Replaced all third-party MCP execution dependencies with actual official MCP capability discovery and native CLI/XCUITest fallbacks.",
+    "Copied and adapted the complete relevant simulator, target selection, build/launch, UI inspection, logging and troubleshooting workflow into references/debugging-workflow.md.",
+    "Copied and adapted selected concurrency triage and project-mode guidance into references/concurrency-triage.md; removed blanket isolation/global-state recommendations and source-comment examples.",
+    "Added immutable domain/state ownership, reproducible failure-before/repair-after evidence, crash/hang diagnostics and scoped cleanup."
+  ],
+  "host_platforms": [
+    "macOS"
+  ],
+  "target_platforms": [
+    "iOS",
+    "iPadOS",
+    "macOS",
+    "Safari native extensions"
+  ],
+  "required_tools": [
+    "xcodebuild",
+    "xcrun simctl",
+    "OSLog/native unified logging",
+    "LLDB or xcdebug where supported",
+    "Instruments where applicable",
+    "Apple Xcode MCP via xcrun mcpbridge for supported interactive work"
+  ],
+  "verification": {
+    "reviewed_on": "2026-11-09 UTC",
+    "review_host": "Linux",
+    "frontmatter_and_local_integrity": "passed_static_checks_2026-11-09_UTC",
+    "apple_runtime": "not_run_requires_approved_macos_worker",
+    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "scope": "all payload files except provenance.json; consumer lock must separately authenticate the complete tree including this file",
+    "files": {
+      "LICENSE": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+      "SKILL.md": "ec697fdcc5e3a8734067e351cb0b95b7758af95653d006a5eacf69524c121a93",
+      "references/concurrency-triage.md": "552edce1de6604f9117257551165aad7af29dbe091ac43effab1692d6a08c737",
+      "references/debugging-workflow.md": "3b5655d55cb80707b06a0190cb15657aecf61195074fee958553ea5902d12ea0"
+    }
+  }
+}

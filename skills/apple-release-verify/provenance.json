@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "skill": "apple-release-verify",
+  "version": "0.1.0",
+  "status": "infrastructure_draft",
+  "canonical_repository": "https://github.com/bajor/tools-configs",
+  "upstream": {
+    "repository": "https://github.com/Dimillian/Skills",
+    "commit": "05ba982bfeb0d77d3c97d4542b0ee15034d05f84",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Thomas Ricouard",
+    "license_path": "LICENSE",
+    "license_sha256": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+    "files": [
+      {
+        "path": "macos-spm-app-packaging/SKILL.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/macos-spm-app-packaging/SKILL.md",
+        "sha256": "a20c790a7153ff519262e04c8d95861ce752d7850f703ae762ee8a477763dd9a"
+      }
+    ]
+  },
+  "modifications": [
+    "Copied and adapted only signing, entitlement, packaging and notarization verification steps.",
+    "Excluded upstream application scaffolds, custom launch/package wrappers, Sparkle release automation and credential setup.",
+    "Added distribution-specific acceptance, nested extension checks and evidence; publication is outside this skill."
+  ],
+  "host_platforms": [
+    "macOS"
+  ],
+  "target_platforms": [
+    "iOS",
+    "iPadOS",
+    "macOS",
+    "Safari native extensions"
+  ],
+  "required_tools": [
+    "xcodebuild",
+    "codesign",
+    "spctl for applicable Developer ID artifacts",
+    "xcrun stapler for applicable notarized artifacts"
+  ],
+  "verification": {
+    "reviewed_on": "2026-11-09 UTC",
+    "review_host": "Linux",
+    "frontmatter_and_local_integrity": "passed_static_checks_2026-11-09_UTC",
+    "apple_runtime": "not_run_requires_approved_macos_worker",
+    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "scope": "all payload files except provenance.json; consumer lock must separately authenticate the complete tree including this file",
+    "files": {
+      "LICENSE": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+      "SKILL.md": "3de4d570ec9b5136eb5354952693d61a94801ae55df885938ed666f57301b02b"
+    }
+  }
+}

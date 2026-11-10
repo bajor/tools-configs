@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "skill": "apple-performance",
+  "version": "0.1.0",
+  "status": "infrastructure_draft",
+  "canonical_repository": "https://github.com/bajor/tools-configs",
+  "upstream": {
+    "repository": "https://github.com/Dimillian/Skills",
+    "commit": "05ba982bfeb0d77d3c97d4542b0ee15034d05f84",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Thomas Ricouard",
+    "license_path": "LICENSE",
+    "license_sha256": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+    "files": [
+      {
+        "path": "swiftui-performance-audit/SKILL.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/swiftui-performance-audit/SKILL.md",
+        "sha256": "6cfb3f9f3e1938aca3eb1cf3ac9f265cca15559b0c9b3dcd3ab2e580be3cea2f"
+      },
+      {
+        "path": "swiftui-performance-audit/references/profiling-intake.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/swiftui-performance-audit/references/profiling-intake.md",
+        "sha256": "636ae046936183a7ac5412458926d0a8babe4e05396955d3608f9a7320913bcd"
+      },
+      {
+        "path": "swiftui-performance-audit/references/report-template.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/swiftui-performance-audit/references/report-template.md",
+        "sha256": "c09e67323c3c0ebcacd647be9117f258d11ec58001ba0e5683c13c2bc4d21ff2"
+      }
+    ]
+  },
+  "modifications": [
+    "Copied and adapted the relevant audit, intake and reporting workflow into references/profiling-workflow.md.",
+    "Replaced user-only capture guidance with an official xctrace recording recipe and native XCTest metrics workflow, conditional on installed tool support.",
+    "Added physical-device requirements, paired revision-pinned comparisons, variability, inconclusive outcomes, raw artifacts and privacy-aware cleanup."
+  ],
+  "host_platforms": [
+    "macOS"
+  ],
+  "target_platforms": [
+    "iOS",
+    "iPadOS",
+    "macOS",
+    "Safari native extensions"
+  ],
+  "required_tools": [
+    "xcrun xctrace",
+    "Instruments",
+    "XCTest metrics",
+    "OSLog signposts",
+    "xcodebuild"
+  ],
+  "verification": {
+    "reviewed_on": "2026-11-09 UTC",
+    "review_host": "Linux",
+    "frontmatter_and_local_integrity": "passed_static_checks_2026-11-09_UTC",
+    "apple_runtime": "not_run_requires_approved_macos_worker",
+    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "scope": "all payload files except provenance.json; consumer lock must separately authenticate the complete tree including this file",
+    "files": {
+      "LICENSE": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+      "SKILL.md": "1b1012bbb03c376493b79be6b6ac348eb40564ba73c7f6b4297bfc5599b6cb72",
+      "references/profiling-workflow.md": "3406ac4cd8f3db14612db8ce7dbd840961753b7498422a46eb6f2a7cea98f19c"
+    }
+  }
+}

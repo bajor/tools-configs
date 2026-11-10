@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "skill": "apple-build-verify",
+  "version": "0.1.0",
+  "status": "infrastructure_draft",
+  "canonical_repository": "https://github.com/bajor/tools-configs",
+  "upstream": {
+    "repository": "https://github.com/Dimillian/Skills",
+    "commit": "05ba982bfeb0d77d3c97d4542b0ee15034d05f84",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Thomas Ricouard",
+    "license_path": "LICENSE",
+    "license_sha256": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+    "files": [
+      {
+        "path": "ios-debugger-agent/SKILL.md",
+        "source": "https://github.com/Dimillian/Skills/blob/05ba982bfeb0d77d3c97d4542b0ee15034d05f84/ios-debugger-agent/SKILL.md",
+        "sha256": "07000b6744b8cf21bfa76db3bf76c6d158f9ef16a4a33eee9ce15508a7aa8b2e"
+      }
+    ]
+  },
+  "modifications": [
+    "Extracted build/test workflow into one canonical skill using official interactive MCP capability negotiation and unattended xcodebuild.",
+    "Added source/toolchain identity, expected test discovery, native result inspection, independent local verification commands and artifact acceptance."
+  ],
+  "host_platforms": [
+    "macOS"
+  ],
+  "target_platforms": [
+    "iOS",
+    "iPadOS",
+    "macOS",
+    "Safari native extensions"
+  ],
+  "required_tools": [
+    "xcodebuild",
+    "xcrun xcresulttool",
+    "xcrun simctl",
+    "Apple Xcode MCP via xcrun mcpbridge for supported interactive work"
+  ],
+  "verification": {
+    "reviewed_on": "2026-11-09 UTC",
+    "review_host": "Linux",
+    "frontmatter_and_local_integrity": "passed_static_checks_2026-11-09_UTC",
+    "apple_runtime": "not_run_requires_approved_macos_worker",
+    "harness_discovery": "not_run_requires_consumer_bootstrap_canaries"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "scope": "all payload files except provenance.json; consumer lock must separately authenticate the complete tree including this file",
+    "files": {
+      "LICENSE": "df17aae89ce4705d0a6e5f7b46eeea3b9023967ecad948f8779b47039eb55a8b",
+      "SKILL.md": "ae0d47ab071a816dc5453a41bfc3eddfd53a53b80330f3cbc7b8854ee1a12623"
+    }
+  }
+}
