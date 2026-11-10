@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/backnotprop/pstack",
+    "commit": "4161d4ef5051574e825ffe70e2f43a2e49e4b3db",
+    "path": "skills/no-comments",
+    "url": "https://github.com/backnotprop/pstack/tree/4161d4ef5051574e825ffe70e2f43a2e49e4b3db/skills/no-comments",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Lauren Tan"
+  },
+  "modifications": [
+    "Preserve explicit invocation; restrict writes and publication to existing authorization.",
+    "Adapt the full review/triage/fix/report workflow and Comment Sicko prompt to deterministic absolute first-party comment enforcement.",
+    "Preserve legal protections and only approved unavoidable tool directives; remove upstream API-doc, style-suppression and foreign-constraint exemptions.",
+    "Remove assumed poteto-mode/how/why/architect/subagent dependencies; support authorized independent review or disclosed serial inspection.",
+    "Preserve valid constraints in contracts/Markdown and require relevant checks, targeted mutation evidence and immutable/pure prevention before completion.",
+    "Replace em-dash punctuation to follow repository writing rules.",
+    "Independent review: keep generic consumer policy/discovery separate; preserve legal and semantic directives; stop before unsupported comment deletion; inventory metadata examples and evidence limitations clarified."
+  ],
+  "required_tools": [
+    "Agent harness with explicit skill invocation or approved loading",
+    "Git and repository-native build/test/verification tools selected by the target skill",
+    "Approved syntax-aware comment checker covering selected source languages"
+  ],
+  "optional_dependencies": [],
+  "verification": {
+    "date": "2026-11-10 UTC",
+    "metadata": "Linux artifact audit only; field presence is not demonstrated invocation control. Raw quick_validate incompatibility retained; temporary metadata projection excludes only disable-model-invocation.",
+    "workflow": "Not executed against a target application or formal model; no runtime or CI capability is claimed.",
+    "harness_discovery": "Not demonstrated by this source adoption.",
+    "raw_quick_validate": "Incompatible: bundled skill-creator validator rejects the retained upstream disable-model-invocation field. Validator was not changed; only a temporary projection omitted that field.",
+    "scope": "Artifact metadata and integrity only; the temporary integrity audit is not an installed CI drift gate.",
+    "evidence": "Architecture reference docs/evidence/pstack-local-validation.txt; rerun command: python3 /tmp/unpolar-verification-research/validate_pstack.py in this recorded workspace. Audit script is a temporary harness, not a distributed CI gate.",
+    "review": "Fresh Claude source review obtained; corrections require repeat review. No application execution or multi-harness discovery established.",
+    "reproducible_payload_audit": {
+      "tool_repository": "https://github.com/bajor/tools-configs",
+      "tool_commit": "c42cf54bd7734ba543697cf0b13168c52dc37866",
+      "tool_pr": "https://github.com/bajor/tools-configs/pull/88",
+      "command": "python3 scripts/verify_skill_package.py --package skills/no-comments",
+      "scope": "Inventory, digests and license only; same-file hashes are not authentication. Metadata checks and runtime/discovery have separate results."
+    }
+  },
+  "digest_scope": "SHA-256 of every packaged file except provenance.json; upstream digest maps LICENSE to repository root LICENSE.",
+  "files": {
+    "LICENSE": {
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "upstream_sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "modified": false
+    },
+    "SKILL.md": {
+      "sha256": "48e458702015333445a495d31883c8ba5d1ac9edd0721a7e201eb730f81d7ed7",
+      "upstream_sha256": "a725059771d1577fc59fbd266e2f75fe7f547a23a3dcc1052459db54ae10c0c2",
+      "modified": true
+    },
+    "references/comment-sicko.md": {
+      "sha256": "a9e992545893c561e622a06abf4fb0492c6efca9f03f3b9aa23229c9aaab80fa",
+      "upstream_sha256": "73c0bcb8c258981131c00f09c2c56e300c7225803bd4e1093ef41362e0073d98",
+      "modified": true
+    }
+  },
+  "required_skills": [],
+  "intended_platforms": [
+    "Linux",
+    "macOS",
+    "Windows when target verification tools support it"
+  ],
+  "integrity_authority": "Same-file digests detect accidental drift only. Authenticating the whole package requires an approved external source/tree pin; that distribution infrastructure is not implemented here."
+}
