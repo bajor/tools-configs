@@ -1,4 +1,4 @@
--- Real config: nvim --headless '+luafile nvim-vps-linux/scripts/keymaps.lua'
+-- Real config: nvim --headless '+luafile nvim/scripts/keymaps.lua'
 -- Set NVIM_KEYMAP_JSON to export global and config-owned file-tree maps and the
 -- colorscheme's red, green, yellow, blue, magenta and cyan ANSI colors.
 local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }

@@ -373,7 +373,7 @@ def export_keymaps():
             subprocess.run(
                 [binary, "--headless", f"+luafile {CONFIG / 'scripts' / 'keymaps.lua'}"],
                 check=True, cwd=REPO, timeout=EXPORT_TIMEOUT_S,
-                env={**os.environ, "XDG_CONFIG_HOME": str(config_home), "VPS_KEYMAP_JSON": str(target)})
+                env={**os.environ, "XDG_CONFIG_HOME": str(config_home), "NVIM_KEYMAP_JSON": str(target)})
         except FileNotFoundError:
             raise SystemExit(f"cannot run {binary!r}; set NVIM_CONFIG_BIN to the Neovim binary")
         except subprocess.TimeoutExpired:

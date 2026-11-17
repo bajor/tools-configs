@@ -174,7 +174,7 @@ nvim --headless '+luafile nvim/scripts/tmux.lua'
 ```
 To check tmux syntax, start a temporary isolated server, then kill it:
 ```bash
-tmux -f tmux/.tmux.conf -L config-check start-server
+tmux -L config-check -f tmux/.tmux.conf new-session -d -s config-check
 tmux -L config-check kill-server
 ```
 Test real pane focus, working directories, clipboard and mosh on the VPS.
