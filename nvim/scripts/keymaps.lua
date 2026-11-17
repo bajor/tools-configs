@@ -1,5 +1,5 @@
--- Real config: nvim --headless '+luafile nvim-vps-linux/scripts/keymaps.lua'
--- Set VPS_KEYMAP_JSON to export global and config-owned file-tree maps and the
+-- Real config: nvim --headless '+luafile nvim/scripts/keymaps.lua'
+-- Set NVIM_KEYMAP_JSON to export global and config-owned file-tree maps and the
 -- colorscheme's red, green, yellow, blue, magenta and cyan ANSI colors.
 local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }
 -- Modes where typed text arrives, so a Space prefix would wait for timeoutlen.
@@ -10,7 +10,7 @@ local UNSUPPORTED_MODIFIERS = { D = true, M = true, A = true }
 -- belong to plugin defaults, so validate them without documenting them here.
 local OWNED_BUFFER_SCOPES = { NvimTree = true }
 local KEY_SEPARATOR = '\0'
-local BASELINE_ENV = 'VPS_KEYMAP_BASELINE'
+local BASELINE_ENV = 'NVIM_KEYMAP_BASELINE'
 local BASELINE_TIMEOUT_MS = 20000
 local PICKER_TIMEOUT_MS = 5000
 local ANSI_INDEX = { red = 1, green = 2, yellow = 3, blue = 4, magenta = 5, cyan = 6 }
@@ -179,7 +179,7 @@ local function check()
     return entry.scope == 'global' or OWNED_BUFFER_SCOPES[entry.scope]
   end, public)
   local rows = to_rows(documented)
-  local path = vim.env.VPS_KEYMAP_JSON
+  local path = vim.env.NVIM_KEYMAP_JSON
   if path and path ~= '' then
     vim.fn.writefile({ vim.json.encode({ keymaps = rows, palette = palette }, { sort_keys = true }) }, path)
   end

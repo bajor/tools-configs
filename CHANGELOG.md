@@ -4,6 +4,18 @@
 
 ### Changed
 
+- Merge the maintained `nvim-vps-linux/` into the canonical `nvim/`
+  directory, replacing legacy config and removing the duplicate. Carry over
+  Python/LSP settings, safe autosave, remote OSC 52, Ferris Sweep docs and tests.
+- Make Neovim Space+h/j/k/l and terminal-mode Ctrl+h/j/k/l navigate tmux
+  at editor boundaries, without stealing unprefixed shell controls.
+- Add tmux prefix-based h/j/k/l pane focus, v/s working-directory splits,
+  H/J/K/L pane resizing, last-pane and reload shortcuts.
+- Rename VPS-specific Neovim installation commands and verification variables
+  to NvimInstallTools, NvimInstallParsers, NVIM_CONFIG_BIN and NVIM_KEYMAP_JSON.
+
+### Changed
+
 - Move shared agent instructions out of this repository to
   [`bajor/skills/agents`](https://github.com/bajor/skills/tree/main/agents).
   Repoint any checkout-based links to a standalone `~/AGENTS.md` before updating.

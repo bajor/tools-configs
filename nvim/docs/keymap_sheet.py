@@ -5,11 +5,11 @@ The Neovim maps are the only source of shortcuts. scripts/keymaps.lua exports
 them as JSON; this script lays them out on the Sweep and exits nonzero when a
 label does not fit its key or a map would be dropped.
 
-    python3 nvim-vps-linux/docs/keymap_sheet.py           write SVG, PDF, README table
-    python3 nvim-vps-linux/docs/keymap_sheet.py --check   fail when the SVG or table is stale
-    python3 nvim-vps-linux/docs/keymap_sheet.py --json F  use an existing export
+    python3 nvim/docs/keymap_sheet.py           write SVG, PDF, README table
+    python3 nvim/docs/keymap_sheet.py --check   fail when the SVG or table is stale
+    python3 nvim/docs/keymap_sheet.py --json F  use an existing export
 
-Set VPS_NVIM to choose the Neovim binary (not NVIM: Neovim sets that to its
+Set NVIM_CONFIG_BIN to choose the Neovim binary (not NVIM: Neovim sets that to its
 server address inside :terminal). Neovim runs with this repository's config,
 whatever ~/.config/nvim holds. The PDF needs cairosvg or rsvg-convert.
 """
@@ -368,14 +368,14 @@ def export_keymaps():
         config_home.mkdir()
         (config_home / "nvim").symlink_to(CONFIG)
         target = Path(tmp) / "keymaps.json"
-        binary = os.environ.get("VPS_NVIM", "nvim")
+        binary = os.environ.get("NVIM_CONFIG_BIN", "nvim")
         try:
             subprocess.run(
                 [binary, "--headless", f"+luafile {CONFIG / 'scripts' / 'keymaps.lua'}"],
                 check=True, cwd=REPO, timeout=EXPORT_TIMEOUT_S,
-                env={**os.environ, "XDG_CONFIG_HOME": str(config_home), "VPS_KEYMAP_JSON": str(target)})
+                env={**os.environ, "XDG_CONFIG_HOME": str(config_home), "NVIM_KEYMAP_JSON": str(target)})
         except FileNotFoundError:
-            raise SystemExit(f"cannot run {binary!r}; set VPS_NVIM to the Neovim binary")
+            raise SystemExit(f"cannot run {binary!r}; set NVIM_CONFIG_BIN to the Neovim binary")
         except subprocess.TimeoutExpired:
             raise SystemExit(f"Neovim took longer than {EXPORT_TIMEOUT_S} s to export the maps")
         except subprocess.CalledProcessError:

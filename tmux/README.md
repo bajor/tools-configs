@@ -1,63 +1,79 @@
-# VPS tmux
+# tmux for Neovim on the VPS
 
-This config keeps Neovim sessions stable through mosh 1.4+, the first
-priority of the VPS editor rebuild. Rex is the terminal and multiplexer
-on the Mac. RGB means 24-bit color. OSC 52 is a terminal clipboard protocol.
-The supported baseline is tmux 3.5a+ and the `tmux-256color` terminfo entry
-on the VPS.
-Rex on the Mac must use a prefix other than Ctrl+a.
+The canonical Neovim configuration is [nvim/](../nvim/).
+Connection: Mac (Rex) → mosh 1.4+ → Ubuntu VPS tmux 3.5a+ → Neovim.
+Tmux owns persistent remote terminal panes; Neovim owns editor windows.
+No nested tmux and no Neovim/tmux navigation plugin are needed.
 
 ## Install and reconnect
 
-1. Back up `~/.tmux.conf`, then link it to this folder's `.tmux.conf`.
-2. If a tmux server is running, run `tmux source-file ~/.tmux.conf`.
-3. Reconnect with mosh. If the connection already attaches to tmux, stay
-   there. Otherwise run `tmux new-session -A -s main`.
-4. Confirm `tmux show -gv default-terminal` prints `tmux-256color`.
+1. Back up `~/.tmux.conf`, then link it to this repository's `tmux/.tmux.conf`.
+2. Verify configuration parsing in an isolated tmux server:
+   `tmux -L config-check -f tmux/.tmux.conf new-session -d -s config-check`
+   then `tmux -L config-check kill-server`.
+3. Reload a live session using `tmux source-file ~/.tmux.conf`.
+4. Connect via mosh, then `tmux new-session -A -s main` if not attached.
 
-The verified outer mosh terminal is `xterm-256color`; its RGB capability
-is declared explicitly at array index 100, so reloads do not append duplicates.
-For a different outer TERM, add its verified RGB capability explicitly.
-Inside tmux, applications see `tmux-256color`. Escape time is
-10 ms. Focus events are enabled, but Neovim must check disk changes on editor
-activity because mosh does not reliably carry focus notifications.
-`set-clipboard on` forwards OSC 52 copy from Neovim. Paste from the Mac uses
-Rex's Cmd+V; OSC 52 clipboard read does not work through mosh.
-`on` permits applications in tmux panes to write the client clipboard. The
-Neovim rebuild explicitly uses an OSC 52 write provider and local-register
-paste.
-Avoid relying on `"+p` to read the Mac clipboard.
+All bindings use **Ctrl+a** as tmux prefix (press, release, then action).
+This leaves unprefixed Ctrl+h/j/k/l available for shell line editing,
+including backspace, newline, kill-line and clear-screen. Avoid giving Rex
+the same prefix.
 
-Graphics passthrough and extended keyboard settings are removed together
-with their VPS Neovim consumers. Mosh cannot forward either protocol.
+## Pane keys
 
-The status line uses a transparent background and Solarized Dark - Vivid
-accents, referencing craftzdog/dotfiles `dot_config/tmux/statusline.conf`.
-Pane borders use the same palette. Import the matching Ghostty theme in Rex.
-
-## Keys
-
-Press Ctrl+a, release it, then press the action key.
-
-| Action key | Result |
+| Keys | Action |
 | --- | --- |
-| `d` | Detach, keeping programs running |
-| `c` | Create a window |
-| `w` | Choose a window |
-| `n` / `p` | Next / previous window |
-| `[` | Enter copy mode |
-| Ctrl+a | Send Ctrl+a to the application |
+| `Ctrl+a h/j/k/l` | Focus pane left/down/up/right |
+| `Ctrl+a v` | Split terminal to the right in the current directory |
+| `Ctrl+a s` | Split terminal below in the current directory |
+| `Ctrl+a H/J/K/L` | Resize left/down/up/right by five cells |
+| `Ctrl+a z` | Zoom/unzoom pane (tmux default) |
+| `Ctrl+a Tab` | Return to previous pane |
+| `Ctrl+a x` | Confirm pane closure (tmux default) |
+| `Ctrl+a c` | New window |
+| `Ctrl+a w` | Window chooser |
+| `Ctrl+a n/p` | Next/previous window |
+| `Ctrl+a d` | Detach while keeping session running |
+| `Ctrl+a [` | Copy mode |
+| `Ctrl+a r` | Reload `~/.tmux.conf` |
+| `Ctrl+a Ctrl+a` | Send Ctrl+a into program |
 
-Use `tmux ls` to list sessions and `tmux attach -t main` to attach.
-Mouse scrolling enters copy mode outside an application's alternate screen.
+## Seamless navigation from Neovim
 
-## Verify
+**Space+h/j/k/l** moves between Neovim editor windows. If no editor window
+exists in that direction, Neovim asynchronously runs the matching
+`tmux select-pane` operation, only if it is inside a tmux session.
+No adjacent tmux pane means no focus change.
 
-1. Run `tmux info` in the attached mosh client; look for RGB or Tc.
-2. Run `tmux show -sv escape-time` (expected: `10`),
-   `tmux show -gv focus-events` (expected: `on`), and
-   `tmux show -sv set-clipboard` (expected: `on`).
-3. Copy with Neovim's `"+yy` and paste into a Mac application with Cmd+V.
+In shell, Pi, OpenCode or test panes, use **Ctrl+a h/j/k/l** to navigate
+back to the editor. Tmux never intercepts the shell's unprefixed Ctrl keys.
+Neovim terminal-mode Ctrl+h/j/k/l exits terminal input and uses the same
+editor-window-to-tmux edge fallback.
 
-Acceptance: Esc responds promptly, truecolor works, and copied text reaches
-the Mac. This config cannot verify Rex's palette, font, or Mac clipboard.
+**Space+v/s** makes Neovim editor windows. **Ctrl+a v/s** makes independent
+tmux terminals. Both split directions are relative to the focused pane.
+
+## Mosh, colors and clipboard
+
+The setup retains `tmux-256color`, truecolor capability for `xterm*`,
+`escape-time=10`, focus events, 100k scrollback, mouse support, and
+Solarized Dark – Vivid colors shared with the Neovim theme.
+
+OSC 52 can **write** the Mac clipboard through mosh 1.4+ and tmux.
+Clipboard **reads** cannot work across mosh, so `"+p` in Neovim uses
+its unnamed register. To paste the Mac clipboard, use Cmd+V in Rex.
+Extended-key input, graphics and focus notifications are constrained by mosh.
+
+## Verify on the VPS
+
+```bash
+tmux show -gv default-terminal
+tmux show -sv escape-time
+tmux show -gv focus-events
+tmux show -sv set-clipboard
+nvim --headless '+luafile nvim/scripts/tmux.lua'
+```
+
+Expected: `tmux-256color`, `10`, `on`, `on`, and a passing Neovim
+navigation smoke test. Check pane directions, working directories, and
+OSC 52 copying interactively from the actual VPS/mosh/Rex session.
