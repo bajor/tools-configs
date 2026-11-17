@@ -3,7 +3,8 @@ local python = require('config.python')
 local last_run
 
 local function execute(command)
-  -- Toggleterm has a positional exec API; use terminal 1 for reusable output.
+  local rex = require('core.rex')
+  if rex.available() then return rex.run_shell(command) end
   require('toggleterm').exec(command, 1, 15, nil, 'horizontal')
 end
 

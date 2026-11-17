@@ -25,6 +25,7 @@
 require('core.options')
 require('core.clipboard')
 require('core.keymaps')
+require('core.rex').setup()
 require('core.autocmds')
 
 -- Load plugins (vim-plug + configs)
