@@ -4,6 +4,15 @@
 
 ### Changed
 
+- Replace the remote terminal multiplexer and mosh configuration with
+  native Rex Mac/Linux remote sessions; remove the old multiplexer directory.
+- Add Rex Lua key sequences and test event automation, smart Neovim-to-Rex
+  navigation, Rex agent/command panes and Python test output panes.
+- Keep independent Neovim windows, Ferris Sweep bindings and the
+  non-Rex ToggleTerm fallback; document SSH service lifetime and migration.
+
+### Changed
+
 - Merge the maintained `nvim-vps-linux/` into the canonical `nvim/`
   directory, replacing legacy config and removing the duplicate. Carry over
   Python/LSP settings, safe autosave, remote OSC 52, Ferris Sweep docs and tests.

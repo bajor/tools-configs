@@ -4,7 +4,7 @@
 local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }
 -- Modes where typed text arrives, so a Space prefix would wait for timeoutlen.
 local TYPING_MODES = { i = true, t = true, s = true, c = true, l = true }
--- Cmd is unavailable over mosh; Alt/Meta chords are expensive on the Sweep.
+-- Rex owns host modifier shortcuts; keep Neovim shortcuts portable on Ferris Sweep.
 local UNSUPPORTED_MODIFIERS = { D = true, M = true, A = true }
 -- ui.lua supplies the tree's complete on_attach map set. Other buffer maps
 -- belong to plugin defaults, so validate them without documenting them here.

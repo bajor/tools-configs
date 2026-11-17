@@ -1,4 +1,7 @@
--- Integration check: requires uv and the tools installed by VpsInstallTools.
+-- Integration check: requires uv and tools installed by NvimInstallTools.
+-- Exercise the non-Rex fallback even if this headless test starts inside Rex.
+local original_rex_block = vim.env.REX_BLOCK
+vim.env.REX_BLOCK = nil
 local project = vim.fn.tempname()
 local file = project .. '/test_pair.py'
 local function command(argv)
@@ -77,5 +80,6 @@ vim.schedule(function()
   vim.fn.delete(project, 'rf')
   if not ok then io.stderr:write(err .. '\n'); vim.cmd('cquit 1') end
   print('Python: venv import, one hover, pytest, run and rerun passed')
+  vim.env.REX_BLOCK = original_rex_block
   vim.cmd('qa!')
 end)
