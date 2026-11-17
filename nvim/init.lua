@@ -8,14 +8,13 @@
         keymaps.lua    - Key mappings
         autocmds.lua   - Autocommands
       config/
-        python_format.lua - Python formatting helper
+        (project helpers)
       plugins/
         init.lua       - Plugin list (vim-plug)
         lsp/
           init.lua     - LSP setup & diagnostics
           servers.lua  - LSP server configs
-          colors.lua   - Diagnostic colors
-        completion.lua - nvim-cmp setup
+        completion.lua - Native LSP menus
         treesitter.lua - Treesitter config
         telescope.lua  - Telescope config
         ui.lua         - Theme, statusline, icons
@@ -24,6 +23,7 @@
 
 -- Load core settings
 require('core.options')
+require('core.clipboard')
 require('core.keymaps')
 require('core.autocmds')
 

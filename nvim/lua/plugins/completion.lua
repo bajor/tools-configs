@@ -1,63 +1,33 @@
--- Completion setup with nvim-cmp
-local cmp = require('cmp')
-local has_luasnip, luasnip = pcall(require, 'luasnip')
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      if has_luasnip then
-        luasnip.lsp_expand(args.body)
-      else
-        vim.snippet.expand(args.body)
-      end
-    end,
-  },
-
-  mapping = {
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif has_luasnip and luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if has_luasnip and luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<Up>'] = cmp.mapping.select_prev_item(),
-    ['<Down>'] = cmp.mapping.select_next_item(),
-  },
-
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip', max_item_count = 5 },
-    { name = 'path' },
-  }, {
-    { name = 'buffer' },
-  }),
-
-  formatting = {
-    format = function(entry, vim_item)
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snippet]",
-        buffer = "[Buffer]",
-        path = "[Path]",
-      })[entry.source.name]
-      return vim_item
+-- Priorities 1/2/3: native menus preserve queued input without completion
+-- plugins.
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('VpsCompletion', { clear = true }),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client and client:supports_method('textDocument/completion') then
+      vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
     end
-  },
-
-  experimental = {
-    ghost_text = true,
-  },
+  end,
 })
+
+local function menu_or_words(key)
+  if vim.fn.pumvisible() == 1
+    or #vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/completion' }) == 0
+    or vim.fn.reg_recording() ~= '' or vim.fn.reg_executing() ~= '' then return key end
+  return '<C-x><C-o>'
+end
+local map = vim.keymap.set
+map('i', '<C-n>', function() return menu_or_words('<C-n>') end,
+  { expr = true, desc = 'Completion next' })
+map('i', '<C-p>', function() return menu_or_words('<C-p>') end,
+  { expr = true, desc = 'Completion previous' })
+map('i', '<CR>', function()
+  if vim.fn.pumvisible() == 1 then
+    return vim.fn.complete_info({ 'selected' }).selected < 0 and '<C-n><C-y>' or '<C-y>'
+  end
+  return '<C-]><CR>'
+end, { expr = true, desc = 'Confirm completion or newline' })
+map('i', '<Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+end, { expr = true, desc = 'Completion next or Tab' })

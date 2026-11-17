@@ -1,96 +1,52 @@
--- UI plugins configuration
-
--- Theme
-vim.cmd('syntax enable')
-vim.cmd('colorscheme gruvbox')
-
--- Lualine
-local ok_lualine, lualine = pcall(require, 'lualine')
-if ok_lualine then
-  -- Raccoon sync status component (safe if raccoon not installed)
-  local function get_raccoon()
-    local ok, raccoon = pcall(require, 'raccoon')
-    if ok and type(raccoon) == 'table' and type(raccoon.is_active) == 'function' then
-      return raccoon
+-- Priority 5: the vivid palette matches the imported Rex theme.
+require('solarized-osaka').setup({
+  style = 'vivid',
+  transparent = true,
+  styles = { sidebars = 'transparent', floats = 'transparent' },
+  on_highlights = function(highlights)
+    for _, severity in ipairs({ 'Error', 'Warn', 'Info', 'Hint' }) do
+      highlights['DiagnosticUnderline' .. severity] = { underline = true }
     end
-    return nil
+  end,
+})
+vim.cmd('colorscheme solarized-osaka')
+
+require('flash').setup({ modes = { char = { enabled = false }, search = { enabled = false } } })
+require('nvim-tree').setup({
+  on_attach = function(buf)
+    local api = require('nvim-tree.api')
+    vim.keymap.set('n', 'o', api.node.open.edit, { buffer = buf, desc = 'Tree open' })
+    vim.keymap.set('n', 'q', api.tree.close, { buffer = buf, desc = 'Tree close' })
+  end,
+  disable_netrw = true,
+  hijack_netrw = false,
+  view = { side = 'right' },
+  renderer = { group_empty = true },
+  git = { enable = true, ignore = false },
+  filters = { dotfiles = false, git_ignored = false },
+})
+
+local function mode_color()
+  if vim.fn.mode():sub(1, 1) == 'i' then
+    return { bg = '#fdf7e7', fg = '#031219', gui = 'bold' }
   end
-
-  local raccoon_status = {
-    function()
-      local raccoon = get_raccoon()
-      if raccoon and raccoon.is_active() then
-        return raccoon.statusline()
-      end
-      return ''
-    end,
-    cond = function()
-      local raccoon = get_raccoon()
-      return raccoon ~= nil and raccoon.is_active()
-    end,
-    color = function()
-      local raccoon = get_raccoon()
-      if raccoon and raccoon.is_active() then
-        local status = raccoon.statusline() or ''
-        if status:find('CONFLICTS') or status:find('behind') then
-          return { fg = '#fb4934', gui = 'bold' }  -- red for out of sync
-        end
-        -- In sync: no special color, blends with statusline
-      end
-    end,
-  }
-
-  lualine.setup({
-    options = {
-      theme = 'gruvbox',
-      component_separators = { left = '', right = '' },
-      section_separators = { left = '', right = '' },
-    },
-    sections = {
-      lualine_a = { 'mode' },
-      lualine_b = { 'branch', 'diff', 'diagnostics', raccoon_status },
-      lualine_c = { 'filename' },
-      lualine_x = { 'g:metals_status', 'encoding', 'fileformat', 'filetype' },
-      lualine_y = { 'progress' },
-      lualine_z = { 'location' },
-    },
-  })
+  return { gui = 'bold' }
 end
-
--- Devicons
-local ok_icons, devicons = pcall(require, 'nvim-web-devicons')
-if ok_icons then
-  devicons.setup({
-    override = {
-      scala = { icon = "", color = "#cc3e44", cterm_color = "167", name = "Scala" },
-      go = { icon = "", color = "#00ADD8", cterm_color = "74", name = "Go" },
-      ex = { icon = "", color = "#a074c4", cterm_color = "140", name = "Elixir" },
-      exs = { icon = "", color = "#a074c4", cterm_color = "140", name = "ElixirScript" },
-      heex = { icon = "", color = "#a074c4", cterm_color = "140", name = "HEEx" },
-    },
-  })
-end
-
--- Copilot Chat
-local ok_chat, copilot_chat = pcall(require, 'CopilotChat')
-if ok_chat then
-  local bg = '#282828'
-  local fg = '#ebdbb2'
-  local border = '#928374'
-
-  vim.api.nvim_set_hl(0, 'CopilotChatNormal', { bg = bg, fg = fg })
-  vim.api.nvim_set_hl(0, 'CopilotChatBorder', { bg = bg, fg = border })
-  vim.api.nvim_set_hl(0, 'FloatBorder', { bg = bg, fg = border })
-  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = bg, fg = fg })
-
-  copilot_chat.setup({
-    window = {
-      layout = 'float',
-      width = 0.8,
-      height = 0.6,
-      relative = 'editor',
-      row = 2,
-      border = 'rounded',
-    },
-  })
-end
+require('lualine').setup({
+  options = {
+    theme = 'auto', globalstatus = true,
+    component_separators = '', section_separators = '',
+  },
+  sections = {
+    lualine_a = { { 'mode', color = mode_color } },
+    lualine_b = { 'branch', 'diff', 'diagnostics' },
+    lualine_c = {},
+    lualine_x = { 'encoding', 'fileformat', 'filetype' },
+    lualine_y = { 'progress' }, lualine_z = { 'location' },
+  },
+})
+require('incline').setup({})
+-- Priority 1: avoid animation churn over mosh; only indent is enabled.
+require('snacks').setup({ indent = { enabled = true, animate = { enabled = false } } })
+require('nvim-web-devicons').setup({})
+pcall(function() require('vim._core.ui2').enable({}) end)
