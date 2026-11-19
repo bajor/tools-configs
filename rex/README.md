@@ -59,6 +59,8 @@ The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 | Rex prefix | Action |
 | --- | --- |
 | h/j/k/l | Focus pane, also from programs that ignore Alt keys |
+| c / o / i | Claude / opencode / pi agent pane to the right |
+| e | Floating scratch shell |
 | r | Resize mode: h/j/k/l resize by 10, Enter or Escape leaves |
 | v/s | Split pane right/below |
 | z / x | Zoom or close current pane |
@@ -74,13 +76,26 @@ Ctrl+h/j/k/l (backspace, newline, kill line, clear screen). Programs in
 Rex panes no longer receive Alt+h/j/k/l, for example readline Alt+l
 (lowercase word) or zsh Alt+h (run-help).
 
+## Actions
+
+rex/init.lua defines three actions. They appear in the Rex command
+palette, run from the CLI, and Neovim calls them; each new pane starts in
+the cwd argument, else in the directory of the pane's foreground program.
+
+| Action | What it does | Keys |
+| --- | --- | --- |
+| agent name=claude/opencode/pi | Agent pane to the right, 40% | Ctrl+A c / o / i |
+| run cmd=... | Command pane below, 30%, stays open after exit | |
+| scratch | Floating shell over the window | Ctrl+A e |
+
+    rex do run cmd="pytest -x" cwd="$HOME/project"
+
 ## From Neovim
 
-- :RexSplitRight, :RexSplitBelow create standalone Rex terminals
-- :RexAgent opencode, :RexAgent pi, :RexAgent claude launch agents
-- :RexRun go test ./... keeps command output in a separate pane
-- :RexFocus right, :RexZoom control the current layout
-- Space+rr/rt/rl Python actions use Rex when the native context exists
+- :RexAgent opencode, :RexAgent pi, :RexAgent claude call the agent action
+- :RexRun go test ./... calls the run action with the editor CWD
+- Space+rr/rt/rl Python actions call the run action
+- Splits, zoom and focus are Rex keys only (Ctrl+A v/s/z, Alt+h/j/k/l)
 
 ## Advanced Lua automation
 

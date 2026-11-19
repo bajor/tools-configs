@@ -31,12 +31,11 @@ Rex CLI; it does not cross a plain SSH shell or focus another Rex server.
 Space+v and Space+s create editor windows. Ctrl+A then v/s in Rex creates
 independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
 
-Other native Rex features from Neovim:
-- :RexSplitRight and :RexSplitBelow create terminal panes with the editor CWD
+Rex actions own pane layout (rex/README.md); Neovim only calls them:
 - :RexAgent opencode, :RexAgent claude or :RexAgent pi starts an agent
 - :RexRun go test ./... runs a command and preserves its output
-- :RexZoom zooms the current pane
-- :RexFocus right (also left/up/down) focuses a Rex pane
+Use Rex keys for splits, zoom and focus. Errors from Rex, such as an
+unknown agent name, appear as Neovim warnings.
 
 CLI operations use argument arrays, not concatenated shell text. The
 Python runner retains its existing shell command generation.
