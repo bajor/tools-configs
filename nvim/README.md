@@ -34,7 +34,7 @@ independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
 Rex actions own pane layout (rex/README.md); Neovim only calls them:
 - :RexAgent opencode, :RexAgent claude or :RexAgent pi starts an agent
 - :RexRun go test ./... runs a command and preserves its output
-- Space+t opens the scratch action's floating Rex shell
+- Space+t toggles the scratch action's floating Rex shell
 Use Rex keys for splits, zoom and focus. Errors from Rex, such as an
 unknown agent name, appear as Neovim warnings.
 

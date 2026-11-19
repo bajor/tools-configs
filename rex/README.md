@@ -60,7 +60,7 @@ The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 | --- | --- |
 | h/j/k/l | Focus pane, also from programs that ignore Alt keys |
 | c / o / i | Claude / opencode / pi agent pane to the right |
-| e | Floating scratch shell |
+| e | Toggle the floating scratch shell |
 | r | Resize mode: h/j/k/l resize by 10, Enter or Escape leaves |
 | v/s | Split pane right/below |
 | z / x | Zoom or close current pane |
@@ -86,7 +86,7 @@ the cwd argument, else in the directory of the pane's foreground program.
 | --- | --- | --- |
 | agent name=claude/opencode/pi | Agent pane to the right, 40% | Ctrl+A c / o / i |
 | run cmd=... | Command pane below, 30%, stays open after exit | |
-| scratch | Floating shell over the window | Ctrl+A e |
+| scratch | Toggle one floating shell per window; hiding keeps it running | Ctrl+A e |
 
     rex do run cmd="pytest -x" cwd="$HOME/project"
 
