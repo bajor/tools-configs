@@ -17,16 +17,12 @@ local function check()
   vim.api.nvim_feedkeys("i" .. vim.keycode("<M-l>"), "xt", false)
   assert(vim.api.nvim_get_current_win() == right, "Alt+l did not reach the right window")
   assert(vim.api.nvim_get_mode().mode == "n", "Alt+l left Neovim in insert mode")
-  local args = rex.split_args("right", { "opencode" },
-    { block = "test", cwd = "/tmp/has spaces", ratio = 40, interactive = true })
+  -- The rex CLI receives one argv element per key=value pair, so spaces
+  -- and shell syntax reach the Rex action unchanged.
+  local args = rex.action_args("run", { cmd = "pytest -k 'a or b' | tail", cwd = "/tmp/has spaces" })
   assert(vim.deep_equal(args, {
-    "rex", "split", "--split=right", "-b", "test", "-c", "/tmp/has spaces",
-    "--ratio=40", "--interactive", "--", "opencode",
+    "rex", "do", "run", "cmd=pytest -k 'a or b' | tail", "cwd=/tmp/has spaces",
   }))
-  local cmd = rex.split_args("below", { "sh", "-c", "echo ok" },
-    { block = "test", cwd = "/tmp", direct = true, keep_open = true })
-  assert(vim.tbl_contains(cmd, "--shell=none"))
-  assert(vim.tbl_contains(cmd, "--keep-open"))
 end
 vim.schedule(function()
   local ok, err = xpcall(check, debug.traceback)

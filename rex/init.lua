@@ -5,11 +5,23 @@ local NAVIGATION_EDITOR = "nvim"
 local ESC = "\27"
 local RESIZE_STEP = 10
 
--- Block calls inside a key function act on the pane the key was sent to.
-local function runs_editor()
+local SHELL = "com.superlogical.terminal.shell"
+local AGENTS = { claude = true, opencode = true, pi = true }
+-- Share of the anchor pane's space that a new agent or run pane takes.
+local AGENT_SHARE, RUN_SHARE = 0.4, 0.3
+-- Floating shell position as x, y, width, height fractions of the window.
+local SCRATCH_BOUNDS = { 0.1, 0.1, 0.8, 0.8 }
+
+-- Block calls in a key function or action act on the pane it came from:
+-- the focused pane, or REX_BLOCK for `rex do` run inside a Rex terminal.
+local function foreground()
   local process = rex.block.call(TERMINAL, "process", {})
-  local foreground = process and process.foreground
-  return foreground ~= nil and foreground.name == NAVIGATION_EDITOR
+  return process and process.foreground
+end
+
+local function runs_editor()
+  local program = foreground()
+  return program ~= nil and program.name == NAVIGATION_EDITOR
 end
 
 -- Exclusive stops stray keys reaching the shell while resizing.
@@ -35,6 +47,63 @@ for key, direction in pairs(directions) do
   -- such as a Neovim started without this config.
   rex.bind("ctrl+a>" .. key, "pane.focus." .. direction)
 end
+
+-- Without a cwd argument, new panes start where the pane's program runs.
+local function start_dir(args)
+  if args.cwd then return args.cwd end
+  local program = foreground()
+  return program and program.cwd or ""
+end
+
+local function shell_block(label, options)
+  return rex.layout.block{ flavor = SHELL, label = label, options = options }
+end
+
+local function split_after(ctx, direction, share, block)
+  local split, err = rex.session.new_split{
+    anchor_id = ctx.block_id, direction = direction, side = "after",
+    ratio = 1 - share, focus = true, layout = block,
+  }
+  if err ~= nil then error(err, 0) end
+  return { block_id = split.block_ids[1] }
+end
+
+rex.action{
+  name = "agent", title = "Open Agent Pane", args = { name = "string", cwd = "string?" },
+  run = function(ctx, args)
+    if not AGENTS[args.name] then error("unknown agent: " .. args.name, 0) end
+    return split_after(ctx, "horizontal", AGENT_SHARE, shell_block(args.name,
+      { command = { args.name }, interactive = true, cwd = start_dir(args) }))
+  end,
+}
+
+-- The pane stays open after the command exits so its output can be read.
+rex.action{
+  name = "run", title = "Run Command in Pane", args = { cmd = "string", cwd = "string?" },
+  run = function(ctx, args)
+    return split_after(ctx, "vertical", RUN_SHARE, shell_block("run", {
+      command = { "sh", "-c", args.cmd }, interactive = true, cwd = start_dir(args),
+      exit = { on_completion = false },
+    }))
+  end,
+}
+
+rex.action{
+  name = "scratch", title = "Open Floating Shell", args = { cwd = "string?" },
+  run = function(_, args)
+    local layer, err = rex.session.new_layer{
+      bounds = SCRATCH_BOUNDS, focus = true,
+      layout = shell_block("scratch", { cwd = start_dir(args) }),
+    }
+    if err ~= nil then error(err, 0) end
+    return { block_id = layer.block_ids[1] }
+  end,
+}
+
+rex.bind("ctrl+a>c", "agent", { name = "claude" })
+rex.bind("ctrl+a>o", "agent", { name = "opencode" })
+rex.bind("ctrl+a>i", "agent", { name = "pi" })
+rex.bind("ctrl+a>e", "scratch")
 
 rex.bind("ctrl+a>v", "pane.split.right")
 rex.bind("ctrl+a>s", "pane.split.down")
