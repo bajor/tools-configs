@@ -20,7 +20,7 @@
 <text x="48.80" y="32.54" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Run</text>
 <rect x="61.50" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="62.30" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">T</text>
-<text x="62.30" y="32.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Toggle</text>
+<text x="62.30" y="32.37" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Floating</text>
 <text x="62.30" y="34.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">terminal</text>
 <rect x="78.00" y="26.50" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="78.80" y="29.50" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">Y</text>

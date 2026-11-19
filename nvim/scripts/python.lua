@@ -1,17 +1,29 @@
 -- Integration check: requires uv and tools installed by NvimInstallTools.
--- Exercise the non-Rex fallback even if this headless test starts inside Rex.
-local original_rex_block = vim.env.REX_BLOCK
-vim.env.REX_BLOCK = nil
+-- A stand-in rex CLI on PATH receives `rex do run cmd=...` and runs cmd in
+-- place, so the test never touches a real Rex server.
+local original = { REX_BLOCK = vim.env.REX_BLOCK, PATH = vim.env.PATH }
 local project = vim.fn.tempname()
 local file = project .. '/test_pair.py'
+local fake_bin = vim.fn.tempname()
+local rex_output, rex_calls = fake_bin .. '/output', fake_bin .. '/calls'
 local function command(argv)
   local result = vim.system(argv, { text = true, env = { UV_LINK_MODE = 'copy' } }):wait()
   assert(result.code == 0, result.stderr)
 end
+local function install_fake_rex()
+  vim.fn.mkdir(fake_bin, 'p')
+  vim.fn.writefile({ '#!/bin/sh', 'echo "$*" >> ' .. vim.fn.shellescape(rex_calls),
+    'for arg; do case $arg in cmd=*) cmd=${arg#cmd=};; esac; done',
+    'sh -c "$cmd" >> ' .. vim.fn.shellescape(rex_output) .. ' 2>&1' }, fake_bin .. '/rex')
+  vim.fn.setfperm(fake_bin .. '/rex', 'rwx------')
+  vim.env.PATH = fake_bin .. ':' .. vim.env.PATH
+  vim.env.REX_BLOCK = 'block:test'
+end
 local function output()
-  local terminal = require('toggleterm.terminal').get(1)
-  if not terminal then return '' end
-  return table.concat(vim.api.nvim_buf_get_lines(terminal.bufnr, 0, -1, false), '\n')
+  return table.concat(vim.fn.filereadable(rex_output) == 1 and vim.fn.readfile(rex_output) or {}, '\n')
+end
+local function call_count()
+  return vim.fn.filereadable(rex_calls) == 1 and #vim.fn.readfile(rex_calls) or 0
 end
 
 local function check_python()
@@ -57,17 +69,16 @@ local function check_unsaved_rerun()
   vim.cmd.edit(file)
   vim.api.nvim_buf_set_lines(0, 0, 1, false, { '# unsaved change' })
   vim.cmd('enew')
-  local toggleterm = require('toggleterm')
-  local execute, calls = toggleterm.exec, 0
-  toggleterm.exec = function() calls = calls + 1 end
+  local calls = call_count()
   require('config.python_run').rerun()
-  toggleterm.exec = execute
-  assert(calls == 0, 'rerun executed stale contents of a modified buffer')
+  vim.wait(500)
+  assert(call_count() == calls, 'rerun executed stale contents of a modified buffer')
 end
 
 vim.schedule(function()
   local active = vim.env.VIRTUAL_ENV
   vim.env.VIRTUAL_ENV = nil
+  install_fake_rex()
   local ok, err = xpcall(function()
     check_python()
     check_commands()
@@ -75,11 +86,10 @@ vim.schedule(function()
   end, debug.traceback)
   vim.env.VIRTUAL_ENV = active
   for _, client in ipairs(vim.lsp.get_clients()) do client:stop() end
-  local terminal = require('toggleterm.terminal').get(1)
-  if terminal then terminal:shutdown() end
   vim.fn.delete(project, 'rf')
+  vim.fn.delete(fake_bin, 'rf')
   if not ok then io.stderr:write(err .. '\n'); vim.cmd('cquit 1') end
   print('Python: venv import, one hover, pytest, run and rerun passed')
-  vim.env.REX_BLOCK = original_rex_block
+  vim.env.REX_BLOCK, vim.env.PATH = original.REX_BLOCK, original.PATH
   vim.cmd('qa!')
 end)

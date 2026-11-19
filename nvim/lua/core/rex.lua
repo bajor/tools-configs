@@ -49,6 +49,9 @@ end
 function M.run_shell(command)
   return action("run", { cmd = command, cwd = vim.fn.getcwd() })
 end
+function M.scratch()
+  return action("scratch", { cwd = vim.fn.getcwd() })
+end
 function M.agent(name)
   return action("agent", { name = name, cwd = vim.fn.getcwd() })
 end

@@ -4,6 +4,12 @@
 
 ### Changed
 
+- Remove ToggleTerm: Space+t opens the Rex scratch action's floating shell,
+  and Python run/test commands require a Rex terminal instead of falling
+  back to an in-editor terminal.
+
+### Changed
+
 - Move pane layout into Rex actions (agent, run, scratch) in rex/init.lua,
   bound to Ctrl+A c/o/i/e and listed in the Rex palette. :RexAgent and
   :RexRun call them through rex do; remove :RexSplitRight, :RexSplitBelow,

@@ -24,9 +24,8 @@ Plug('nvim-lua/plenary.nvim')
 Plug('nvim-telescope/telescope.nvim')
 Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 
--- Terminal and Git
+-- Formatting and Git
 Plug('stevearc/conform.nvim')
-Plug('akinsho/toggleterm.nvim')
 Plug('lewis6991/gitsigns.nvim')
 
 -- Mason (LSP installer)
