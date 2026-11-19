@@ -72,10 +72,14 @@ assumed to work without verification of the installed Rex build.
     nvim --headless '+luafile nvim/scripts/python.lua'
     python3 rex/scripts/check_config.py
     python3 nvim/docs/keymap_sheet.py --check
+    uv run --no-project --with reportlab --with pypdf python3 make_poster.py --check
 
 The Python integration test needs uv, Mason-installed Pyright/Ruff and
 pytest. The keyboard reference is generated from the unchanged Neovim
-mappings; Ferris Sweep SVG/PDF remain under nvim/docs. Rex bindings live in
+mappings; Ferris Sweep SVG/PDF remain under nvim/docs. The printable 4 x A4
+poster at the repository root is laid out by make_poster.py, which fails
+when it no longer lists every Neovim map and Rex binding; rerun it without
+--check after changing shortcuts. Rex bindings live in
 rex/init.lua and are documented in rex/README.md. Alt+h/j/k/l are the only
 Alt maps Neovim may define; nvim/scripts/keymaps.lua rejects any other.
 
