@@ -58,6 +58,7 @@ The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 
 | Rex prefix | Action |
 | --- | --- |
+| h/j/k/l | Focus pane, also from programs that ignore Alt keys |
 | r | Resize mode: h/j/k/l resize by 10, Enter or Escape leaves |
 | v/s | Split pane right/below |
 | z / x | Zoom or close current pane |
@@ -69,7 +70,9 @@ The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 | Ctrl+A | Send literal Ctrl+A |
 
 Alt is used instead of Ctrl because shells and agent prompts already use
-Ctrl+h/j/k/l (backspace, newline, kill line, clear screen).
+Ctrl+h/j/k/l (backspace, newline, kill line, clear screen). Programs in
+Rex panes no longer receive Alt+h/j/k/l, for example readline Alt+l
+(lowercase word) or zsh Alt+h (run-help).
 
 ## From Neovim
 

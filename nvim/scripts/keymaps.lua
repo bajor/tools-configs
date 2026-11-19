@@ -100,7 +100,8 @@ local function violations_for(entry)
   local has_desc = (map.desc or ''):match('%S')
   local reasons = {}
   if TYPING_MODES[mode] and leader then reasons[#reasons + 1] = 'leader in typing mode' end
-  if has_unsupported_key(map.lhs) and not REX_NAVIGATION_KEYS[lhs] then
+  local rex_navigation = entry.scope == 'global' and REX_NAVIGATION_KEYS[lhs]
+  if has_unsupported_key(map.lhs) and not rex_navigation then
     reasons[#reasons + 1] = 'unsupported key'
   end
   if (entry.scope == 'global' or leader) and not has_desc then

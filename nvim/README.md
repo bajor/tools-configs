@@ -19,12 +19,13 @@ The editor stays useful outside Rex, with an in-editor terminal fallback.
 
 ## Editor and Rex navigation
 
-Alt+h/j/k/l moves left/down/up/right everywhere, with no prefix. Rex owns
-the key (rex/init.lua): in a shell, agent or test pane it focuses the next
-Rex pane; in a pane running Neovim it hands the key to Neovim. Neovim then
-switches editor windows first and, when there is no adjacent editor window,
-runs rex focus in the same Rex session. Insert and terminal mode return to
-normal mode first. Editor-to-Rex hand-off requires REX_BLOCK and the local
+Alt+h/j/k/l moves left/down/up/right with no prefix. Rex owns the key
+(rex/init.lua): in a shell, agent or test pane it focuses the next Rex
+pane; in a pane running Neovim it hands the key to Neovim. In normal,
+insert and terminal mode Neovim then switches editor windows first and,
+when there is no adjacent editor window, runs rex focus in the same Rex
+session. Insert and terminal mode return to normal mode first. Ctrl+A then
+h/j/k/l always focuses Rex panes, from any program. Editor-to-Rex hand-off requires REX_BLOCK and the local
 Rex CLI; it does not cross a plain SSH shell or focus another Rex server.
 
 Space+v and Space+s create editor windows. Ctrl+A then v/s in Rex creates
