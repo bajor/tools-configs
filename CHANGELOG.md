@@ -6,8 +6,8 @@
 
 - Move pane navigation into Rex: Alt+h/j/k/l focuses Rex panes with no
   prefix and hands the key to Neovim when it owns the pane, replacing
-  Space+h/j/k/l, terminal-mode Ctrl+h/j/k/l and Ctrl+A h/j/k/l. Replace
-  Ctrl+A Shift+h/j/k/l with a Ctrl+A r resize mode.
+  Space+h/j/k/l and terminal-mode Ctrl+h/j/k/l. Ctrl+A h/j/k/l stays as a
+  fallback. Replace Ctrl+A Shift+h/j/k/l with a Ctrl+A r resize mode.
 
 ### Changed
 

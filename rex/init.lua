@@ -12,10 +12,11 @@ local function runs_editor()
   return foreground ~= nil and foreground.name == NAVIGATION_EDITOR
 end
 
--- Escape leaves the mode; exclusive stops stray keys reaching the shell.
+-- Exclusive stops stray keys reaching the shell while resizing.
 rex.mode("resize", { exclusive = true })
 rex.bind("ctrl+a>r", "client.mode.enter", { name = "resize" })
 rex.bind("resize/enter", "client.mode.exit")
+rex.bind("resize/escape", "client.mode.exit")
 
 -- Alt+h/j/k/l moves between panes without a prefix. Neovim receives the key
 -- instead, moves between its own windows, and runs `rex focus` at its edge.
@@ -30,6 +31,9 @@ for key, direction in pairs(directions) do
     return true
   end)
   rex.bind("resize/" .. key, "pane.resize", { direction = direction, amount = RESIZE_STEP })
+  -- Always focuses Rex panes, even from a program that ignores Alt keys,
+  -- such as a Neovim started without this config.
+  rex.bind("ctrl+a>" .. key, "pane.focus." .. direction)
 end
 
 rex.bind("ctrl+a>v", "pane.split.right")
