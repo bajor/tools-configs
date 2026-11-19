@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Add make_poster.py, the generator of the root 4 x A4 Ferris Sweep poster,
+  and regenerate the poster for Alt+h/j/k/l, the resize mode, agent and
+  scratch keys. Its --check fails when the poster misses a shortcut.
 - Remove ToggleTerm: Space+t toggles the Rex scratch action's floating shell,
   and Python run/test commands require a Rex terminal instead of falling
   back to an in-editor terminal.
