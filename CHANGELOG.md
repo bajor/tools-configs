@@ -4,6 +4,19 @@
 
 ### Changed
 
+- Add make_wallpaper.py and the root iPad wallpaper, a black 2048 x 2732
+  sheet of 8 Rex and 8 Neovim shortcuts. Each row draws the Ferris Sweep with
+  the keys lit, naming the home-row letter to hold rather than a modifier the
+  keyboard has no key for. Its --check fails when a drawn Rex shortcut is not
+  bound in rex/init.lua.
+- Move file switching from Neovim to Rex: edit, buffers, buffer_cycle and
+  search actions on Alt+p, Alt+b, Alt+n, Alt+Shift+n and Alt+f. Rex starts one
+  Neovim per project with --listen and drives it over that socket, so nvim/
+  needs no configuration. check_editor.py covers them on a throwaway server.
+- Draw the Alt keys on poster page 4 and resolve the DejaVu fonts from the
+  macOS font directory as well as the Debian one, so the poster rebuilds on
+  both. Rebuilding on macOS shifts 11 bytes of the embedded font subset
+  without changing a drawn page.
 - Add make_poster.py, the generator of the root 4 x A4 Ferris Sweep poster,
   and regenerate the poster for Alt+h/j/k/l, the resize mode, agent and
   scratch keys. Its --check fails when the poster misses a shortcut.
