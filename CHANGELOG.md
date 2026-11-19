@@ -4,11 +4,6 @@
 
 ### Changed
 
-- Add make_wallpaper.py and the root iPad wallpaper, a black 2048 x 2732
-  sheet of 8 Rex and 8 Neovim shortcuts. Each row draws the Ferris Sweep with
-  the keys lit, naming the home-row letter to hold rather than a modifier the
-  keyboard has no key for. Its --check fails when a drawn Rex shortcut is not
-  bound in rex/init.lua.
 - Move file switching from Neovim to Rex: edit, buffers, buffer_cycle and
   search actions on Alt+p, Alt+b, Alt+n, Alt+Shift+n and Alt+f. Rex starts one
   Neovim per project with --listen and drives it over that socket, so nvim/
