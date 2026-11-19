@@ -11,6 +11,7 @@ local AGENTS = { claude = true, opencode = true, pi = true }
 local AGENT_SHARE, RUN_SHARE = 0.4, 0.3
 -- Floating shell position as x, y, width, height fractions of the window.
 local SCRATCH_BOUNDS = { 0.1, 0.1, 0.8, 0.8 }
+local SCRATCH = "scratch"
 
 -- Block calls in a key function or action act on the pane it came from:
 -- the focused pane, or REX_BLOCK for `rex do` run inside a Rex terminal.
@@ -88,15 +89,45 @@ rex.action{
   end,
 }
 
+local function active_window(view)
+  for _, window in ipairs(view.windows) do
+    if window.window_id == view.active_window_id then return window end
+  end
+end
+
+local function holds_scratch(layer)
+  for _, block in ipairs(layer.blocks) do
+    if block.label == SCRATCH then return true end
+  end
+  return false
+end
+
+local function scratch_layer()
+  local window = active_window(rex.session.view())
+  for _, layer in ipairs(window and window.layers or {}) do
+    if holds_scratch(layer) then return layer end
+  end
+end
+
+-- One scratch shell per window. Minimizing keeps its program running; the
+-- next call brings it back and focuses it. It is recreated after it exits.
 rex.action{
-  name = "scratch", title = "Open Floating Shell", args = { cwd = "string?" },
+  name = "scratch", title = "Toggle Floating Shell", args = { cwd = "string?" },
   run = function(_, args)
-    local layer, err = rex.session.new_layer{
+    local layer = scratch_layer()
+    if layer then
+      local state = layer.state == "minimized" and "normal" or "minimized"
+      local _, err = rex.session.set_layer_state{
+        layer_id = layer.layer_id, state = state, focus = state == "normal" }
+      if err ~= nil then error(err, 0) end
+      return { layer_id = layer.layer_id, state = state }
+    end
+    local created, err = rex.session.new_layer{
       bounds = SCRATCH_BOUNDS, focus = true,
-      layout = shell_block("scratch", { cwd = start_dir(args) }),
+      layout = shell_block(SCRATCH, { cwd = start_dir(args) }),
     }
     if err ~= nil then error(err, 0) end
-    return { block_id = layer.block_ids[1] }
+    return { block_id = created.block_ids[1], state = "normal" }
   end,
 }
 

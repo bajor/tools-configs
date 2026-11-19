@@ -63,25 +63,44 @@ local function check_commands()
     local _, count = output():gsub('run%-ok', '')
     return count >= 2
   end), 'last command did not rerun')
+  for _, call in ipairs(vim.fn.readfile(rex_calls)) do
+    assert(call:find('^do run ') and call:find(' cwd=', 1, true), 'unexpected rex call: ' .. call)
+  end
 end
 
 local function check_unsaved_rerun()
   vim.cmd.edit(file)
   vim.api.nvim_buf_set_lines(0, 0, 1, false, { '# unsaved change' })
   vim.cmd('enew')
-  local calls = call_count()
+  local rex = require('core.rex')
+  local run_shell, calls = rex.run_shell, 0
+  rex.run_shell = function() calls = calls + 1 end
   require('config.python_run').rerun()
-  vim.wait(500)
-  assert(call_count() == calls, 'rerun executed stale contents of a modified buffer')
+  rex.run_shell = run_shell
+  assert(calls == 0, 'rerun executed stale contents of a modified buffer')
+end
+
+-- Given no Rex terminal, When a Python file is run, Then Neovim warns and
+-- starts nothing.
+local function check_outside_rex()
+  vim.cmd.edit(file)
+  vim.env.REX_BLOCK = nil
+  local notify, warnings, calls = vim.notify, {}, call_count()
+  vim.notify = function(message) warnings[#warnings + 1] = message end
+  require('config.python_run').run_file()
+  vim.notify = notify
+  assert(call_count() == calls, 'ran a command outside a Rex terminal')
+  assert(vim.tbl_contains(warnings, 'Rex CLI requires a native Rex terminal'), vim.inspect(warnings))
 end
 
 vim.schedule(function()
   local active = vim.env.VIRTUAL_ENV
   vim.env.VIRTUAL_ENV = nil
-  install_fake_rex()
   local ok, err = xpcall(function()
+    install_fake_rex()
     check_python()
     check_commands()
+    check_outside_rex()
     check_unsaved_rerun()
   end, debug.traceback)
   vim.env.VIRTUAL_ENV = active
@@ -89,7 +108,7 @@ vim.schedule(function()
   vim.fn.delete(project, 'rf')
   vim.fn.delete(fake_bin, 'rf')
   if not ok then io.stderr:write(err .. '\n'); vim.cmd('cquit 1') end
-  print('Python: venv import, one hover, pytest, run and rerun passed')
+  print('Python: venv import, one hover, pytest, run, rerun and outside-Rex warning passed')
   vim.env.REX_BLOCK, vim.env.PATH = original.REX_BLOCK, original.PATH
   vim.cmd('qa!')
 end)

@@ -111,10 +111,14 @@ def check(rex, *, tmp):
     assert marker.exists(), "Neovim did not receive Alt+h"
     assert focused(rex.view()) == editor, "Rex moved focus away from Neovim"
 
-    # Given any pane, When scratch runs, Then a floating shell opens.
-    rex("do", "-s", "check", "-b", shell, "scratch")
+    # Given no scratch shell, When scratch runs three times, Then one floating
+    # shell opens, hides, and comes back; it is never duplicated.
+    states = [json.loads(rex("do", "-s", "check", "-b", shell, "scratch").stdout)["state"]
+              for _ in range(3)]
+    assert states == ["normal", "minimized", "normal"], states
     floating = [layer for w in rex.view()["windows"] for layer in w["layers"] if layer["kind"] != "tiled"]
-    assert any(b["label"] == "scratch" for layer in floating for b in layer["blocks"]), floating
+    scratch = [layer for layer in floating if any(b["label"] == "scratch" for b in layer["blocks"])]
+    assert len(scratch) == 1 and "state" not in scratch[0], floating
 
 
 if __name__ == "__main__":

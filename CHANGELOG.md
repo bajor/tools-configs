@@ -4,19 +4,13 @@
 
 ### Changed
 
-- Remove ToggleTerm: Space+t opens the Rex scratch action's floating shell,
+- Remove ToggleTerm: Space+t toggles the Rex scratch action's floating shell,
   and Python run/test commands require a Rex terminal instead of falling
   back to an in-editor terminal.
-
-### Changed
-
 - Move pane layout into Rex actions (agent, run, scratch) in rex/init.lua,
   bound to Ctrl+A c/o/i/e and listed in the Rex palette. :RexAgent and
   :RexRun call them through rex do; remove :RexSplitRight, :RexSplitBelow,
   :RexZoom and :RexFocus, which duplicated Rex keys.
-
-### Changed
-
 - Move pane navigation into Rex: Alt+h/j/k/l focuses Rex panes with no
   prefix and hands the key to Neovim when it owns the pane, replacing
   Space+h/j/k/l and terminal-mode Ctrl+h/j/k/l. Ctrl+A h/j/k/l stays as a
