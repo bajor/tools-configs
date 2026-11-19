@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """Generate the printable Ferris Sweep poster for Neovim and Rex (4 x A4).
 
-    uv run --no-project --with reportlab --with pypdf python3 make_poster.py
-    uv run --no-project --with reportlab --with pypdf python3 make_poster.py --check
+    uv run --no-project --with reportlab==5.1.0 --with pypdf python3 make_poster.py
+    uv run --no-project --with reportlab==5.1.0 --with pypdf python3 make_poster.py --check
 
 The layout and its Polish labels are written by hand, so the script checks
-that the poster shows exactly the Neovim maps in the generated table of
-nvim/README.md and the Ctrl+A and Alt bindings in rex/init.lua. --check
-builds into a temporary file and fails when a shortcut was added, removed or
-renamed without updating the poster. Fonts come from DejaVu in
-/usr/share/fonts/truetype/dejavu. First written 2026-11-17 as a one-off
-script outside the repository; kept here so the poster can be rebuilt.
+that the poster names exactly the Neovim maps in the generated table of
+nvim/README.md and the Ctrl+A, Alt and resize-mode bindings in rex/init.lua.
+It builds into a temporary file and replaces the poster only after the
+checks pass. --check instead fails when the committed poster differs from a
+fresh build; ReportLab is pinned because its version changes the bytes.
+Needs the DejaVu fonts in /usr/share/fonts/truetype/dejavu (Debian/Ubuntu
+package fonts-dejavu-core). First written 2026-11-17 as a one-off script
+outside the repository; kept here so the poster can be rebuilt.
 """
 import argparse
 import re
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -34,8 +37,14 @@ INK, MUTED, LINE = '#142126', '#46545a', '#b8c2c4'
 BLUE, GREEN, PURPLE, RUST = '#005c85', '#176449', '#70438d', '#a13f21'
 FONTS = Path('/usr/share/fonts/truetype/dejavu')
 COLS, CW = [10, 104, 198], 89  # column x positions and width, mm
+HALF_X, HALF_W = 154, 133  # page 1 right half: x position and text width, mm
 THUMB_LABELS = {'tab': 'Tab', 'enter': 'Ent', 'space': 'SPC', 'back': 'Bk'}
 CORNERS = ['LEWY GÓRNY', 'PRAWY GÓRNY', 'LEWY DOLNY', 'PRAWY DOLNY']
+
+
+def require(condition, detail):
+    if not condition:
+        raise SystemExit(f'poster check failed: {detail}')
 
 
 class Poster:
@@ -62,10 +71,10 @@ class Poster:
 
     def text(self, *, x, y, value, size=16.0, font='sans', color=INK, align='left', maxw=None):
         width = pdfmetrics.stringWidth(text=value, fontName=font, fontSize=size) / mm
-        assert maxw is None or width <= maxw, (value, width, maxw)
+        require(maxw is None or width <= maxw, (value, width, maxw))
         left = x - width if align == 'right' else x - width / 2 if align == 'center' else x
-        assert left >= EDGE and left + width <= W - EDGE, (value, left, width)
-        assert EDGE - 1 <= y <= H - EDGE + 1, (value, y)
+        require(left >= EDGE and left + width <= W - EDGE, (value, left, width))
+        require(EDGE - 1 <= y <= H - EDGE + 1, (value, y))
         self.canvas.setFillColor(aColor=HexColor(val=color))
         self.canvas.setFont(psfontname=font, size=size)
         draw = {'right': self.canvas.drawRightString, 'center': self.canvas.drawCentredString}
@@ -136,15 +145,15 @@ def page_gestures(p):
     p.header(page=1, title='DWA PREFIKSY. JEDEN RUCH.',
              subtitle='SPC = spacja. Strzałka → oznacza: naciśnij, puść, potem następny klawisz.')
     p.text(x=10, y=54, value='SPC → NEOVIM', size=24, font='bold', color=BLUE)
-    p.text(x=154, y=54, value='Ctrl+A → REX', size=24, font='bold', color=RUST)
+    p.text(x=HALF_X, y=54, value='Ctrl+A → REX', size=24, font='bold', color=RUST)
     p.keyboard(x=12, y=59, width=116, active=['f'], prefix=['space'], color=BLUE)
-    p.keyboard(x=156, y=59, width=116, active=['a', 'v'], held=['k'], color=RUST, labels={'k': 'Ctrl'})
-    p.text(x=10, y=116, value='Przykład: SPC → f → f = szukaj pliku.', size=15, font='bold', maxw=133)
-    p.text(x=154, y=116, value='Trzymaj K (Ctrl), stuknij A, puść oba.', size=14.5, font='bold', maxw=133)
-    p.text(x=10, y=123, value='SPC: prawy kciuk, klawisz bliżej środka.', size=13, color=MUTED, maxw=133)
-    p.text(x=154, y=123, value='Potem v = nowy panel terminala po prawej.', size=13, color=MUTED, maxw=133)
-    p.line(x1=147, y1=48, x2=147, y2=185)
-    p.text(x=10, y=132.5, value='RUCH · trzymaj S (Alt) + ...', size=16, font='bold', color=PURPLE, maxw=133)
+    p.keyboard(x=HALF_X + 2, y=59, width=116, active=['a', 'v'], held=['k'], color=RUST, labels={'k': 'Ctrl'})
+    p.text(x=10, y=116, value='Przykład: SPC → f → f = szukaj pliku.', size=15, font='bold', maxw=HALF_W)
+    p.text(x=HALF_X, y=116, value='Trzymaj K (Ctrl), stuknij A, puść oba.', size=14.5, font='bold', maxw=HALF_W)
+    p.text(x=10, y=123, value='SPC: prawy kciuk, klawisz bliżej środka.', size=13, color=MUTED, maxw=HALF_W)
+    p.text(x=HALF_X, y=123, value='Potem v = nowy panel terminala po prawej.', size=13, color=MUTED, maxw=HALF_W)
+    p.line(x1=HALF_X - 7, y1=48, x2=HALF_X - 7, y2=185)
+    p.text(x=10, y=132.5, value='RUCH · trzymaj S (Alt) + ...', size=16, font='bold', color=PURPLE, maxw=HALF_W)
     p.text(x=10, y=142, value='h ←    j ↓    k ↑    l →', size=21, font='monob')
     p.nvim('<M-h>', '<M-j>', '<M-k>', '<M-l>')
     p.rex('alt+h', 'alt+j', 'alt+k', 'alt+l')
@@ -157,17 +166,17 @@ def page_gestures(p):
         p.text(x=x, y=y, value=key, size=19, font='monob', color=BLUE)
         p.text(x=x + 10, y=y - .5, value=label, size=13.5, maxw=57)
     p.nvim(*('<Space>' + key for key, _ in windows))
-    p.text(x=154, y=135, value='EDYCJA · bez SPC', size=17, font='bold', color=BLUE)
+    p.text(x=HALF_X, y=135, value='EDYCJA · bez SPC', size=17, font='bold', color=BLUE)
     edit = [('s', 'skok Flash'), ('S', 'zaznacz kod'), ('r', 'ponów zmianę'), ('jk', 'NORMAL (a)'),
             ('gc', 'komentarz (b)'), ('gcc', 'komentarz linii'), ('o/q', 'otwórz / zamknij (c)'),
             ('i/u', 'pisz / cofnij (d)')]
     p.nvim('s', 'S', 'r', 'jk', 'gc', 'gcc', 'o', 'q')
     for i, (key, label) in enumerate(edit):
-        x, y = 154 + (i % 2) * 68, 146 + (i // 2) * 10
+        x, y = HALF_X + (i % 2) * 68, 146 + (i // 2) * 10
         p.text(x=x, y=y, value=key, size=18.5, font='monob', color=BLUE, maxw=20)
         p.text(x=x + 21, y=y - .5, value=label, size=12.3, maxw=45)
-    p.text(x=154, y=183, value='(a) INSERT  (b) też zaznaczenie  (c) w drzewie  (d) domyślne Vim',
-           size=9, color=MUTED, maxw=133)
+    p.text(x=HALF_X, y=183, value='(a) INSERT  (b) też zaznaczenie  (c) w drzewie  (d) domyślne Vim',
+           size=9, color=MUTED, maxw=HALF_W)
     p.text(x=10, y=190, value="Shift: trzymaj A lub '.   Esc: trzymaj Bksp, stuknij Enter.   "
                               "Kciuki: Tab/SYM · Enter · SPC · Bksp/NUM.", size=12.1, color=MUTED, maxw=277)
     p.footer(page=1, note='Alt+h/j/k/l: najpierw okna NVIM (też INSERT), na brzegu panele Rex. '
@@ -241,7 +250,7 @@ def page_tools(p):
                           'Git: zmiana = fragment różnic.')
 
 
-def page_rex(p):
+def page_rex(p, *, resize_step):
     """Page 4: every Rex Ctrl+A binding and the resize mode."""
     p.header(page=4, title='REX: PANELE, AGENCI, SESJE', color=RUST,
              subtitle='Ctrl+A, puść oba klawisze, potem akcja. To panele terminala, nie okna Neovima.')
@@ -252,8 +261,9 @@ def page_rex(p):
                 ('r', 'tryb rozmiaru'), ('Tab', 'poprzedni panel')]
     p.rows(x=10, items=movement, start=110, step=9.4, color=RUST, keyw=21, keysize=19.5)
     p.rex('h', 'j', 'k', 'l', 'r', 'tab')
-    p.text(x=10, y=166, value='Tryb rozmiaru: h/j/k/l o 10,', size=12, color=MUTED, maxw=CW)
+    p.text(x=10, y=166, value=f'Tryb rozmiaru: h/j/k/l o {resize_step},', size=12, color=MUTED, maxw=CW)
     p.text(x=10, y=172, value='Enter lub Esc kończy.', size=12, color=MUTED, maxw=CW)
+    p.rex(*('resize/' + key for key in ('h', 'j', 'k', 'l', 'enter', 'escape')))
     p.box(x=10, y=175, w=CW, h=17, fill='#fff3e9')
     p.text(x=13, y=182, value='Alt + h/j/k/l', size=15, font='bold', maxw=83)
     p.text(x=13, y=189, value='ten sam ruch bez Ctrl+A', size=12.5, maxw=83)
@@ -274,52 +284,70 @@ def page_rex(p):
 
 def documented_nvim_maps():
     readme = (REPO / 'nvim' / 'README.md').read_text(encoding=ENCODING)
+    require(TABLE_START in readme and TABLE_END in readme, 'nvim/README.md lost its keymap table markers')
     table = readme.split(TABLE_START)[1].split(TABLE_END)[0]
-    return set(re.findall(r'\| `([^`]+)` \|', table))
+    return set(re.findall(pattern=r'\| `([^`]+)` \|', string=table))
 
 
-def configured_rex_keys():
-    """Ctrl+A sequences without the prefix, and Alt keys, as rex/init.lua binds them."""
-    source = (REPO / 'rex' / 'init.lua').read_text(encoding=ENCODING)
-    keys = {prefix.replace('ctrl+a>', '') + rest
-            for prefix, rest in re.findall(r'rex\.bind\("(ctrl\+a>|alt\+)([^"]+)"', source)}
-    directions = re.findall(r'(\w) = "(?:left|down|up|right)"', source)
-    for prefix in re.findall(r'rex\.bind\("(ctrl\+a>|alt\+)" \.\. key', source):
+def configured_rex_keys(source):
+    """Ctrl+A sequences without the prefix, Alt keys and resize-mode keys."""
+    prefixes = r'(ctrl\+a>|alt\+|resize/)'
+    keys = {prefix.replace('ctrl+a>', '') + rest for prefix, rest in
+            re.findall(pattern=r'rex\.bind\("' + prefixes + r'([^"]+)"', string=source)}
+    directions = re.findall(pattern=r'(\w) = "(?:left|down|up|right)"', string=source)
+    for prefix in re.findall(pattern=r'rex\.bind\("' + prefixes + r'" \.\. key', string=source):
         keys.update(prefix.replace('ctrl+a>', '') + key for key in directions)
     return keys
 
 
-def build(path):
+def resize_step(source):
+    match = re.search(pattern=r'RESIZE_STEP = (\d+)', string=source)
+    if match is None:
+        raise SystemExit('poster check failed: RESIZE_STEP not found in rex/init.lua')
+    return int(match.group(1))
+
+
+def build(*, path, source):
     poster = Poster(path=path)
-    for page in (page_gestures, page_code, page_tools, page_rex):
-        page(poster)
+    for page in (page_gestures, page_code, page_tools):
+        page(p=poster)
+    page_rex(poster, resize_step=resize_step(source))
     poster.canvas.save()
     return poster
 
 
-def verify(poster, path):
-    documented, configured = documented_nvim_maps(), configured_rex_keys()
-    assert poster.nvim_keys == documented, {'missing': sorted(documented - poster.nvim_keys),
-                                            'extra': sorted(poster.nvim_keys - documented)}
-    assert poster.rex_keys == configured, {'missing': sorted(configured - poster.rex_keys),
-                                           'extra': sorted(poster.rex_keys - configured)}
+def same(*, name, drawn, configured):
+    require(drawn == configured, {name: {'missing': sorted(configured - drawn),
+                                         'extra': sorted(drawn - configured)}})
+
+
+def verify(*, poster, path, source):
+    same(name='nvim', drawn=poster.nvim_keys, configured=documented_nvim_maps())
+    same(name='rex', drawn=poster.rex_keys, configured=configured_rex_keys(source))
     pages = PdfReader(stream=str(path)).pages
-    assert len(pages) == 4
+    require(len(pages) == 4, f'{len(pages)} pages instead of 4')
     for page in pages:
-        assert abs(float(page.mediabox.width) - W * mm) < .01
-        assert abs(float(page.mediabox.height) - H * mm) < .01
+        landscape = (abs(float(page.mediabox.width) - W * mm) < .01
+                     and abs(float(page.mediabox.height) - H * mm) < .01)
+        require(landscape, 'page is not A4 landscape')
         extracted = page.extract_text()
-        assert '�' not in extracted and 'FERRIS SWEEP' in extracted
+        require('�' not in extracted and 'FERRIS SWEEP' in extracted, 'text did not embed cleanly')
 
 
 def main():
     parser = argparse.ArgumentParser(description='Generate the Ferris Sweep Neovim and Rex poster.')
-    parser.add_argument('--check', action='store_true', help='verify without writing the poster')
+    parser.add_argument('--check', action='store_true', help='fail if the committed poster is stale')
     check = parser.parse_args().check
+    source = (REPO / 'rex' / 'init.lua').read_text(encoding=ENCODING)
     with tempfile.TemporaryDirectory() as tmp:
-        path = Path(tmp) / POSTER.name if check else POSTER
-        poster = build(path)
-        verify(poster, path)
+        path = Path(tmp) / POSTER.name
+        poster = build(path=path, source=source)
+        verify(poster=poster, path=path, source=source)
+        if check:
+            require(path.read_bytes() == POSTER.read_bytes(),
+                    f'{POSTER.name} is stale; run make_poster.py without --check')
+        else:
+            shutil.copyfile(src=path, dst=POSTER)
     print(f'{"Checked" if check else "Wrote"} {POSTER.name}: {len(poster.nvim_keys)} Neovim and '
           f'{len(poster.rex_keys)} Rex shortcuts match the configuration.')
 
