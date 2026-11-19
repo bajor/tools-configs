@@ -37,8 +37,9 @@ Rex actions own pane layout (rex/README.md); Neovim only calls them:
 Use Rex keys for splits, zoom and focus. Errors from Rex, such as an
 unknown agent name, appear as Neovim warnings.
 
-CLI operations use argument arrays, not concatenated shell text. The
-Python runner retains its existing shell command generation.
+Neovim starts the rex CLI with an argument array. :RexRun and the Python
+runner pass one command string that the run action executes with sh -c,
+so pipes, globs and $VARS in it are expanded by the shell.
 The existing Sidekick in-editor agent pane is still available separately.
 
 ## Python development
@@ -68,6 +69,7 @@ assumed to work without verification of the installed Rex build.
     nvim --headless '+luafile nvim/scripts/keymaps.lua'
     nvim --headless '+luafile nvim/scripts/completion.lua'
     nvim --headless '+luafile nvim/scripts/python.lua'
+    python3 rex/scripts/check_config.py
     python3 nvim/docs/keymap_sheet.py --check
 
 The Python integration test needs uv, Mason-installed Pyright/Ruff and

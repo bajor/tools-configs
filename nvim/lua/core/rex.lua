@@ -19,7 +19,8 @@ local function invoke(argv)
     on_exit = function(_, code)
       if code ~= 0 then
         vim.schedule(function()
-          vim.notify("Rex CLI failed: " .. vim.trim(table.concat(errors, " ")), vim.log.levels.WARN)
+          local detail = vim.trim(table.concat(errors, " "))
+          vim.notify(("Rex CLI failed (exit %d): %s"):format(code, detail), vim.log.levels.WARN)
         end)
       end
     end,
