@@ -143,10 +143,9 @@ the result only if tests fail. No additional plugin or subscription needed.
 1. Confirm rex version and rex config check on Mac and VPS.
 2. Open the remote host from Rex for Mac and create a persistent session.
 3. Disconnect/reconnect; confirm the programs are still there.
-4. Run nvim --headless '+luafile nvim/scripts/rex.lua',
-   python3 rex/scripts/check_config.py and python3 rex/scripts/check_editor.py
-   in the repo. The last two start a throwaway Rex server with this init.lua;
-   they never touch the running one.
+4. Run nvim --headless '+luafile nvim/scripts/rex.lua' and
+   python3 rex/scripts/check_config.py in the repo. The second starts a
+   throwaway Rex server with this init.lua; it never touches the running one.
 5. Test Alt+h/j/k/l between shell and Neovim panes, agents, test panes
    and OSC 52 clipboard.
 6. If the installed Rex build lacks an action, run rex actions from that

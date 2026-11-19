@@ -35,21 +35,11 @@ W, H = 297, 210  # A4 landscape, millimetres
 EDGE = 9  # nothing is drawn closer than this to the paper edge, in mm
 INK, MUTED, LINE = '#142126', '#46545a', '#b8c2c4'
 BLUE, GREEN, PURPLE, RUST = '#005c85', '#176449', '#70438d', '#a13f21'
-# Debian and Ubuntu ship the fonts here; the macOS font-dejavu cask puts the
-# same files in the user's font directory.
-FONT_DIRS = (Path('/usr/share/fonts/truetype/dejavu'), Path.home() / 'Library/Fonts')
+FONTS = Path('/usr/share/fonts/truetype/dejavu')
 COLS, CW = [10, 104, 198], 89  # column x positions and width, mm
 HALF_X, HALF_W = 154, 133  # page 1 right half: x position and text width, mm
 THUMB_LABELS = {'tab': 'Tab', 'enter': 'Ent', 'space': 'SPC', 'back': 'Bk'}
 CORNERS = ['LEWY GÓRNY', 'PRAWY GÓRNY', 'LEWY DOLNY', 'PRAWY DOLNY']
-
-
-def font_dir():
-    for directory in FONT_DIRS:
-        if (directory / 'DejaVuSans.ttf').is_file():
-            return directory
-    raise SystemExit('DejaVu fonts not found in: '
-                     + ', '.join(str(d) for d in FONT_DIRS))
 
 
 def require(condition, detail):
@@ -62,10 +52,9 @@ class Poster:
     that records which shortcuts the drawn pages mention."""
 
     def __init__(self, *, path):
-        fonts = font_dir()
         for name, file in [('sans', 'DejaVuSans.ttf'), ('bold', 'DejaVuSans-Bold.ttf'),
                            ('mono', 'DejaVuSansMono.ttf'), ('monob', 'DejaVuSansMono-Bold.ttf')]:
-            pdfmetrics.registerFont(font=TTFont(name=name, filename=str(fonts / file)))
+            pdfmetrics.registerFont(font=TTFont(name=name, filename=str(FONTS / file)))
         self.canvas = canvas.Canvas(filename=str(path), pagesize=(W * mm, H * mm),
                                     pageCompression=1, invariant=1)
         self.canvas.setTitle(title='Ferris Sweep | Neovim + Rex | plakat 4 × A4')
@@ -272,15 +261,12 @@ def page_rex(p, *, resize_step):
                 ('r', 'tryb rozmiaru'), ('Tab', 'poprzedni panel')]
     p.rows(x=10, items=movement, start=110, step=9.4, color=RUST, keyw=21, keysize=19.5)
     p.rex('h', 'j', 'k', 'l', 'r', 'tab')
-    p.text(x=10, y=164, value=f'Tryb rozmiaru: h/j/k/l o {resize_step}. Enter/Esc kończy.',
-           size=10.5, color=MUTED, maxw=CW)
+    p.text(x=10, y=166, value=f'Tryb rozmiaru: h/j/k/l o {resize_step},', size=12, color=MUTED, maxw=CW)
+    p.text(x=10, y=172, value='Enter lub Esc kończy.', size=12, color=MUTED, maxw=CW)
     p.rex(*('resize/' + key for key in ('h', 'j', 'k', 'l', 'enter', 'escape')))
-    p.box(x=10, y=167, w=CW, h=25, fill='#fff3e9')
-    p.text(x=13, y=173, value='ALT · bez prefiksu', size=13.5, font='bold', color=RUST, maxw=83)
-    p.text(x=13, y=179.5, value='h j k l  panel / okno', size=12, font='monob', maxw=83)
-    p.text(x=13, y=185, value='p plik   b bufor   f szukaj', size=12, font='monob', maxw=83)
-    p.text(x=13, y=190.5, value='n następny   Shift+n wstecz', size=12, font='monob', maxw=83)
-    p.rex('alt+p', 'alt+b', 'alt+n', 'alt+shift+n', 'alt+f')
+    p.box(x=10, y=175, w=CW, h=17, fill='#fff3e9')
+    p.text(x=13, y=182, value='Alt + h/j/k/l', size=15, font='bold', maxw=83)
+    p.text(x=13, y=189, value='ten sam ruch bez Ctrl+A', size=12.5, maxw=83)
     panes = [('v', 'nowy panel →'), ('s', 'nowy panel ↓'), ('z', 'powiększ / przywróć'),
              ('x', 'zamknij panel!'), ('b', 'wyrównaj panele'), ('f', 'panel pływający'),
              ('g', 'wybierz panel'), ('a', 'aktywność paneli'), ('e', 'terminal: pokaż / ukryj')]
