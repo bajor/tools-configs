@@ -98,6 +98,36 @@ the cwd argument, else in the directory of the pane's foreground program.
 - Space+t calls the scratch action
 - Splits, zoom and focus are Rex keys only (Ctrl+A v/s/z, Alt+h/j/k/l)
 
+## Editor: Rex switches files, Neovim edits
+
+Rex owns window and file switching; Neovim is left to edit text. Rex starts
+one Neovim per project root with `--listen` and afterwards drives it over that
+socket, so nvim/ needs no configuration for this and stays a plain checkout.
+The editor pane is labelled `editor:<project>`.
+
+| Key | Action | VS Code equivalent |
+| --- | --- | --- |
+| Alt+p | Pick a file and open it | Cmd+P quick open |
+| Alt+b | Pick an open buffer | editor dropdown |
+| Alt+n / Alt+Shift+n | Next / previous buffer | Cmd+Tab / Cmd+Shift+Tab |
+| Alt+f | Search the project, pick a match | Cmd+Shift+F |
+
+`edit` lists tracked and untracked files, honouring `.gitignore`, and falls
+back to `find` outside Git. `search` needs ripgrep. The first open splits an
+editor pane at 60%; later opens reuse it and focus it.
+
+Each action takes its argument so scripts never block on a prompt:
+
+    rex do edit path=src/main.py cwd="$HOME/project"
+    rex do buffer_cycle direction=prev
+    rex do search pattern=TODO
+
+Alt+p, Alt+b, Alt+n and Alt+f now belong to Rex, so programs in panes no
+longer receive them, in the same way as Alt+h/j/k/l.
+
+Telescope and nvim-tree stay bound inside Neovim. Stop using Space+ff, Space+fg
+and Space+e if file switching should come from Rex alone.
+
 ## Advanced Lua automation
 
 In a Rex terminal within the project checkout:
@@ -113,9 +143,10 @@ the result only if tests fail. No additional plugin or subscription needed.
 1. Confirm rex version and rex config check on Mac and VPS.
 2. Open the remote host from Rex for Mac and create a persistent session.
 3. Disconnect/reconnect; confirm the programs are still there.
-4. Run nvim --headless '+luafile nvim/scripts/rex.lua' and
-   python3 rex/scripts/check_config.py in the repo. The second starts a
-   throwaway Rex server with this init.lua; it never touches the running one.
+4. Run nvim --headless '+luafile nvim/scripts/rex.lua',
+   python3 rex/scripts/check_config.py and python3 rex/scripts/check_editor.py
+   in the repo. The last two start a throwaway Rex server with this init.lua;
+   they never touch the running one.
 5. Test Alt+h/j/k/l between shell and Neovim panes, agents, test panes
    and OSC 52 clipboard.
 6. If the installed Rex build lacks an action, run rex actions from that
