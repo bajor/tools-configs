@@ -19,16 +19,16 @@ The editor stays useful outside Rex, with an in-editor terminal fallback.
 
 ## Editor and Rex navigation
 
-Space+h/j/k/l switches Neovim windows first; when there is no adjacent
-editor window it sends rex focus left/down/up/right in the same Rex session.
-This requires the REX_BLOCK variable and the local Rex CLI. It does not
-cross a plain SSH shell or arbitrarily focus another Rex server.
+Alt+h/j/k/l moves left/down/up/right everywhere, with no prefix. Rex owns
+the key (rex/init.lua): in a shell, agent or test pane it focuses the next
+Rex pane; in a pane running Neovim it hands the key to Neovim. Neovim then
+switches editor windows first and, when there is no adjacent editor window,
+runs rex focus in the same Rex session. Insert and terminal mode return to
+normal mode first. Editor-to-Rex hand-off requires REX_BLOCK and the local
+Rex CLI; it does not cross a plain SSH shell or focus another Rex server.
 
 Space+v and Space+s create editor windows. Ctrl+A then v/s in Rex creates
-independent terminal panes. Neovim terminal mode Ctrl+h/j/k/l exits input
-mode and uses the same editor window -> Rex pane navigation. Use Ctrl+A
-then h/j/k/l from a shell, agent or test pane to return to the editor.
-Unprefixed shell control keys remain untouched.
+independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
 
 Other native Rex features from Neovim:
 - :RexSplitRight and :RexSplitBelow create terminal panes with the editor CWD
@@ -72,22 +72,23 @@ assumed to work without verification of the installed Rex build.
 
 The Python integration test needs uv, Mason-installed Pyright/Ruff and
 pytest. The keyboard reference is generated from the unchanged Neovim
-mappings; Ferris Sweep SVG/PDF remain under nvim/docs. Rex-only prefix
-bindings live in rex/init.lua and are documented separately.
+mappings; Ferris Sweep SVG/PDF remain under nvim/docs. Rex bindings live in
+rex/init.lua and are documented in rex/README.md. Alt+h/j/k/l are the only
+Alt maps Neovim may define; nvim/scripts/keymaps.lua rejects any other.
 
 ## Generated Neovim keyboard reference
 
 <!-- keymaps:start -->
 | Mode | Keys | Action |
 | --- | --- | --- |
-| t | `<C-H>` | Terminal window h |
-| t | `<C-J>` | Terminal window j |
-| t | `<C-K>` | Terminal window k |
-| t | `<C-L>` | Terminal window l |
 | i | `<C-N>` | Completion next |
 | i | `<C-P>` | Completion previous |
 | t | `<C-Q>` | Terminal normal mode |
 | i | `<CR>` | Confirm completion or newline |
+| i,n,t | `<M-h>` | Window left |
+| i,n,t | `<M-j>` | Window down |
+| i,n,t | `<M-k>` | Window up |
+| i,n,t | `<M-l>` | Window right |
 | n,x | `<Space>aa` | Toggle agent pane |
 | n,x | `<Space>ac` | Open Claude |
 | n,x | `<Space>ad` | Detach agent |
@@ -128,10 +129,6 @@ bindings live in rex/init.lua and are documented separately.
 | n | `<Space>gr` | Reset hunk |
 | n | `<Space>gs` | Stage hunk |
 | n | `<Space>gv` | Preview hunk |
-| n | `<Space>h` | Window left |
-| n | `<Space>j` | Window down |
-| n | `<Space>k` | Window up |
-| n | `<Space>l` | Window right |
 | n | `<Space>n` | Clear search highlight |
 | n | `<Space>o` | Only window |
 | n | `<Space>q` | Close quickfix |

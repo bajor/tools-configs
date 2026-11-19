@@ -12,6 +12,11 @@ local function check()
   assert(rex.navigate("l") and vim.api.nvim_get_current_win() == right)
   assert(not rex.navigate("l") and vim.api.nvim_get_current_win() == right)
   assert(rex.navigate("h") and vim.api.nvim_get_current_win() == left)
+  -- Given insert mode in the left window, When Rex sends Alt+l, Then the
+  -- right window is focused in normal mode.
+  vim.api.nvim_feedkeys("i" .. vim.keycode("<M-l>"), "xt", false)
+  assert(vim.api.nvim_get_current_win() == right, "Alt+l did not reach the right window")
+  assert(vim.api.nvim_get_mode().mode == "n", "Alt+l left Neovim in insert mode")
   local args = rex.split_args("right", { "opencode" },
     { block = "test", cwd = "/tmp/has spaces", ratio = 40, interactive = true })
   assert(vim.deep_equal(args, {

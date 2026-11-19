@@ -47,14 +47,19 @@ same thing as a remote Rex session.
 
 ## Keyboard shortcuts
 
+Alt+h/j/k/l focuses the pane left/down/up/right, with no prefix. When the
+focused pane runs Neovim, Rex writes the Alt key into that pane instead,
+so Neovim can move between its own windows first and call rex focus at its
+edge. Rex writes the escape sequence itself, so it works whether or not the
+Mac client treats Option as Alt.
+
 Ctrl+A is a Rex prefix (press, release, then the next key).
 The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 
 | Rex prefix | Action |
 | --- | --- |
-| h/j/k/l | Focus pane left/down/up/right |
+| r | Resize mode: h/j/k/l resize by 10, Enter or Escape leaves |
 | v/s | Split pane right/below |
-| Shift+h/j/k/l | Resize pane by 10 |
 | z / x | Zoom or close current pane |
 | b / f | Balance panes / float pane |
 | g / a | Go to any pane / view activity |
@@ -63,9 +68,8 @@ The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 | Tab | Focus previous pane |
 | Ctrl+A | Send literal Ctrl+A |
 
-Neovim uses Space+h/j/k/l to move internally and falls through to
-Rex only at the outer editor boundary. Shell and agent panes use the
-Rex prefix above. This avoids stealing default shell Ctrl+h/j/k/l.
+Alt is used instead of Ctrl because shells and agent prompts already use
+Ctrl+h/j/k/l (backspace, newline, kill line, clear screen).
 
 ## From Neovim
 
@@ -91,7 +95,8 @@ the result only if tests fail. No additional plugin or subscription needed.
 2. Open the remote host from Rex for Mac and create a persistent session.
 3. Disconnect/reconnect; confirm the programs are still there.
 4. Run nvim --headless '+luafile nvim/scripts/rex.lua' in the repo.
-5. Test editor-edge navigation, agents, test panes and OSC 52 clipboard.
+5. Test Alt+h/j/k/l between shell and Neovim panes, agents, test panes
+   and OSC 52 clipboard.
 6. If the installed Rex build lacks an action, run rex actions from that
    client and adjust Lua bindings; the beta API can change.
 

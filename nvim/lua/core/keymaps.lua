@@ -42,14 +42,15 @@ map('n', '<leader>gb', '<Cmd>Gitsigns blame_line<CR>', { desc = 'Blame line' })
 map('n', '<leader>gB', '<Cmd>Gitsigns blame<CR>', { desc = 'Blame buffer' })
 map('n', '<leader>gd', '<Cmd>Gitsigns diffthis<CR>', { desc = 'Diff file' })
 
-map('n', '<leader>h', function() require('core.rex').navigate('h') end,
-  { desc = 'Window left' })
-map('n', '<leader>j', function() require('core.rex').navigate('j') end,
-  { desc = 'Window down' })
-map('n', '<leader>k', function() require('core.rex').navigate('k') end,
-  { desc = 'Window up' })
-map('n', '<leader>l', function() require('core.rex').navigate('l') end,
-  { desc = 'Window right' })
+-- Rex sends Alt+h/j/k/l here when Neovim has the pane (rex/init.lua);
+-- core.rex moves between editor windows, then Rex panes at the edge.
+local window_names = { h = 'left', j = 'down', k = 'up', l = 'right' }
+for direction, name in pairs(window_names) do
+  local navigate = '<Cmd>lua require("core.rex").navigate("' .. direction .. '")<CR>'
+  map('n', '<M-' .. direction .. '>', navigate, { desc = 'Window ' .. name })
+  map({ 'i', 't' }, '<M-' .. direction .. '>', '<C-\\><C-n>' .. navigate,
+    { desc = 'Window ' .. name })
+end
 map('n', '<leader>v', '<Cmd>vsplit<CR>', { desc = 'Vertical split' })
 map('n', '<leader>s', '<Cmd>split<CR>', { desc = 'Horizontal split' })
 map('n', '<leader>x', '<Cmd>close<CR>', { desc = 'Close window' })
@@ -58,11 +59,6 @@ map('n', '<leader>t', '<Cmd>ToggleTerm<CR>', { desc = 'Toggle terminal' })
 map('n', '<leader>e', '<Cmd>NvimTreeToggle<CR>', { desc = 'File tree' })
 map('n', '<leader>q', '<Cmd>cclose<CR>', { desc = 'Close quickfix' })
 map('n', '<leader>n', '<Cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
-for _, direction in ipairs({ 'h', 'j', 'k', 'l' }) do
-  map('t', '<C-' .. direction .. '>',
-    '<C-\\><C-n><Cmd>lua require("core.rex").navigate("' .. direction .. '")<CR>',
-    { desc = 'Terminal window ' .. direction })
-end
 map('t', '<C-q>', '<C-\\><C-n>', { desc = 'Terminal normal mode' })
 
 map('n', '<leader>dc', '<Cmd>DapContinue<CR>', { desc = 'Debug continue' })
