@@ -56,23 +56,15 @@
 <text x="62.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Git</text>
 <rect x="78.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="78.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">H</text>
-<text x="78.80" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="78.80" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">left</text>
 <rect x="91.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="92.30" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">J</text>
 <text x="103.70" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Gui</text>
-<text x="92.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="92.30" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">down</text>
 <rect x="105.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="105.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">K</text>
 <text x="117.20" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Ctl</text>
-<text x="105.80" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="105.80" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">up</text>
 <rect x="118.50" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="119.30" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">L</text>
 <text x="130.70" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Alt</text>
-<text x="119.30" y="43.74" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">Window</text>
-<text x="119.30" y="46.57" font-size="2.4" fill="#1b2b30" font-weight="normal" text-anchor="start">right</text>
 <rect x="132.00" y="37.70" width="13.0" height="10.7" rx="1.2" fill="#f4f6f7" stroke="#b9c2c6" stroke-width="0.25"/>
 <text x="132.80" y="40.70" font-size="2.4" fill="#66767c" font-weight="bold" text-anchor="start">'</text>
 <text x="144.20" y="40.50" font-size="1.5" fill="#66767c" font-weight="normal" text-anchor="end">Sft</text>
@@ -119,30 +111,30 @@
 <text x="92.30" y="65.97" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">Bksp</text>
 <text x="92.30" y="68.57" font-size="2.2" fill="#1b2b30" font-weight="normal" text-anchor="start">hold Num</text>
 <text x="151.50" y="24.20" font-size="3.6" fill="#1b2b30" font-weight="bold" text-anchor="start">Other keys</text>
-<text x="151.50" y="28.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">t</text>
-<text x="159.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-h</text>
-<text x="169.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Terminal window h</text>
-<text x="151.50" y="31.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">t</text>
-<text x="159.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-j</text>
-<text x="169.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Terminal window j</text>
+<text x="151.50" y="28.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
+<text x="159.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-n</text>
+<text x="169.50" y="28.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion next</text>
+<text x="151.50" y="31.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
+<text x="159.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-p</text>
+<text x="169.50" y="31.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion previous</text>
 <text x="151.50" y="35.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">t</text>
-<text x="159.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-k</text>
-<text x="169.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Terminal window k</text>
-<text x="151.50" y="38.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">t</text>
-<text x="159.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-l</text>
-<text x="169.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Terminal window l</text>
-<text x="151.50" y="41.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
-<text x="159.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-n</text>
-<text x="169.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion next</text>
-<text x="151.50" y="44.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
-<text x="159.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-p</text>
-<text x="169.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion previous</text>
-<text x="151.50" y="48.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">t</text>
-<text x="159.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-q</text>
-<text x="169.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Terminal normal mode</text>
-<text x="151.50" y="51.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
-<text x="159.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Enter</text>
-<text x="169.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Confirm completion or newline</text>
+<text x="159.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">C-q</text>
+<text x="169.50" y="35.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Terminal normal mode</text>
+<text x="151.50" y="38.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
+<text x="159.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Enter</text>
+<text x="169.50" y="38.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Confirm completion or newline</text>
+<text x="151.50" y="41.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i,n,t</text>
+<text x="159.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">M-h</text>
+<text x="169.50" y="41.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Window left</text>
+<text x="151.50" y="44.75" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i,n,t</text>
+<text x="159.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">M-j</text>
+<text x="169.50" y="44.75" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Window down</text>
+<text x="151.50" y="48.00" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i,n,t</text>
+<text x="159.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">M-k</text>
+<text x="169.50" y="48.00" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Window up</text>
+<text x="151.50" y="51.25" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i,n,t</text>
+<text x="159.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">M-l</text>
+<text x="169.50" y="51.25" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Window right</text>
 <text x="151.50" y="54.50" font-size="2.0" fill="#66767c" font-weight="normal" text-anchor="start">i</text>
 <text x="159.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="bold" text-anchor="start">Tab</text>
 <text x="169.50" y="54.50" font-size="2.0" fill="#1b2b30" font-weight="normal" text-anchor="start">Completion next or Tab</text>

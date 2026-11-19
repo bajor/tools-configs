@@ -4,6 +4,13 @@
 
 ### Changed
 
+- Move pane navigation into Rex: Alt+h/j/k/l focuses Rex panes with no
+  prefix and hands the key to Neovim when it owns the pane, replacing
+  Space+h/j/k/l, terminal-mode Ctrl+h/j/k/l and Ctrl+A h/j/k/l. Replace
+  Ctrl+A Shift+h/j/k/l with a Ctrl+A r resize mode.
+
+### Changed
+
 - Replace the remote terminal multiplexer and mosh configuration with
   native Rex Mac/Linux remote sessions; remove the old multiplexer directory.
 - Add Rex Lua key sequences and test event automation, smart Neovim-to-Rex
