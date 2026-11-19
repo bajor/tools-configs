@@ -3,9 +3,7 @@ local python = require('config.python')
 local last_run
 
 local function execute(command)
-  local rex = require('core.rex')
-  if rex.available() then return rex.run_shell(command) end
-  require('toggleterm').exec(command, 1, 15, nil, 'horizontal')
+  return require('core.rex').run_shell(command)
 end
 
 local function run(arguments)

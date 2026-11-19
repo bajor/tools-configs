@@ -95,6 +95,7 @@ the cwd argument, else in the directory of the pane's foreground program.
 - :RexAgent opencode, :RexAgent pi, :RexAgent claude call the agent action
 - :RexRun go test ./... calls the run action with the editor CWD
 - Space+rr/rt/rl Python actions call the run action
+- Space+t calls the scratch action
 - Splits, zoom and focus are Rex keys only (Ctrl+A v/s/z, Alt+h/j/k/l)
 
 ## Advanced Lua automation

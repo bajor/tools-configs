@@ -3,7 +3,7 @@
 This is the single Neovim configuration. It uses native Rex sessions,
 terminals and panes, without nested multiplexers or mosh. The remote
 connection is Rex for macOS -> SSH -> Rex Server on Linux -> Neovim.
-The editor stays useful outside Rex, with an in-editor terminal fallback.
+Editing works outside Rex; panes, terminals and runners need a Rex terminal.
 
 ## Installation
 
@@ -34,6 +34,7 @@ independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
 Rex actions own pane layout (rex/README.md); Neovim only calls them:
 - :RexAgent opencode, :RexAgent claude or :RexAgent pi starts an agent
 - :RexRun go test ./... runs a command and preserves its output
+- Space+t opens the scratch action's floating Rex shell
 Use Rex keys for splits, zoom and focus. Errors from Rex, such as an
 unknown agent name, appear as Neovim warnings.
 
@@ -48,8 +49,8 @@ Pyright provides types, definitions and completion; Ruff handles lint and
 formatting; debugpy provides DAP. One interpreter resolver is shared by
 LSP, DAP and Python run/test actions. Space+rr runs the current saved
 Python file, Space+rt runs pytest on it, and Space+rl repeats.
-When inside a native Rex terminal, commands run in a new Rex pane below
-with retained output. Outside Rex they use ToggleTerm as before.
+They call the Rex run action, so the command runs in a new Rex pane below
+with retained output. Outside a Rex terminal they warn instead of running.
 
 External editor changes are checked on activity instead of relying only
 on terminal focus events. Automatic saves refuse conflicting disk changes.
@@ -138,7 +139,7 @@ Alt maps Neovim may define; nvim/scripts/keymaps.lua rejects any other.
 | n | `<Space>rr` | Run Python file |
 | n | `<Space>rt` | Test Python file with pytest |
 | n | `<Space>s` | Horizontal split |
-| n | `<Space>t` | Toggle terminal |
+| n | `<Space>t` | Floating terminal |
 | n | `<Space>v` | Vertical split |
 | n | `<Space>x` | Close window |
 | i | `<Tab>` | Completion next or Tab |
