@@ -5,8 +5,11 @@
 ### Changed
 
 - Add the root iPad wallpaper, a black 1640 x 2360 PNG for an iPad Air 11"
-  holding 8 Rex and 8 Neovim shortcuts. Each row draws the Ferris Sweep with
-  its keys lit, naming the home-row letter to hold rather than a modifier this
+  (M3) holding 8 Rex and 8 Neovim shortcuts. It has no title, legend or
+  section headings, only muted colours centred with at least 150 px of black
+  on every side. Each row draws the Ferris Sweep with its keys lit beside a
+  one-line description, with a x2 tag on a key tapped twice, as in Space f f.
+  A row names the home-row letter to hold rather than a modifier this
   keyboard has no key for: Alt+n holds S and Alt+f holds L, because a modifier
   and its letter sit on opposite hands, and Ctrl+A holds K because A is Shift
   when held. The 4 x A4 poster does not yet draw the Alt editor keys, so
