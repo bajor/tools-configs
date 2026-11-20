@@ -20,8 +20,6 @@ READY_TIMEOUT_S, SETTLE_S = 10, 1.5
 SHARE_TOLERANCE = 0.01
 RUN_SHARE, AGENT_SHARE = 0.3, 0.4
 NAVIGATION_MODS = "ctrl,shift"
-# Letters that Option+letter types on the Polish Pro layout: ą ć ę ł ń ó ś ź ż.
-POLISH_OPTION_LETTERS = "acelnosxz"
 # Rex panes inherit these; a stale value would point the CLI at the live server.
 REX_ENV = ("REX_SERVER", "REX_SESSION", "REX_BLOCK")
 
@@ -98,12 +96,12 @@ def check(rex, *, tmp):
     refused = rex("do", "-s", "check", "-b", shell, "agent", "name=bogus", check=False)
     assert refused.returncode != 0 and "unknown agent" in refused.stderr, refused.stderr
 
-    # Given this config, When a client fetches its keymap, Then no Option key that
-    # types a Polish letter (with or without Shift) is bound, so the pane gets the letter.
+    # Given this config file's bindings, When they are listed, Then none uses Option,
+    # which types letters such as ł and ń on the Polish Pro layout.
     keymap = json.loads(rex("keymap", "--json").stdout)
     taken = sorted({key for binding in keymap["bindings"] for key in binding["keys"]
-                    if "alt" in key.split("+")[:-1] and key.split("+")[-1] in POLISH_OPTION_LETTERS})
-    assert not taken, f"Rex binds {taken}, which Polish Pro needs for letters"
+                    if "alt" in key.split("+")[:-1]})
+    assert not taken, f"Rex binds Option keys {taken}; Polish Pro needs Option for letters"
 
     # Given a shell above the run pane, When Ctrl+Shift+j is pressed, Then Rex focuses the run pane.
     rex("block", "focus", "-s", "check", shell)

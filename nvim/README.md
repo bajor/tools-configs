@@ -26,13 +26,15 @@ pane; in a pane running Neovim it lets the key through to Neovim. In normal,
 insert and terminal mode Neovim then switches editor windows first and,
 when there is no adjacent editor window, runs rex focus in the same Rex
 session. Insert and terminal mode return to normal mode first. Ctrl+A then
-h/j/k/l always focuses Rex panes, from any program. Editor-to-Rex hand-off requires REX_BLOCK and the local
+h/j/k/l always focuses Rex panes, from any program, on clients that apply
+Rex bindings. Editor-to-Rex hand-off requires REX_BLOCK and the local
 Rex CLI; it does not cross a plain SSH shell or focus another Rex server.
 
-The iPad Rex app does not apply Rex bindings and sends keys straight to the
-pane, so on the iPad these keys work only from Neovim panes, where the
-Neovim mapping alone does the switching. No navigation key uses Option,
-which types letters such as ł and ń on the Polish Pro layout.
+The iPad Rex app does not apply Rex bindings, Ctrl+A keys included, and
+sends keys straight to the pane. On the iPad, Ctrl+Shift+h/j/k/l therefore
+works only from Neovim panes, where the Neovim mapping alone does the
+switching; tap other panes. No navigation key uses Option, which types
+letters such as ł and ń on the Polish Pro layout.
 
 Space+v and Space+s create editor windows. Ctrl+A then v/s in Rex creates
 independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
