@@ -6,8 +6,6 @@ local MAP_MODES = { 'n', 'i', 't', 'x', 's', 'o', 'c', 'l' }
 local TYPING_MODES = { i = true, t = true, s = true, c = true, l = true }
 -- Rex owns host modifier shortcuts; keep Neovim shortcuts portable on Ferris Sweep.
 local UNSUPPORTED_MODIFIERS = { D = true, M = true, A = true }
--- The one exception: Rex hands Alt+h/j/k/l to Neovim for window navigation.
-local REX_NAVIGATION_KEYS = { ['<M-H>'] = true, ['<M-J>'] = true, ['<M-K>'] = true, ['<M-L>'] = true }
 -- ui.lua supplies the tree's complete on_attach map set. Other buffer maps
 -- belong to plugin defaults, so validate them without documenting them here.
 local OWNED_BUFFER_SCOPES = { NvimTree = true }
@@ -100,10 +98,7 @@ local function violations_for(entry)
   local has_desc = (map.desc or ''):match('%S')
   local reasons = {}
   if TYPING_MODES[mode] and leader then reasons[#reasons + 1] = 'leader in typing mode' end
-  local rex_navigation = entry.scope == 'global' and REX_NAVIGATION_KEYS[lhs]
-  if has_unsupported_key(map.lhs) and not rex_navigation then
-    reasons[#reasons + 1] = 'unsupported key'
-  end
+  if has_unsupported_key(map.lhs) then reasons[#reasons + 1] = 'unsupported key' end
   if (entry.scope == 'global' or leader) and not has_desc then
     reasons[#reasons + 1] = 'needs desc'
   end

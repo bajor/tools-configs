@@ -19,14 +19,20 @@ Editing works outside Rex; panes, terminals and runners need a Rex terminal.
 
 ## Editor and Rex navigation
 
-Alt+h/j/k/l moves left/down/up/right with no prefix. Rex owns the key
+Ctrl+Shift+h/j/k/l moves left/down/up/right with no prefix (on the Ferris
+Sweep, hold A and D, then tap the letter). Rex binds the key
 (rex/init.lua): in a shell, agent or test pane it focuses the next Rex
-pane; in a pane running Neovim it hands the key to Neovim. In normal,
+pane; in a pane running Neovim it lets the key through to Neovim. In normal,
 insert and terminal mode Neovim then switches editor windows first and,
 when there is no adjacent editor window, runs rex focus in the same Rex
 session. Insert and terminal mode return to normal mode first. Ctrl+A then
 h/j/k/l always focuses Rex panes, from any program. Editor-to-Rex hand-off requires REX_BLOCK and the local
 Rex CLI; it does not cross a plain SSH shell or focus another Rex server.
+
+The iPad Rex app does not apply Rex bindings and sends keys straight to the
+pane, so on the iPad these keys work only from Neovim panes, where the
+Neovim mapping alone does the switching. No navigation key uses Option,
+which types letters such as ł and ń on the Polish Pro layout.
 
 Space+v and Space+s create editor windows. Ctrl+A then v/s in Rex creates
 independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
@@ -72,17 +78,19 @@ assumed to work without verification of the installed Rex build.
     nvim --headless '+luafile nvim/scripts/python.lua'
     python3 rex/scripts/check_config.py
     python3 nvim/docs/keymap_sheet.py --check
-    uv run --no-project --with reportlab==5.1.0 --with pypdf python3 make_poster.py --check
+
+The nvim commands load ~/.config/nvim. To check another checkout, such as
+one about to be deployed, set XDG_CONFIG_HOME to a directory whose nvim
+entry links to that checkout's nvim/.
 
 The Python integration test needs uv, Mason-installed Pyright/Ruff and
 pytest. The keyboard reference is generated from the unchanged Neovim
-mappings; Ferris Sweep SVG/PDF remain under nvim/docs. The printable 4 x A4
-poster at the repository root is laid out by make_poster.py (needs the
-DejaVu fonts, package fonts-dejavu-core). --check fails when the poster
-misses a Neovim map or Rex binding, or differs from a fresh build; rerun
-it without --check after changing shortcuts. Rex bindings live in
-rex/init.lua and are documented in rex/README.md. Alt+h/j/k/l are the only
-Alt maps Neovim may define; nvim/scripts/keymaps.lua rejects any other.
+mappings; Ferris Sweep SVG/PDF remain under nvim/docs. After changing
+shortcuts, regenerate it with
+`uv run --no-project --with cairosvg python3 nvim/docs/keymap_sheet.py`
+(cairosvg needs the system libcairo). Rex bindings live in rex/init.lua and
+are documented in rex/README.md. nvim/scripts/keymaps.lua rejects Neovim
+maps that use Alt, Meta or Cmd.
 
 ## Generated Neovim keyboard reference
 
@@ -92,11 +100,11 @@ Alt maps Neovim may define; nvim/scripts/keymaps.lua rejects any other.
 | i | `<C-N>` | Completion next |
 | i | `<C-P>` | Completion previous |
 | t | `<C-Q>` | Terminal normal mode |
+| i,n,t | `<C-S-H>` | Window left |
+| i,n,t | `<C-S-J>` | Window down |
+| i,n,t | `<C-S-K>` | Window up |
+| i,n,t | `<C-S-L>` | Window right |
 | i | `<CR>` | Confirm completion or newline |
-| i,n,t | `<M-h>` | Window left |
-| i,n,t | `<M-j>` | Window down |
-| i,n,t | `<M-k>` | Window up |
-| i,n,t | `<M-l>` | Window right |
 | n,x | `<Space>aa` | Toggle agent pane |
 | n,x | `<Space>ac` | Open Claude |
 | n,x | `<Space>ad` | Detach agent |

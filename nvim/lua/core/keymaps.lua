@@ -42,13 +42,15 @@ map('n', '<leader>gb', '<Cmd>Gitsigns blame_line<CR>', { desc = 'Blame line' })
 map('n', '<leader>gB', '<Cmd>Gitsigns blame<CR>', { desc = 'Blame buffer' })
 map('n', '<leader>gd', '<Cmd>Gitsigns diffthis<CR>', { desc = 'Diff file' })
 
--- Rex sends Alt+h/j/k/l here when Neovim has the pane (rex/init.lua);
--- core.rex moves between editor windows, then Rex panes at the edge.
+-- Rex passes Ctrl+Shift+h/j/k/l through when Neovim has the pane
+-- (rex/init.lua), and clients that skip Rex keymaps, such as the iPad app,
+-- send them here directly. core.rex moves between editor windows, then Rex
+-- panes at the edge.
 local window_names = { h = 'left', j = 'down', k = 'up', l = 'right' }
 for direction, name in pairs(window_names) do
   local navigate = '<Cmd>lua require("core.rex").navigate("' .. direction .. '")<CR>'
-  map('n', '<M-' .. direction .. '>', navigate, { desc = 'Window ' .. name })
-  map({ 'i', 't' }, '<M-' .. direction .. '>', '<C-\\><C-n>' .. navigate,
+  map('n', '<C-S-' .. direction .. '>', navigate, { desc = 'Window ' .. name })
+  map({ 'i', 't' }, '<C-S-' .. direction .. '>', '<C-\\><C-n>' .. navigate,
     { desc = 'Window ' .. name })
 end
 map('n', '<leader>v', '<Cmd>vsplit<CR>', { desc = 'Vertical split' })
