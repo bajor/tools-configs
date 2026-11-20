@@ -4,8 +4,9 @@
     python3 rex/scripts/check_config.py
 
 Starts `rex server run` on a private socket with this repository's config,
-then drives it through the CLI: the run, agent and scratch actions, and
-Alt+h/j/k/l between a shell and Neovim. Needs rex and nvim on PATH.
+then drives it through the CLI: the run, agent and scratch actions,
+Ctrl+Shift+h/j/k/l between a shell and Neovim, and Option keys left free for
+Polish letters. Needs rex and nvim on PATH.
 """
 import json
 import os
@@ -18,6 +19,9 @@ CONFIG = Path(__file__).resolve().parent.parent / "init.lua"
 READY_TIMEOUT_S, SETTLE_S = 10, 1.5
 SHARE_TOLERANCE = 0.01
 RUN_SHARE, AGENT_SHARE = 0.3, 0.4
+NAVIGATION_MODS = "ctrl,shift"
+# Letters that Option+letter types on the Polish Pro layout: ą ć ę ł ń ó ś ź ż.
+POLISH_OPTION_LETTERS = "acelnosxz"
 # Rex panes inherit these; a stale value would point the CLI at the live server.
 REX_ENV = ("REX_SERVER", "REX_SESSION", "REX_BLOCK")
 
@@ -35,7 +39,7 @@ def main():
         finally:
             server.terminate()
             server.wait()
-    print("Rex config: run, agent, scratch and Alt navigation checks passed")
+    print("Rex config: run, agent, scratch, Ctrl+Shift navigation and free Option key checks passed")
 
 
 class Rex:
@@ -50,8 +54,8 @@ class Rex:
         return json.loads(self("api", "call", "-s", "check", "session.view").stdout)
 
     def key(self, *, session_id, letter):
-        """Press Alt+letter the way a client does, so Lua bindings run first."""
-        press = {"key": "key_" + letter, "mods": "alt", "consumed_mods": "", "text": "",
+        """Press Ctrl+Shift+letter the way a client does, so Lua bindings run first."""
+        press = {"key": "key_" + letter, "mods": NAVIGATION_MODS, "consumed_mods": "", "text": "",
                  "unshifted_codepoint": ord(letter), "composing": False, "action": "press"}
         self("api", "call", "client.key", "-", stdin=json.dumps({"session_id": session_id, "key": press}))
 
@@ -94,21 +98,28 @@ def check(rex, *, tmp):
     refused = rex("do", "-s", "check", "-b", shell, "agent", "name=bogus", check=False)
     assert refused.returncode != 0 and "unknown agent" in refused.stderr, refused.stderr
 
-    # Given a shell above the run pane, When Alt+j is pressed, Then Rex focuses the run pane.
+    # Given this config, When a client fetches its keymap, Then no Option key that
+    # types a Polish letter (with or without Shift) is bound, so the pane gets the letter.
+    keymap = json.loads(rex("keymap", "--json").stdout)
+    taken = sorted({key for binding in keymap["bindings"] for key in binding["keys"]
+                    if "alt" in key.split("+")[:-1] and key.split("+")[-1] in POLISH_OPTION_LETTERS})
+    assert not taken, f"Rex binds {taken}, which Polish Pro needs for letters"
+
+    # Given a shell above the run pane, When Ctrl+Shift+j is pressed, Then Rex focuses the run pane.
     rex("block", "focus", "-s", "check", shell)
     rex.key(session_id=session_id, letter="j")
-    assert focused(rex.view()) != shell, "Alt+j did not leave the shell"
+    assert focused(rex.view()) != shell, "Ctrl+Shift+j did not leave the shell"
 
-    # Given Neovim in a pane, When Alt+h is pressed, Then Neovim receives <M-h>.
-    marker = tmp / "alt-h"
+    # Given Neovim in a pane, When Ctrl+Shift+h is pressed, Then Neovim receives <C-S-h>.
+    marker = tmp / "ctrl-shift-h"
     rex("split", "-s", "check", "-b", shell, "--split", "right", "--ratio", str(int(AGENT_SHARE * 100)),
         "--label", "editor", "--", "nvim", "--clean",
-        "-c", f"nnoremap <M-h> <Cmd>call writefile(['ok'], '{marker}')<CR>")
+        "-c", f"nnoremap <C-S-h> <Cmd>call writefile(['ok'], '{marker}')<CR>")
     time.sleep(SETTLE_S)
     editor = focused(rex.view())
     rex.key(session_id=session_id, letter="h")
     time.sleep(SETTLE_S)
-    assert marker.exists(), "Neovim did not receive Alt+h"
+    assert marker.exists(), "Neovim did not receive Ctrl+Shift+h"
     assert focused(rex.view()) == editor, "Rex moved focus away from Neovim"
 
     # Given no scratch shell, When scratch runs three times, Then one floating

@@ -12,11 +12,11 @@ local function check()
   assert(rex.navigate("l") and vim.api.nvim_get_current_win() == right)
   assert(not rex.navigate("l") and vim.api.nvim_get_current_win() == right)
   assert(rex.navigate("h") and vim.api.nvim_get_current_win() == left)
-  -- Given insert mode in the left window, When Rex sends Alt+l, Then the
-  -- right window is focused in normal mode.
-  vim.api.nvim_feedkeys("i" .. vim.keycode("<M-l>"), "xt", false)
-  assert(vim.api.nvim_get_current_win() == right, "Alt+l did not reach the right window")
-  assert(vim.api.nvim_get_mode().mode == "n", "Alt+l left Neovim in insert mode")
+  -- Given insert mode in the left window, When Ctrl+Shift+l arrives, Then
+  -- the right window is focused in normal mode.
+  vim.api.nvim_feedkeys("i" .. vim.keycode("<C-S-l>"), "xt", false)
+  assert(vim.api.nvim_get_current_win() == right, "Ctrl+Shift+l did not reach the right window")
+  assert(vim.api.nvim_get_mode().mode == "n", "Ctrl+Shift+l left Neovim in insert mode")
   -- The rex CLI receives one argv element per key=value pair, so spaces
   -- and shell syntax reach the Rex action unchanged.
   local args = rex.action_args("run", { cmd = "pytest -k 'a or b' | tail", cwd = "/tmp/has spaces" })

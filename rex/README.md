@@ -47,18 +47,22 @@ same thing as a remote Rex session.
 
 ## Keyboard shortcuts
 
-Alt+h/j/k/l focuses the pane left/down/up/right, with no prefix. When the
-focused pane runs Neovim, Rex writes the Alt key into that pane instead,
+Ctrl+Shift+h/j/k/l focuses the pane left/down/up/right, with no prefix. When
+the focused pane runs Neovim, Rex lets the key through to that pane instead,
 so Neovim can move between its own windows first and call rex focus at its
-edge. Rex writes the escape sequence itself, so it works whether or not the
-Mac client treats Option as Alt.
+edge. On the Ferris Sweep, hold A (Shift) and D (Ctrl), then tap the letter.
+
+The iPad app (Rex Dev 0.1.0, build 1971) does not apply these bindings: it
+sends every key straight to the pane. There Ctrl+Shift+h/j/k/l still works
+from Neovim panes, because Neovim maps the same keys; in shell and agent
+panes, tap the pane instead.
 
 Ctrl+A is a Rex prefix (press, release, then the next key).
 The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 
 | Rex prefix | Action |
 | --- | --- |
-| h/j/k/l | Focus pane, also from programs that ignore Alt keys |
+| h/j/k/l | Focus pane, also from programs that ignore Ctrl+Shift+h/j/k/l |
 | c / o / i | Claude / opencode / pi agent pane to the right |
 | e | Toggle the floating scratch shell |
 | r | Resize mode: h/j/k/l resize by 10, Enter or Escape leaves |
@@ -71,10 +75,16 @@ The prefix captures shell Ctrl+A; Ctrl+A twice forwards it to the shell.
 | Tab | Focus previous pane |
 | Ctrl+A | Send literal Ctrl+A |
 
-Alt is used instead of Ctrl because shells and agent prompts already use
-Ctrl+h/j/k/l (backspace, newline, kill line, clear screen). Programs in
-Rex panes no longer receive Alt+h/j/k/l, for example readline Alt+l
-(lowercase word) or zsh Alt+h (run-help).
+Ctrl+Shift is used because the other modifiers are taken:
+
+- Option types letters on the Polish Pro layout (Option+l is ł, Option+n is
+  ń), so no Rex key uses Option, and every Option key reaches the pane.
+- Plain Ctrl+h/j/k/l already mean backspace, newline, kill line and clear
+  screen in shells and agent prompts.
+- iPadOS reserves Cmd+H for the Home screen.
+
+Programs in Rex panes other than Neovim no longer receive
+Ctrl+Shift+h/j/k/l.
 
 ## Actions
 
@@ -96,7 +106,8 @@ the cwd argument, else in the directory of the pane's foreground program.
 - :RexRun go test ./... calls the run action with the editor CWD
 - Space+rr/rt/rl Python actions call the run action
 - Space+t calls the scratch action
-- Splits, zoom and focus are Rex keys only (Ctrl+A v/s/z, Alt+h/j/k/l)
+- Splits and zoom are Rex keys only (Ctrl+A v/s/z); Ctrl+Shift+h/j/k/l
+  moves between Neovim windows and on to Rex panes
 
 ## Editor: Rex switches files, Neovim edits
 
@@ -107,10 +118,10 @@ The editor pane is labelled `editor:<project>`.
 
 | Key | Action | VS Code equivalent |
 | --- | --- | --- |
-| Alt+p | Pick a file and open it | Cmd+P quick open |
-| Alt+b | Pick an open buffer | editor dropdown |
-| Alt+n / Alt+Shift+n | Next / previous buffer | Cmd+Tab / Cmd+Shift+Tab |
-| Alt+f | Search the project, pick a match | Cmd+Shift+F |
+| Ctrl+Shift+p | Pick a file and open it | Cmd+P quick open |
+| Ctrl+Shift+b | Pick an open buffer | editor dropdown |
+| Ctrl+Shift+n / Ctrl+Shift+m | Next / previous buffer | Cmd+Tab / Cmd+Shift+Tab |
+| Ctrl+Shift+f | Search the project, pick a match | Cmd+Shift+F |
 
 `edit` lists tracked and untracked files, honouring `.gitignore`, and falls
 back to `find` outside Git. `search` needs ripgrep. The first open splits an
@@ -122,8 +133,10 @@ Each action takes its argument so scripts never block on a prompt:
     rex do buffer_cycle direction=prev
     rex do search pattern=TODO
 
-Alt+p, Alt+b, Alt+n and Alt+f now belong to Rex, so programs in panes no
-longer receive them, in the same way as Alt+h/j/k/l.
+Ctrl+Shift+p, Ctrl+Shift+b, Ctrl+Shift+n, Ctrl+Shift+m and Ctrl+Shift+f belong
+to Rex, so programs in panes no longer receive them. They need a client that
+applies Rex bindings; on the iPad, use Space+ff, Space+fg and Space+fb in
+Neovim instead.
 
 Telescope and nvim-tree stay bound inside Neovim. Stop using Space+ff, Space+fg
 and Space+e if file switching should come from Rex alone.
@@ -146,8 +159,8 @@ the result only if tests fail. No additional plugin or subscription needed.
 4. Run nvim --headless '+luafile nvim/scripts/rex.lua' and
    python3 rex/scripts/check_config.py in the repo. The second starts a
    throwaway Rex server with this init.lua; it never touches the running one.
-5. Test Alt+h/j/k/l between shell and Neovim panes, agents, test panes
-   and OSC 52 clipboard.
+5. Test Ctrl+Shift+h/j/k/l between shell and Neovim panes, agents, test
+   panes and OSC 52 clipboard.
 6. If the installed Rex build lacks an action, run rex actions from that
    client and adjust Lua bindings; the beta API can change.
 

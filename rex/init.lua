@@ -2,7 +2,6 @@ local directions = { h = "left", j = "down", k = "up", l = "right" }
 local TERMINAL = "com.superlogical.terminal"
 -- Panes whose foreground program is this editor get the navigation keys.
 local NAVIGATION_EDITOR = "nvim"
-local ESC = "\27"
 local RESIZE_STEP = 10
 
 local SHELL = "com.superlogical.terminal.shell"
@@ -31,21 +30,20 @@ rex.bind("ctrl+a>r", "client.mode.enter", { name = "resize" })
 rex.bind("resize/enter", "client.mode.exit")
 rex.bind("resize/escape", "client.mode.exit")
 
--- Alt+h/j/k/l moves between panes without a prefix. Neovim receives the key
--- instead, moves between its own windows, and runs `rex focus` at its edge.
--- Writing ESC+key sends the Alt sequence even when macOS Option types text.
+-- Ctrl+Shift+h/j/k/l moves between panes without a prefix. No Rex key uses
+-- Option: on the Polish Pro layout Option types letters such as ł and ń.
+-- Returning false passes the key to a Neovim pane unchanged; Neovim maps the
+-- same keys, moves between its own windows, and runs `rex focus` at its edge.
+-- That mapping also serves clients that skip this keymap, such as the iPad.
 for key, direction in pairs(directions) do
-  rex.bind("alt+" .. key, function()
-    if runs_editor() then
-      rex.block.call(TERMINAL, "write", { data = ESC .. key })
-    else
-      rex.session.focus_direction{ direction = direction }
-    end
+  rex.bind("ctrl+shift+" .. key, function()
+    if runs_editor() then return false end
+    rex.session.focus_direction{ direction = direction }
     return true
   end)
   rex.bind("resize/" .. key, "pane.resize", { direction = direction, amount = RESIZE_STEP })
-  -- Always focuses Rex panes, even from a program that ignores Alt keys,
-  -- such as a Neovim started without this config.
+  -- Always focuses Rex panes, even from a program that does not map
+  -- Ctrl+Shift+h/j/k/l, such as a Neovim started without this config.
   rex.bind("ctrl+a>" .. key, "pane.focus." .. direction)
 end
 
@@ -374,8 +372,9 @@ rex.action{
   end,
 }
 
-rex.bind("alt+p", "edit")
-rex.bind("alt+b", "buffers")
-rex.bind("alt+n", "buffer_cycle", { direction = "next" })
-rex.bind("alt+shift+n", "buffer_cycle", { direction = "prev" })
-rex.bind("alt+f", "search")
+-- Ctrl+Shift already holds Shift, so previous buffer takes m, next to n.
+rex.bind("ctrl+shift+p", "edit")
+rex.bind("ctrl+shift+b", "buffers")
+rex.bind("ctrl+shift+n", "buffer_cycle", { direction = "next" })
+rex.bind("ctrl+shift+m", "buffer_cycle", { direction = "prev" })
+rex.bind("ctrl+shift+f", "search")
