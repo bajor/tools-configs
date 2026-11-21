@@ -69,8 +69,10 @@ local function multi_grep()
         )
         return { 'sh', '-c', cmd }
       end,
-      -- fd and rg print paths relative to opts.cwd, but :edit resolves a
-      -- relative name against the window's directory, so filename is absolute.
+      -- fd and rg print paths relative to opts.cwd. filename stays relative
+      -- because file_ignore_patterns (Lua patterns such as ".git") are
+      -- matched against it. path is absolute, because :edit would resolve a
+      -- relative name against the window's directory; Telescope prefers it.
       entry_maker = function(line)
         local prefix = line:sub(1, 2)
         local rest = line:sub(3)
@@ -81,7 +83,8 @@ local function multi_grep()
             value = rest,
             display = rest .. "  [file]",
             ordinal = "A" .. rest, -- A sorts before B
-            filename = vim.fs.joinpath(opts.cwd, rest),
+            filename = rest,
+            path = vim.fs.joinpath(opts.cwd, rest),
             lnum = 1,
             col = 1,
           }
@@ -93,7 +96,8 @@ local function multi_grep()
               value = rest,
               display = rest,
               ordinal = "B" .. rest, -- B sorts after A
-              filename = vim.fs.joinpath(opts.cwd, filename),
+              filename = filename,
+              path = vim.fs.joinpath(opts.cwd, filename),
               lnum = tonumber(lnum),
               col = tonumber(col),
               text = text,
@@ -108,10 +112,12 @@ local function multi_grep()
     previewer = conf.grep_previewer(opts),
     attach_mappings = function(prompt_bufnr, _)
       actions.select_default:replace(function()
+        -- This picker's own selection: get_selected_entry() is a global that
+        -- can still hold the previous picker's entry while results load.
+        local selection = action_state.get_current_picker(prompt_bufnr):get_selection()
         actions.close(prompt_bufnr)
-        local selection = action_state.get_selected_entry()
         if selection then
-          vim.cmd('edit ' .. vim.fn.fnameescape(selection.filename))
+          vim.cmd('edit ' .. vim.fn.fnameescape(selection.path))
           if selection.lnum then
             vim.api.nvim_win_set_cursor(0, { selection.lnum, (selection.col or 1) - 1 })
           end

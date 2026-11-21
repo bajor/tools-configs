@@ -20,16 +20,18 @@ local function pick(keys, prompt)
   local prompt_bufnr = vim.api.nvim_get_current_buf()
   local picker = action_state.get_current_picker(prompt_bufnr)
   picker:set_prompt(prompt)
-  wait_for(keys .. " results", function() return picker.manager and picker.manager:num_results() > 0 end)
-  -- Let the sorter settle on the best match before selecting it.
-  vim.wait(200)
+  -- Each prompt matches exactly one file, so the first selected entry is it.
+  -- Ask this picker: get_selected_entry() can return the previous picker's.
+  wait_for(keys .. " results", function() return picker:get_selection() ~= nil end)
   require("telescope.actions").select_default(prompt_bufnr)
   wait_for(keys .. " to open a file", function() return vim.bo.filetype ~= "TelescopePrompt" end)
   return vim.api.nvim_buf_get_name(0)
 end
 
 local function check()
-  local root = vim.fn.tempname()
+  -- "git" in the root path: file_ignore_patterns such as ".git" are Lua
+  -- patterns, so they must only ever see paths relative to the root.
+  local root = vim.fs.joinpath(vim.fn.tempname(), "github-projects")
   local top = vim.fs.joinpath(root, "top-level-file.txt")
   write(top, "rootneedle")
   write(vim.fs.joinpath(root, "sub", "inner.txt"), "other")
