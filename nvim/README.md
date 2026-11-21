@@ -39,6 +39,10 @@ letters such as ł and ń on the Polish Pro layout.
 Space+v and Space+s create editor windows. Ctrl+A then v/s in Rex creates
 independent terminal panes. Shell Ctrl+h/j/k/l keys remain untouched.
 
+Rex starts one Neovim per project root, and that root stays Neovim's global
+working directory. Search: Space+ff and Space+fg search from that root, even
+if some plugin changes the directory for one window only.
+
 Rex actions own pane layout (rex/README.md); Neovim only calls them:
 - :RexAgent opencode, :RexAgent claude or :RexAgent pi starts an agent
 - :RexRun go test ./... runs a command and preserves its output
@@ -78,6 +82,7 @@ assumed to work without verification of the installed Rex build.
     nvim --headless '+luafile nvim/scripts/keymaps.lua'
     nvim --headless '+luafile nvim/scripts/completion.lua'
     nvim --headless '+luafile nvim/scripts/python.lua'
+    nvim --headless '+luafile nvim/scripts/search.lua'
     python3 rex/scripts/check_config.py
     python3 nvim/docs/keymap_sheet.py --check
 

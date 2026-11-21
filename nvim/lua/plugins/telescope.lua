@@ -27,6 +27,17 @@ telescope.setup({
 
 telescope.load_extension('fzf')
 
+-- Rex starts one Neovim per project root, which stays the global working
+-- directory. Searching from it means a plugin's window-local :lcd cannot
+-- narrow the search.
+local function project_root()
+  return vim.fn.getcwd(-1, -1)
+end
+
+local function find_files()
+  require('telescope.builtin').find_files({ cwd = project_root() })
+end
+
 -- Custom picker: search both file names and content
 -- Filename matches appear first, then content matches
 local function multi_grep()
@@ -37,7 +48,7 @@ local function multi_grep()
   local action_state = require('telescope.actions.state')
 
   local opts = {
-    cwd = vim.fn.getcwd(),
+    cwd = project_root(),
   }
 
   pickers.new(opts, {
@@ -58,6 +69,8 @@ local function multi_grep()
         )
         return { 'sh', '-c', cmd }
       end,
+      -- fd and rg print paths relative to opts.cwd, but :edit resolves a
+      -- relative name against the window's directory, so filename is absolute.
       entry_maker = function(line)
         local prefix = line:sub(1, 2)
         local rest = line:sub(3)
@@ -68,7 +81,7 @@ local function multi_grep()
             value = rest,
             display = rest .. "  [file]",
             ordinal = "A" .. rest, -- A sorts before B
-            filename = rest,
+            filename = vim.fs.joinpath(opts.cwd, rest),
             lnum = 1,
             col = 1,
           }
@@ -80,7 +93,7 @@ local function multi_grep()
               value = rest,
               display = rest,
               ordinal = "B" .. rest, -- B sorts after A
-              filename = filename,
+              filename = vim.fs.joinpath(opts.cwd, filename),
               lnum = tonumber(lnum),
               col = tonumber(col),
               text = text,
@@ -110,5 +123,6 @@ local function multi_grep()
 end
 
 return {
+  find_files = find_files,
   multi_grep = multi_grep,
 }
